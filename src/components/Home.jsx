@@ -91,7 +91,14 @@ const Home = () => {
         <div>
           <h2>{profile.name}</h2>
           <p>{profile.email}</p>
-          {/* Renderiza el resto de los datos del perfil como desees */}
+          <ul>
+            {profile.schedules.map((schedule) => (
+              <li key={schedule.id}>
+                {schedule.dateOfReservation} - Pista {schedule.courtNumber} - La
+                he alquilado yo: {schedule.playerSchedules.payer ? "Si" : "No"}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

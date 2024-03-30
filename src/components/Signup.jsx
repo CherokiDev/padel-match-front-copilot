@@ -23,6 +23,10 @@ const Signup = () => {
     navigate("/login");
   };
 
+  const handleGoToLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -61,6 +65,9 @@ const Signup = () => {
         required
       />
       <button type="submit">Signup</button>
+      <button type="button" onClick={handleGoToLogin}>
+        Go to Login
+      </button>
     </form>
   );
 };
