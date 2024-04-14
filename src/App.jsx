@@ -9,10 +9,13 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
