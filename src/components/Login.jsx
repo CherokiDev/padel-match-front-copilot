@@ -22,7 +22,7 @@ const Login = () => {
       navigate("/home");
       toast("Bienvenido!");
     } catch (error) {
-      toast(error.response.data.message);
+      toast(error.response.data.message, { type: "error" });
     }
   };
 

@@ -1,5 +1,5 @@
 // src/components/Home.js
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./NavBar";
@@ -16,7 +16,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useAuth();
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     if (!isAuthenticated) {
       navigate("/login");
       return;
@@ -33,16 +33,30 @@ const Home = () => {
       console.error("Error fetching profile", error);
       navigate("/login");
     }
-  };
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (!isLoading) fetchProfile();
-  }, [navigate, isAuthenticated, isLoading]);
+  }, [navigate, isAuthenticated, isLoading, fetchProfile]);
 
-  const handleButtonClick = async (payerValue) => {
+  const buttonHaveCourt = async (payerValue) => {
     try {
       const schedulesResponse = await axios.get(
         "http://localhost:3000/schedulesAvailables"
+      );
+
+      setSchedules(schedulesResponse.data.data);
+      setPayer(payerValue);
+      console.log(payerValue);
+    } catch (error) {
+      console.error("Error handling button click", error);
+    }
+  };
+
+  const buttonDoesNotHaveCourt = async (payerValue) => {
+    try {
+      const schedulesResponse = await axios.get(
+        "http://localhost:3000/schedules"
       );
 
       setSchedules(schedulesResponse.data.data);
@@ -68,7 +82,11 @@ const Home = () => {
       setProfile(response.data.data);
 
       // Reload schedules after submitting
-      handleButtonClick(payer);
+      if (payer) {
+        buttonHaveCourt(true);
+      } else {
+        buttonDoesNotHaveCourt(false);
+      }
     } catch (error) {
       console.error("Error submitting schedule", error);
     }
@@ -85,7 +103,7 @@ const Home = () => {
         <>
           <button
             onClick={() => {
-              handleButtonClick(true);
+              buttonHaveCourt(true);
               setShowButtons(false);
             }}
           >
@@ -93,7 +111,7 @@ const Home = () => {
           </button>
           <button
             onClick={() => {
-              handleButtonClick(false);
+              buttonDoesNotHaveCourt(false);
               setShowButtons(false);
             }}
           >
@@ -101,23 +119,29 @@ const Home = () => {
           </button>
         </>
       ) : (
-        <button onClick={handleBackClick}>Volver</button>
+        <>
+          <button onClick={handleBackClick}>Volver</button>
+          {schedules.length > 0 && (
+            <div>
+              <select
+                value={selectedSchedule}
+                onChange={(e) => setSelectedSchedule(e.target.value)}
+              >
+                <option value="" disabled>
+                  Seleccionar...
+                </option>
+                {schedules.map((schedule) => (
+                  <option key={schedule.id} value={schedule.id}>
+                    {schedule.dateOfReservation} - Court {schedule.courtNumber}
+                  </option>
+                ))}
+              </select>
+              <button onClick={handleScheduleSubmit}>Submit</button>
+            </div>
+          )}
+        </>
       )}
-      {schedules.length > 0 && (
-        <div>
-          <select
-            value={selectedSchedule}
-            onChange={(e) => setSelectedSchedule(e.target.value)}
-          >
-            {schedules.map((schedule) => (
-              <option key={schedule.id} value={schedule.id}>
-                {schedule.dateOfReservation} - Court {schedule.courtNumber}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleScheduleSubmit}>Submit</button>
-        </div>
-      )}
+
       {profile && <Profile profile={profile} />}
     </div>
   );

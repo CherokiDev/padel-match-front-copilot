@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,14 +14,19 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:3000/signup", {
-      email,
-      name,
-      phone,
-      apodo,
-      password,
-    });
-    navigate("/login");
+    try {
+      await axios.post("http://localhost:3000/signup", {
+        email,
+        name,
+        phone,
+        apodo,
+        password,
+      });
+      navigate("/login");
+      toast("Usuario creado con éxito");
+    } catch (error) {
+      toast(error.response.data.message, { type: "error" });
+    }
   };
 
   const handleGoToLogin = () => {
