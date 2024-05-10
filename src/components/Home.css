@@ -1,19 +1,10 @@
-/* src/components/Home.css */
-
-.react-calendar {
-  background: #282c34;
-  border: 1px solid #282c34;
-  color: #fff;
+.schedule-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-.react-calendar__month-view__days__day--neighboringMonth {
-  color: #666;
-}
-
-.react-calendar__tile--now {
-  background: #ff0000;
-}
-
-.react-calendar__tile--active {
-  background: #00ff00;
+.schedule-item.selected {
+  background-color: rgb(145, 145, 80);
 }

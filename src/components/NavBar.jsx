@@ -14,6 +14,10 @@ const Navbar = () => {
   return (
     <nav>
       <button onClick={handleLogout}>Logout</button>
+      <br />
+      esto es del Navbar
+      <br />
+      ------------------------------
     </nav>
   );
 };
