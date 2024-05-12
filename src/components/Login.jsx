@@ -1,5 +1,4 @@
-// src/components/Login.js
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,26 +8,43 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3000/players/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("email", response.data.email);
-      localStorage.setItem("id", response.data.id);
-      navigate("/home");
-      toast("Bienvenido!");
-    } catch (error) {
-      toast(error.response.data.message, { type: "error" });
-    }
-  };
+  useEffect(() => {
+    return () => {
+      setEmail("");
+      setPassword("");
+    };
+  }, []);
 
-  const handleSignup = () => {
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/players/login",
+          {
+            email,
+            password,
+          }
+        );
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("id", response.data.id);
+        navigate("/home");
+        toast("Bienvenido!");
+      } catch (error) {
+        if (error.response && error.response.data.message) {
+          toast(error.response.data.message, { type: "error" });
+        } else {
+          toast("Ocurrió un error inesperado", { type: "error" });
+        }
+      }
+    },
+    [email, password, navigate]
+  );
+
+  const handleSignup = useCallback(() => {
     navigate("/signup");
-  };
+  }, [navigate]);
 
   return (
     <>

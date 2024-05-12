@@ -1,6 +1,7 @@
 // src/components/Home.js
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
 import Navbar from "./NavBar";
 import useAuth from "../hooks/useAuth";
@@ -75,7 +76,10 @@ const Home = () => {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    // Crea una nueva fecha con la hora establecida al mediodía
+    const dateWithNoonTime = new Date(date.setHours(12, 0, 0, 0));
+
+    setSelectedDate(dateWithNoonTime);
   };
 
   const getSchedulesForSelectedDate = () => {
@@ -208,8 +212,10 @@ const Home = () => {
       {selectedSchedule && (
         <div>
           Selected Schedule:{" "}
-          {new Date(selectedSchedule.dateOfReservation).toLocaleTimeString()} -
-          Pista {selectedSchedule.courtNumber}
+          {moment(selectedSchedule.dateOfReservation).format(
+            "DD/MM/YYYY, HH:mm"
+          )}{" "}
+          - Pista {selectedSchedule.courtNumber}
         </div>
       )}
 

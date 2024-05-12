@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 const Profile = ({ profile, deleteSchedule }) => {
   const [players, setPlayers] = useState([]);
@@ -38,15 +39,16 @@ const Profile = ({ profile, deleteSchedule }) => {
       <ul>
         {profile.schedules.map((schedule) => (
           <li key={schedule.id}>
-            {schedule.dateOfReservation} - Pista {schedule.courtNumber} - La he
-            alquilado yo: {schedule.playerSchedules.payer ? "Si" : "No"}
+            {moment(schedule.dateOfReservation).format("DD/MM/YYYY, HH:mm")} -
+            Pista {schedule.courtNumber} - La he alquilado yo:{" "}
+            {schedule.playerSchedules.payer ? "Si" : "No"}
             <button onClick={() => deleteSchedule(schedule.id)}>
               Eliminar
             </button>
           </li>
         ))}
       </ul>
-      <h2>Players in the same schedule</h2>
+      <h2>Jugadores en el mismo horario que yo tengo la pista reservada</h2>
       <table>
         <thead>
           <tr>
@@ -64,7 +66,11 @@ const Profile = ({ profile, deleteSchedule }) => {
                 <td>{player.name}</td>
                 <td>{player.email}</td>
                 <td>{player.apodo}</td>
-                <td>{new Date(schedule.dateOfReservation).toLocaleString()}</td>
+                <td>
+                  {moment(schedule.dateOfReservation).format(
+                    "DD/MM/YYYY, HH:mm"
+                  )}
+                </td>
                 <td>{schedule.courtNumber}</td>
               </tr>
             ))
