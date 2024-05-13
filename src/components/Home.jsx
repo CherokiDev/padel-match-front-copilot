@@ -55,7 +55,6 @@ const Home = () => {
 
       setSchedules(schedulesResponse.data.data);
       setPayer(payerValue);
-      console.log(payerValue);
     } catch (error) {
       console.error("Error handling button click", error);
     }
@@ -69,7 +68,6 @@ const Home = () => {
 
       setSchedules(schedulesResponse.data.data);
       setPayer(payerValue);
-      console.log(payerValue);
     } catch (error) {
       console.error("Error handling button click", error);
     }
@@ -104,7 +102,6 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitted:", selectedSchedule, payer);
     const token = localStorage.getItem("token");
     try {
       const playerId = localStorage.getItem("id");

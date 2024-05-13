@@ -55,6 +55,7 @@ const Profile = ({ profile, deleteSchedule }) => {
             <th>Name</th>
             <th>Email</th>
             <th>Apodo</th>
+            <th>Phone</th>
             <th>Date of Reservation</th>
             <th>Court Number</th>
           </tr>
@@ -66,12 +67,22 @@ const Profile = ({ profile, deleteSchedule }) => {
                 <td>{player.name}</td>
                 <td>{player.email}</td>
                 <td>{player.apodo}</td>
+                <td>{player.phone}</td>
                 <td>
                   {moment(schedule.dateOfReservation).format(
                     "DD/MM/YYYY, HH:mm"
                   )}
                 </td>
                 <td>{schedule.courtNumber}</td>
+                <td>
+                  <a
+                    href={`https://wa.me/${player.phone}?text=Hola%20${player.apodo},%20jugamos%20al%20padel?.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <button>Enviar whatsapp a {player.apodo}</button>
+                  </a>
+                </td>
               </tr>
             ))
           )}
