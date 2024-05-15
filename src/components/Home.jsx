@@ -29,7 +29,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3000/players/profile",
+        `${import.meta.env.VITE_API_URL}/players/profile`,
         {
           headers: {
             Authorization: token,
@@ -50,7 +50,7 @@ const Home = () => {
   const buttonHaveCourt = async (payerValue) => {
     try {
       const schedulesResponse = await axios.get(
-        "http://localhost:3000/schedulesAvailables"
+        `${import.meta.env.VITE_API_URL}/schedulesAvailables`
       );
 
       setSchedules(schedulesResponse.data.data);
@@ -63,7 +63,7 @@ const Home = () => {
   const buttonDoesNotHaveCourt = async (payerValue) => {
     try {
       const schedulesResponse = await axios.get(
-        "http://localhost:3000/schedules"
+        `${import.meta.env.VITE_API_URL}/schedules`
       );
 
       setSchedules(schedulesResponse.data.data);
@@ -106,7 +106,7 @@ const Home = () => {
     try {
       const playerId = localStorage.getItem("id");
       const response = await axios.post(
-        `http://localhost:3000/player/${playerId}/schedules`,
+        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
         {
           scheduleId: selectedSchedule.id,
           payer,
@@ -136,10 +136,13 @@ const Home = () => {
     const token = localStorage.getItem("token");
     const playerId = localStorage.getItem("id");
     try {
-      await axios.delete(`http://localhost:3000/player/${playerId}/schedules`, {
-        data: { scheduleId },
-        headers: { Authorization: token },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
+        {
+          data: { scheduleId },
+          headers: { Authorization: token },
+        }
+      );
       // Actualizar el perfil después de eliminar el schedule
       fetchProfile();
     } catch (error) {

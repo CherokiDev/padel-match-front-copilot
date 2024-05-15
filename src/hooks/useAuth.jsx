@@ -16,11 +16,14 @@ const useAuth = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:3000/verify-token", {
-          headers: {
-            Authorization: token,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/verify-token`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
         setIsAuthenticated(response.status === 200);
       } catch (error) {
         setIsAuthenticated(false);

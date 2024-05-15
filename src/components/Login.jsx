@@ -22,7 +22,7 @@ const Login = () => {
       e.preventDefault();
       try {
         const response = await axios.post(
-          "http://localhost:3000/players/login",
+          `${import.meta.env.VITE_API_URL}/players/login`,
           {
             identifier,
             password,
@@ -52,7 +52,9 @@ const Login = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/players/forgot", { email });
+      await axios.post(`${import.meta.env.VITE_API_URL}/players/forgot`, {
+        email,
+      });
       toast("Correo electrónico de recuperación enviado.");
     } catch (error) {
       toast("Error al enviar el correo electrónico de recuperación.", {

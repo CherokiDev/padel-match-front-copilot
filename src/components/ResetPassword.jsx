@@ -16,9 +16,12 @@ const ResetPassword = () => {
       return;
     }
     try {
-      await axios.post(`http://localhost:3000/players/reset/${token}`, {
-        password,
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/players/reset/${token}`,
+        {
+          password,
+        }
+      );
       toast("Contraseña restablecida con éxito");
       navigate("/login");
     } catch (error) {
