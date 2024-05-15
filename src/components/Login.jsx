@@ -52,7 +52,7 @@ const Login = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}players/forgot`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/players/forgot`, {
         email,
       });
       toast("Correo electrónico de recuperación enviado.");

@@ -11,7 +11,7 @@ const Navbar = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}players`,
+          `${import.meta.env.VITE_API_URL}/players`,
           {
             headers: {
               Authorization: token,

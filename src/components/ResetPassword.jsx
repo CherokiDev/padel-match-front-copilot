@@ -17,7 +17,7 @@ const ResetPassword = () => {
     }
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}players/reset/${token}`,
+        `${import.meta.env.VITE_API_URL}/players/reset/${token}`,
         {
           password,
         }
