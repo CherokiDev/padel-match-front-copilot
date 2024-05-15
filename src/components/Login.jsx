@@ -21,7 +21,6 @@ const Login = () => {
     async (e) => {
       e.preventDefault();
       try {
-        console.log("variable", import.meta.env.VITE_API_URL);
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/players/login`,
           {
@@ -32,7 +31,6 @@ const Login = () => {
             withCredentials: true,
           }
         );
-        console.log("hola", response.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("id", response.data.id);
