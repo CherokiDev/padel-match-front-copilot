@@ -15,16 +15,13 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `https://padel-match-backend-28d0b4405030.herokuapp.com/players`,
-        {
-          email,
-          name,
-          phone,
-          username,
-          password,
-        }
-      );
+      await axios.post(`${import.meta.env.VITE_API_URL}/players`, {
+        email,
+        name,
+        phone,
+        username,
+        password,
+      });
       navigate("/login");
       toast("Usuario creado con éxito");
     } catch (error) {

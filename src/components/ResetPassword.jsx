@@ -17,7 +17,7 @@ const ResetPassword = () => {
     }
     try {
       await axios.post(
-        `https://padel-match-backend-28d0b4405030.herokuapp.com/players/reset/${token}`,
+        `${import.meta.env.VITE_API_URL}/players/reset/${token}`,
         {
           password,
         }
