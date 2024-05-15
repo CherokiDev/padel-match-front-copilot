@@ -27,6 +27,9 @@ const Login = () => {
           {
             identifier,
             password,
+          },
+          {
+            withCredentials: true,
           }
         );
         console.log("hola", response.data);
