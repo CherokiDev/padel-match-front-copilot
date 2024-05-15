@@ -41,7 +41,6 @@ const Navbar = () => {
       <br />
       esto es del Navbar
       <br />
-      ------------------------------
       {players.map((player) => (
         <div key={player.id}>
           <p>{player.email}</p>

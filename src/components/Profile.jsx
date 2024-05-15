@@ -66,7 +66,7 @@ const Profile = ({ profile, deleteSchedule }) => {
               <tr key={schedule.id}>
                 <td>{player.name}</td>
                 <td>{player.email}</td>
-                <td>{player.apodo}</td>
+                <td>{player.username}</td>
                 <td>{player.phone}</td>
                 <td>
                   {moment(schedule.dateOfReservation).format(
@@ -76,11 +76,11 @@ const Profile = ({ profile, deleteSchedule }) => {
                 <td>{schedule.courtNumber}</td>
                 <td>
                   <a
-                    href={`https://wa.me/${player.phone}?text=Hola%20${player.apodo},%20jugamos%20al%20padel?.`}
+                    href={`https://wa.me/${player.phone}?text=Hola%20${player.username},%20jugamos%20al%20padel?.`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <button>Enviar whatsapp a {player.apodo}</button>
+                    <button>Enviar whatsapp a {player.username}</button>
                   </a>
                 </td>
               </tr>

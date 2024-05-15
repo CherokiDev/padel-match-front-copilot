@@ -8,7 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [apodo, setApodo] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const Signup = () => {
         email,
         name,
         phone,
-        apodo,
+        username,
         password,
       });
       navigate("/login");
@@ -58,8 +58,8 @@ const Signup = () => {
       />
       <input
         type="text"
-        value={apodo}
-        onChange={(e) => setApodo(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         placeholder="Apodo"
         required
       />

@@ -8,6 +8,7 @@ import {
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ResetPassword from "./components/ResetPassword";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
@@ -21,6 +22,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/reset/:token" element={<ResetPassword />} />
           <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<ProtectedRoute element={<Home />} />} />
