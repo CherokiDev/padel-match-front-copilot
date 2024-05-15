@@ -29,7 +29,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}players/profile`,
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/players/profile`,
         {
           headers: {
             Authorization: token,
@@ -50,7 +50,7 @@ const Home = () => {
   const buttonHaveCourt = async (payerValue) => {
     try {
       const schedulesResponse = await axios.get(
-        `${import.meta.env.VITE_API_URL}schedulesAvailables`
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/schedulesAvailables`
       );
 
       setSchedules(schedulesResponse.data.data);
@@ -63,7 +63,7 @@ const Home = () => {
   const buttonDoesNotHaveCourt = async (payerValue) => {
     try {
       const schedulesResponse = await axios.get(
-        `${import.meta.env.VITE_API_URL}schedules`
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/schedules`
       );
 
       setSchedules(schedulesResponse.data.data);
@@ -106,7 +106,7 @@ const Home = () => {
     try {
       const playerId = localStorage.getItem("id");
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}player/${playerId}/schedules`,
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/player/${playerId}/schedules`,
         {
           scheduleId: selectedSchedule.id,
           payer,
@@ -137,7 +137,7 @@ const Home = () => {
     const playerId = localStorage.getItem("id");
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}player/${playerId}/schedules`,
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/player/${playerId}/schedules`,
         {
           data: { scheduleId },
           headers: { Authorization: token },

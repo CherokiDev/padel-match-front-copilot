@@ -10,7 +10,7 @@ const Profile = ({ profile, deleteSchedule }) => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}players/same-schedule/${profile.id}`,
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/players/same-schedule/${profile.id}`,
         { headers: { Authorization: token } }
       );
       setPlayers(response.data.players);

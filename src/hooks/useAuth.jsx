@@ -17,7 +17,7 @@ const useAuth = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}verify-token`,
+          `https://padel-match-backend-28d0b4405030.herokuapp.com/verify-token`,
           {
             headers: {
               Authorization: token,

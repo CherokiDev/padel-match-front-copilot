@@ -23,7 +23,7 @@ const Login = () => {
       try {
         console.log("variable", import.meta.env.VITE_API_URL);
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}players/login`,
+          `https://padel-match-backend-28d0b4405030.herokuapp.com/players/login`,
           {
             identifier,
             password,
@@ -54,9 +54,12 @@ const Login = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}players/forgot`, {
-        email,
-      });
+      await axios.post(
+        `https://padel-match-backend-28d0b4405030.herokuapp.com/players/forgot`,
+        {
+          email,
+        }
+      );
       toast("Correo electrónico de recuperación enviado.");
     } catch (error) {
       toast("Error al enviar el correo electrónico de recuperación.", {
