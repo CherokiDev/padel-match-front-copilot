@@ -68,7 +68,7 @@ const Login = () => {
           type="text"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="Email or Username"
+          placeholder="Email o nombre de usuario"
           required
         />
         <input
