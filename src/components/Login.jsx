@@ -28,6 +28,7 @@ const Login = () => {
             password,
           }
         );
+        console.log(response.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("id", response.data.id);
@@ -52,7 +53,7 @@ const Login = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/players/forgot`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}players/forgot`, {
         email,
       });
       toast("Correo electrónico de recuperación enviado.");

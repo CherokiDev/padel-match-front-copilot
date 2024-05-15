@@ -17,7 +17,7 @@ const useAuth = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/verify-token`,
+          `${import.meta.env.VITE_API_URL}verify-token`,
           {
             headers: {
               Authorization: token,
