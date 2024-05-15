@@ -21,6 +21,7 @@ const Login = () => {
     async (e) => {
       e.preventDefault();
       try {
+        console.log("variable", import.meta.env.VITE_API_URL);
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}players/login`,
           {
