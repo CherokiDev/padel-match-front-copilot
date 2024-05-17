@@ -7,11 +7,20 @@ const useAuth = () => {
 
   useEffect(() => {
     const checkToken = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/verify-token`,
           {
-            withCredentials: true,
+            headers: {
+              Authorization: token,
+            },
           }
         );
         setIsAuthenticated(response.status === 200);

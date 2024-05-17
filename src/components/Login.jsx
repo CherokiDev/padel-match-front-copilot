@@ -31,6 +31,7 @@ const Login = () => {
             withCredentials: true,
           }
         );
+        localStorage.setItem("token", response.data.token);
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("id", response.data.id);
         localStorage.setItem("role", response.data.role);
