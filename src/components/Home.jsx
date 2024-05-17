@@ -1,4 +1,3 @@
-// src/components/Home.js
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -27,13 +26,10 @@ const Home = () => {
       return;
     }
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/players/profile`,
         {
-          headers: {
-            Authorization: token,
-          },
+          withCredentials: true,
         }
       );
       setProfile(response.data.dataValues);
@@ -102,7 +98,6 @@ const Home = () => {
   };
 
   const handleSubmit = async () => {
-    const token = localStorage.getItem("token");
     try {
       const playerId = localStorage.getItem("id");
       const response = await axios.post(
@@ -112,16 +107,12 @@ const Home = () => {
           payer,
         },
         {
-          headers: {
-            Authorization: token,
-          },
+          withCredentials: true,
         }
       );
 
-      // Update the profile with the response from the POST request
       setProfile(response.data.data);
 
-      // Reload schedules after submitting
       if (payer) {
         buttonHaveCourt(true);
       } else {
@@ -133,14 +124,13 @@ const Home = () => {
   };
 
   const deleteSchedule = async (scheduleId) => {
-    const token = localStorage.getItem("token");
     const playerId = localStorage.getItem("id");
     try {
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
         {
           data: { scheduleId },
-          headers: { Authorization: token },
+          withCredentials: true,
         }
       );
       // Actualizar el perfil después de eliminar el schedule

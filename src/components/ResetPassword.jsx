@@ -5,14 +5,31 @@ import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
+  const [passwordIsValid, setPasswordIsValid] = useState(true); // Nuevo estado
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const { token } = useParams();
+
+  const handlePasswordChange = (e) => {
+    // Nuevo manejador
+    setPassword(e.target.value);
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    setPasswordIsValid(passwordRegex.test(e.target.value));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast("Las contraseñas no coinciden", { type: "error" });
+      return;
+    }
+    if (!passwordIsValid) {
+      // Nueva validación
+      toast(
+        "La contraseña debe tener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial",
+        { type: "error" }
+      );
       return;
     }
     try {
@@ -34,9 +51,10 @@ const ResetPassword = () => {
       <input
         type="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={handlePasswordChange} // Usar el nuevo manejador
         placeholder="Nueva contraseña"
         required
+        className={passwordIsValid ? "" : "invalid"} // Nueva clase
       />
       <input
         type="password"

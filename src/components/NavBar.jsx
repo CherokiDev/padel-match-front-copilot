@@ -9,13 +9,10 @@ const Navbar = () => {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/players`,
           {
-            headers: {
-              Authorization: token,
-            },
+            withCredentials: true,
           }
         );
         setPlayers(response.data.data);
@@ -31,7 +28,6 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
     localStorage.removeItem("email");
     localStorage.removeItem("id");
     localStorage.removeItem("role");

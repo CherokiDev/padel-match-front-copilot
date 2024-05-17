@@ -7,11 +7,12 @@ const Profile = ({ profile, deleteSchedule }) => {
   const [players, setPlayers] = useState([]);
 
   const fetchPlayers = useCallback(async () => {
-    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/players/same-schedule/${profile.id}`,
-        { headers: { Authorization: token } }
+        {
+          withCredentials: true,
+        }
       );
       setPlayers(response.data.players);
     } catch (error) {
