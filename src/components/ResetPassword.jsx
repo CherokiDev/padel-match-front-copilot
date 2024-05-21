@@ -11,10 +11,9 @@ const ResetPassword = () => {
   const { token } = useParams();
 
   const handlePasswordChange = (e) => {
-    // Nuevo manejador
     setPassword(e.target.value);
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Validación de contraseña (al menos 8 caracteres, letras y números)
+    const passwordRegex = /^[A-Za-z0-9]{8,}$/;
     setPasswordIsValid(passwordRegex.test(e.target.value));
   };
 
@@ -24,10 +23,11 @@ const ResetPassword = () => {
       toast("Las contraseñas no coinciden", { type: "error" });
       return;
     }
-    if (!passwordIsValid) {
-      // Nueva validación
+    // Validación de contraseña (al menos 8 caracteres, letras y números)
+    const passwordRegex = /^[A-Za-z0-9]{8,}$/;
+    if (!passwordRegex.test(password)) {
       toast(
-        "La contraseña debe tener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial",
+        "La contraseña debe tener al menos 8 caracteres, incluyendo letras y números",
         { type: "error" }
       );
       return;

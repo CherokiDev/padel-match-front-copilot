@@ -2,9 +2,9 @@
   "name": "padel-match-front-copilot",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "start": "serve -s dist -l 8080",
     "heroku-postbuild": "npm run build",

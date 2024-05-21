@@ -29,8 +29,8 @@ const Signup = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Validación de contraseña (al menos 8 caracteres, letras y números)
+    const passwordRegex = /^[A-Za-z0-9]{8,}$/;
     setPasswordIsValid(passwordRegex.test(e.target.value));
   };
 
@@ -43,11 +43,11 @@ const Signup = () => {
       return;
     }
 
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Validación de contraseña (al menos 8 caracteres, letras y números)
+    const passwordRegex = /^[A-Za-z0-9]{8,}$/;
     if (!passwordRegex.test(password)) {
       toast(
-        "La contraseña debe tener al menos 8 caracteres, incluyendo al menos una letra mayúscula, una letra minúscula, un número y un carácter especial",
+        "La contraseña debe tener al menos 8 caracteres, incluyendo letras y números",
         { type: "error" }
       );
       return;
@@ -69,8 +69,26 @@ const Signup = () => {
         username,
         password,
       });
-      navigate("/login");
-      toast("Usuario creado con éxito");
+
+      // Iniciar sesión después de registrarse
+      const loginResponse = await axios.post(
+        `${import.meta.env.VITE_API_URL}/players/login`,
+        {
+          identifier: username, // o puedes usar el email
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      localStorage.setItem("token", loginResponse.data.token);
+      localStorage.setItem("email", loginResponse.data.email);
+      localStorage.setItem("id", loginResponse.data.id);
+      localStorage.setItem("role", loginResponse.data.role);
+
+      navigate("/home"); // Cambia esto a la ruta que quieras después de iniciar sesión
+      toast("Usuario creado y autenticado con éxito");
     } catch (error) {
       toast(error.response.data.message, { type: "error" });
     }
@@ -119,6 +137,7 @@ const Signup = () => {
         placeholder="Password"
         required
         className={passwordIsValid ? "" : "invalid"}
+        autoComplete="new-password"
       />
       <button type="submit">Signup</button>
       <button type="button" onClick={handleGoToLogin}>
