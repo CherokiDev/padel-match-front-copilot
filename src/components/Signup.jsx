@@ -30,8 +30,7 @@ const Signup = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     // Validación de contraseña (al menos 8 caracteres, letras y números)
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])[A-Za-z0-9@#]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
     setPasswordIsValid(passwordRegex.test(e.target.value));
   };
 
@@ -45,8 +44,7 @@ const Signup = () => {
     }
 
     // Validación de contraseña (al menos 8 caracteres, letras y números)
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])[A-Za-z0-9@#]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
     if (!passwordRegex.test(password)) {
       toast(
         "La contraseña debe tener al menos 8 caracteres, incluyendo letras y números",
