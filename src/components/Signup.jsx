@@ -70,6 +70,24 @@ const Signup = () => {
         password,
       });
 
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/send-registration-details-email`,
+          {
+            email,
+          }
+        );
+        toast(
+          "Correo electrónico con los detalles de la cuenta enviado. Por favor, revisa tu correo electrónico.",
+          { type: "success" }
+        );
+      } catch (error) {
+        toast(
+          "Error al enviar el correo electrónico con los detalles de la cuenta.",
+          { type: "error" }
+        );
+      }
+
       // Iniciar sesión después de registrarse
       const loginResponse = await axios.post(
         `${import.meta.env.VITE_API_URL}/players/login`,
