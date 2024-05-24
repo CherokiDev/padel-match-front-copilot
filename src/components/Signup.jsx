@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "./Signup.css";
+import { Button, TextField, Container, Typography, Paper } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,12 +13,19 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     setEmailIsValid(emailRegex.test(e.target.value));
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
   };
 
   const handlePhoneChange = (e) => {
@@ -27,40 +34,28 @@ const Signup = () => {
     setPhoneIsValid(phoneRegex.test(e.target.value));
   };
 
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    // Validación de contraseña (al menos 8 caracteres, letras y números)
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z])[A-Za-z\d]{8,}$/;
     setPasswordIsValid(passwordRegex.test(e.target.value));
+    setPasswordsMatch(e.target.value === confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordsMatch(password === e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-    if (!emailRegex.test(email)) {
-      toast("Email no válido", { type: "error" });
+    if (!passwordsMatch) {
+      enqueueSnackbar("Las contraseñas no coinciden", { variant: "error" });
       return;
     }
-
-    // Validación de contraseña (al menos 8 caracteres, letras y números)
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
-    if (!passwordRegex.test(password)) {
-      toast(
-        "La contraseña debe tener al menos 8 caracteres, incluyendo letras y números",
-        { type: "error" }
-      );
-      return;
-    }
-
-    const phoneRegex = /^[0-9]{9}$/;
-    if (!phoneRegex.test(phone)) {
-      toast("Número de teléfono no válido, debe de tener 9 dígitos", {
-        type: "error",
-      });
-      return;
-    }
-
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/players`, {
         email,
@@ -69,30 +64,13 @@ const Signup = () => {
         username,
         password,
       });
+      enqueueSnackbar("Usuario creado con éxito", { variant: "success" });
 
-      try {
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/send-registration-details-email`,
-          {
-            email,
-          }
-        );
-        toast(
-          "Correo electrónico con los detalles de la cuenta enviado. Por favor, revisa tu correo electrónico.",
-          { type: "success" }
-        );
-      } catch (error) {
-        toast(
-          "Error al enviar el correo electrónico con los detalles de la cuenta.",
-          { type: "error" }
-        );
-      }
-
-      // Iniciar sesión después de registrarse
+      // Log in the user after successful registration
       const loginResponse = await axios.post(
         `${import.meta.env.VITE_API_URL}/players/login`,
         {
-          identifier: username, // o puedes usar el email
+          identifier: username, // or you can use email
           password,
         },
         {
@@ -105,10 +83,9 @@ const Signup = () => {
       localStorage.setItem("id", loginResponse.data.id);
       localStorage.setItem("role", loginResponse.data.role);
 
-      navigate("/home"); // Cambia esto a la ruta que quieras después de iniciar sesión
-      toast("Usuario creado y autenticado con éxito");
+      navigate("/home"); // Change this to the route you want after logging in
     } catch (error) {
-      toast(error.response.data.message, { type: "error" });
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
     }
   };
 
@@ -117,51 +94,126 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        value={email}
-        onChange={handleEmailChange}
-        placeholder="Email"
-        required
-        className={emailIsValid ? "" : "invalid"}
-      />
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-        required
-      />
-      <input
-        type="tel"
-        value={phone}
-        onChange={handlePhoneChange}
-        placeholder="Phone"
-        required
-        className={phoneIsValid ? "" : "invalid"}
-      />
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Apodo"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
-        placeholder="Password"
-        required
-        className={passwordIsValid ? "" : "invalid"}
-        autoComplete="new-password"
-      />
-      <button type="submit">Signup</button>
-      <button type="button" onClick={handleGoToLogin}>
-        Go to Login
-      </button>
-    </form>
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+        <Typography variant="h4" align="center">
+          Padel Match
+        </Typography>
+      </Paper>
+      <Typography component="h1" variant="h5">
+        Registrarse
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          value={email}
+          onChange={handleEmailChange}
+          error={!emailIsValid}
+          helperText={!emailIsValid && "Email no válido"}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="name"
+          label="Nombre"
+          name="name"
+          autoComplete="name"
+          value={name}
+          onChange={handleNameChange}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="phone"
+          label="Teléfono"
+          name="phone"
+          autoComplete="phone"
+          value={phone}
+          onChange={handlePhoneChange}
+          error={!phoneIsValid}
+          helperText={
+            !phoneIsValid &&
+            "Número de teléfono no válido, debe de tener 9 dígitos"
+          }
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="username"
+          label="Nombre de usuario"
+          name="username"
+          autoComplete="username"
+          value={username}
+          onChange={handleUsernameChange}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Contraseña"
+          type="password"
+          id="password"
+          autoComplete="new-password"
+          value={password}
+          onChange={handlePasswordChange}
+          error={!passwordIsValid || !passwordsMatch}
+          helperText={
+            !passwordIsValid
+              ? "La contraseña debe tener al menos 8 caracteres, incluyendo letras, números y al menos una letra mayúscula"
+              : !passwordsMatch && "Las contraseñas no coinciden"
+          }
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="confirmPassword"
+          label="Confirmar contraseña"
+          type="password"
+          id="confirmPassword"
+          autoComplete="new-password"
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          error={!passwordsMatch}
+          helperText={!passwordsMatch && "Las contraseñas no coinciden"}
+        />
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          style={{ marginBottom: "10px" }}
+        >
+          Registrarse
+        </Button>
+        <Button
+          type="button"
+          fullWidth
+          variant="contained"
+          color="secondary"
+          onClick={handleGoToLogin}
+        >
+          Volver al inicio de sesión
+        </Button>
+      </form>
+    </Container>
   );
 };
 
