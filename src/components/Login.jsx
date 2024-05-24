@@ -146,7 +146,7 @@ const Login = () => {
           color="primary"
           style={{ backgroundColor: "#f5f5f5" }}
         >
-          Regístrarse
+          Regístrate
         </Button>
       </form>
       <Fade
