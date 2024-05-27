@@ -1,34 +1,19 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  // Button,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
-  const [players, setPlayers] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/players`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        setPlayers(response.data.data);
-      } catch (error) {
-        console.error("Error fetching players:", error);
-      }
-    };
-
-    const role = localStorage.getItem("role");
-    if (role === "admin") {
-      fetchPlayers();
-    }
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -38,18 +23,62 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <nav>
-      <button onClick={handleLogout}>Logout</button>
-      <br />
-      esto es del Navbar
-      <br />
-      {players.map((player) => (
-        <div key={player.id}>
-          <p>{player.email}</p>
-        </div>
-      ))}
-    </nav>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMenu}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" style={{ flexGrow: 1 }}>
+          Padel Match
+        </Typography>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            onClick={() => {
+              navigate("/home");
+              handleClose();
+            }}
+          >
+            Inicio
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              navigate("/profile");
+              handleClose();
+            }}
+          >
+            Perfil
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleLogout();
+              handleClose();
+            }}
+          >
+            Cerrar sesión
+          </MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 };
 

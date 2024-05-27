@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-// import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ResetPassword from "./components/ResetPassword";
 import { SnackbarProvider } from "notistack";
@@ -16,8 +15,13 @@ import { Box, CircularProgress } from "@mui/material";
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
 const Home = lazy(() => import("./components/Home"));
+const Profile = lazy(() => import("./components/Profile")); // Import the Profile component
 
 const theme = createTheme({
+  palette: {
+    type: "light", // o 'dark'
+    // otras opciones del tema
+  },
   typography: {
     fontFamily: "'Roboto Slab', serif",
   },
@@ -50,6 +54,10 @@ const App = () => {
               <Route
                 path="/home"
                 element={<ProtectedRoute element={<Home />} />}
+              />
+              <Route
+                path="/profile"
+                element={<ProtectedRoute element={<Profile />} />} // Add the Profile route
               />
               <Route path="/" element={<Navigate to="/login" />} />
               <Route path="*" element={<ProtectedRoute element={<Home />} />} />

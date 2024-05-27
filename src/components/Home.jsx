@@ -3,15 +3,15 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
-import Navbar from "./NavBar";
 import useAuth from "../hooks/useAuth";
-import Profile from "./Profile";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Home.css";
 import HaveCourtButton from "./HaveCourtButton";
 import DoesNotHaveCourtButton from "./DoesNotHaveCourtButton";
 import { enqueueSnackbar } from "notistack";
+import MatchList from "./MatchList";
+import { Button, Grid } from "@mui/material";
 
 const Home = () => {
   const [profile, setProfile] = useState(null);
@@ -140,7 +140,6 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
       {showButtons ? (
         <>
           <HaveCourtButton
@@ -171,21 +170,56 @@ const Home = () => {
           <Calendar onChange={handleDateChange} value={selectedDate} />
           {schedulesForSelectedDate.length > 0 && (
             <div className="schedule-list">
-              <h4>Elige hora y pista</h4>
-              {schedulesForSelectedDate.map((schedule) => (
-                <div
-                  key={schedule.id}
-                  className={`schedule-item ${
-                    selectedSchedule && selectedSchedule.id === schedule.id
-                      ? "selected"
-                      : ""
-                  }`}
-                  onClick={() => handleScheduleSelect(schedule)}
-                >
-                  {new Date(schedule.dateOfReservation).toLocaleTimeString()} -
-                  Pista {schedule.courtNumber}
-                </div>
-              ))}
+              <Grid container direction="row" spacing={2}>
+                <Grid item xs={6}>
+                  {schedulesForSelectedDate
+                    .filter((schedule) => schedule.courtNumber === 1)
+                    .map((schedule) => (
+                      <Button
+                        key={schedule.id}
+                        variant="contained"
+                        color={
+                          selectedSchedule &&
+                          selectedSchedule.id === schedule.id
+                            ? "primary"
+                            : "secondary"
+                        }
+                        fullWidth
+                        onClick={() => handleScheduleSelect(schedule)}
+                        style={{ marginBottom: "10px" }}
+                      >
+                        {new Date(
+                          schedule.dateOfReservation
+                        ).toLocaleTimeString()}{" "}
+                        - Pista {schedule.courtNumber}
+                      </Button>
+                    ))}
+                </Grid>
+                <Grid item xs={6}>
+                  {schedulesForSelectedDate
+                    .filter((schedule) => schedule.courtNumber === 2)
+                    .map((schedule) => (
+                      <Button
+                        key={schedule.id}
+                        variant="contained"
+                        color={
+                          selectedSchedule &&
+                          selectedSchedule.id === schedule.id
+                            ? "primary"
+                            : "secondary"
+                        }
+                        fullWidth
+                        onClick={() => handleScheduleSelect(schedule)}
+                        style={{ marginBottom: "10px" }}
+                      >
+                        {new Date(
+                          schedule.dateOfReservation
+                        ).toLocaleTimeString()}{" "}
+                        - Pista {schedule.courtNumber}
+                      </Button>
+                    ))}
+                </Grid>
+              </Grid>
             </div>
           )}
           <button onClick={handleSubmit} disabled={!selectedSchedule}>
@@ -203,8 +237,9 @@ const Home = () => {
           - Pista {selectedSchedule.courtNumber}
         </div>
       )}
-
-      {profile && <Profile profile={profile} deleteSchedule={deleteSchedule} />}
+      {profile && (
+        <MatchList profile={profile} deleteSchedule={deleteSchedule} />
+      )}
     </div>
   );
 };
