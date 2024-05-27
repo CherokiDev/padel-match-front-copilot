@@ -2,13 +2,23 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import PropTypes from "prop-types";
+import { Box, CircularProgress } from "@mui/material";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
-    return <div>Loading...</div>; // O puedes retornar un componente de carga
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return isAuthenticated ? (

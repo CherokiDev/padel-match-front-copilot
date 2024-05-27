@@ -9,6 +9,9 @@ import Profile from "./Profile";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./Home.css";
+import HaveCourtButton from "./HaveCourtButton";
+import DoesNotHaveCourtButton from "./DoesNotHaveCourtButton";
+import { enqueueSnackbar } from "notistack";
 
 const Home = () => {
   const [profile, setProfile] = useState(null);
@@ -20,6 +23,17 @@ const Home = () => {
 
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useAuth();
+
+  const fetchSchedules = useCallback(async () => {
+    try {
+      const schedulesResponse = await axios.get(
+        `${import.meta.env.VITE_API_URL}/schedulesAvailables`
+      );
+      setSchedules(schedulesResponse.data.data);
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
+    }
+  }, []);
 
   const fetchProfile = useCallback(async () => {
     if (!isAuthenticated) {
@@ -38,7 +52,7 @@ const Home = () => {
       );
       setProfile(response.data.dataValues);
     } catch (error) {
-      console.error("Error fetching profile", error);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
@@ -46,32 +60,6 @@ const Home = () => {
   useEffect(() => {
     if (!isLoading) fetchProfile();
   }, [navigate, isAuthenticated, isLoading, fetchProfile]);
-
-  const buttonHaveCourt = async (payerValue) => {
-    try {
-      const schedulesResponse = await axios.get(
-        `${import.meta.env.VITE_API_URL}/schedulesAvailables`
-      );
-
-      setSchedules(schedulesResponse.data.data);
-      setPayer(payerValue);
-    } catch (error) {
-      console.error("Error handling button click", error);
-    }
-  };
-
-  const buttonDoesNotHaveCourt = async (payerValue) => {
-    try {
-      const schedulesResponse = await axios.get(
-        `${import.meta.env.VITE_API_URL}/schedules`
-      );
-
-      setSchedules(schedulesResponse.data.data);
-      setPayer(payerValue);
-    } catch (error) {
-      console.error("Error handling button click", error);
-    }
-  };
 
   const handleDateChange = (date) => {
     // Crea una nueva fecha con la hora establecida al mediodía
@@ -118,17 +106,16 @@ const Home = () => {
         }
       );
 
-      // Update the profile with the response from the POST request
       setProfile(response.data.data);
-
-      // Reload schedules after submitting
-      if (payer) {
-        buttonHaveCourt(true);
-      } else {
-        buttonDoesNotHaveCourt(false);
-      }
+      setSelectedSchedule(null);
+      const schedulesEndpoint = payer ? "/schedulesAvailables" : "/schedules";
+      const schedulesResponse = await axios.get(
+        `${import.meta.env.VITE_API_URL}${schedulesEndpoint}`
+      );
+      setSchedules(schedulesResponse.data.data);
+      enqueueSnackbar(response.data.message, { variant: "success" });
     } catch (error) {
-      console.error("Error submitting schedule", error);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
     }
   };
 
@@ -136,17 +123,18 @@ const Home = () => {
     const token = localStorage.getItem("token");
     const playerId = localStorage.getItem("id");
     try {
-      await axios.delete(
+      const response = await axios.delete(
         `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
         {
           data: { scheduleId },
           headers: { Authorization: token },
         }
       );
-      // Actualizar el perfil después de eliminar el schedule
       fetchProfile();
+      fetchSchedules();
+      enqueueSnackbar(response.data.message, { variant: "success" });
     } catch (error) {
-      console.error("Error deleting schedule", error);
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
     }
   };
 
@@ -155,22 +143,17 @@ const Home = () => {
       <Navbar />
       {showButtons ? (
         <>
-          <button
-            onClick={() => {
-              buttonHaveCourt(true);
-              setShowButtons(false);
-            }}
-          >
-            Tengo pista, y busco compañeros
-          </button>
-          <button
-            onClick={() => {
-              buttonDoesNotHaveCourt(false);
-              setShowButtons(false);
-            }}
-          >
-            No tengo pista, me apunto para jugar
-          </button>
+          <HaveCourtButton
+            setSchedules={setSchedules}
+            setPayer={setPayer}
+            setShowButtons={setShowButtons}
+            fetchSchedules={fetchSchedules}
+          />
+          <DoesNotHaveCourtButton
+            setSchedules={setSchedules}
+            setPayer={setPayer}
+            setShowButtons={setShowButtons}
+          />
         </>
       ) : (
         <div className="calendar-schedule-container">
@@ -205,7 +188,9 @@ const Home = () => {
               ))}
             </div>
           )}
-          <button onClick={handleSubmit}>Submit</button>
+          <button onClick={handleSubmit} disabled={!selectedSchedule}>
+            Submit
+          </button>
         </div>
       )}
 
