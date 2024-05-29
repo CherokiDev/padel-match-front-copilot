@@ -33,7 +33,8 @@ const App = () => {
       <Router>
         <SnackbarProvider
           maxSnack={3}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          style={{ marginBottom: "56px" }} // Adjust this value based on the height of BottomNavBar
         >
           <Suspense
             fallback={

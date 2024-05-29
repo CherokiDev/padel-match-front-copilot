@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@mui/material";
-import NavBar from "./NavBar";
+import BottomNavBar from "./BottomNavBar";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -24,8 +24,8 @@ const ProtectedRoute = ({ element }) => {
 
   return isAuthenticated ? (
     <>
-      <NavBar />
       {element}
+      <BottomNavBar />
     </>
   ) : (
     <Navigate to="/login" state={{ from: location }} />

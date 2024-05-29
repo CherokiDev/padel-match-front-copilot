@@ -11,7 +11,7 @@ import HaveCourtButton from "./HaveCourtButton";
 import DoesNotHaveCourtButton from "./DoesNotHaveCourtButton";
 import { enqueueSnackbar } from "notistack";
 import MatchList from "./MatchList";
-import { Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 
 const Home = () => {
   const [profile, setProfile] = useState(null);
@@ -156,18 +156,20 @@ const Home = () => {
         </>
       ) : (
         <div className="calendar-schedule-container">
-          <button onClick={handleBackClick}>Volver</button>
+          <Button variant="contained" color="primary" onClick={handleBackClick}>
+            Volver
+          </Button>
           {payer && (
-            <>
-              <h3>Qué día tienes la pista alquilada</h3>
-            </>
+            <Typography variant="h6">
+              Qué día tienes la pista alquilada
+            </Typography>
           )}
-          {!payer && (
-            <>
-              <h3>Cúando quieres jugar</h3>
-            </>
-          )}
-          <Calendar onChange={handleDateChange} value={selectedDate} />
+          {!payer && <Typography variant="h6">Cúando quieres jugar</Typography>}
+
+          <Box display="flex" justifyContent="center" m={1} p={1}>
+            <Calendar onChange={handleDateChange} value={selectedDate} />
+          </Box>
+
           {schedulesForSelectedDate.length > 0 && (
             <div className="schedule-list">
               <Grid container direction="row" spacing={2}>
@@ -222,9 +224,14 @@ const Home = () => {
               </Grid>
             </div>
           )}
-          <button onClick={handleSubmit} disabled={!selectedSchedule}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            disabled={!selectedSchedule}
+          >
             Submit
-          </button>
+          </Button>
         </div>
       )}
 

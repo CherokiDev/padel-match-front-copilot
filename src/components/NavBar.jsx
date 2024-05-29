@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  // Button,
   Menu,
   MenuItem,
 } from "@mui/material";
@@ -31,6 +30,12 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (anchorEl) {
+      handleClose();
+    }
+  }, [navigate]);
+
   return (
     <AppBar position="static">
       <Toolbar>
@@ -45,38 +50,37 @@ const Navbar = () => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Padel Match
         </Typography>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            onClick={() => {
-              navigate("/home");
-              handleClose();
-            }}
+        {anchorEl && (
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
           >
-            Inicio
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              navigate("/profile");
-              handleClose();
-            }}
-          >
-            Perfil
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleLogout();
-              handleClose();
-            }}
-          >
-            Cerrar sesión
-          </MenuItem>
-        </Menu>
+            <MenuItem
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              Inicio
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              Perfil
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              Cerrar sesión
+            </MenuItem>
+          </Menu>
+        )}
       </Toolbar>
     </AppBar>
   );
