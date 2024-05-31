@@ -2,8 +2,14 @@
 import axios from "axios";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { Button } from "@mui/material";
 
-const DoesNotHaveCourtButton = ({ setSchedules, setPayer, setShowButtons }) => {
+const DoesNotHaveCourtButton = ({
+  setSchedules,
+  setPayer,
+  setShowButtons,
+  style,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
@@ -24,9 +30,16 @@ const DoesNotHaveCourtButton = ({ setSchedules, setPayer, setShowButtons }) => {
   };
 
   return (
-    <button onClick={handleClick} disabled={isLoading}>
-      No tengo pista, me apunto para jugar
-    </button>
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={handleClick}
+      disabled={isLoading}
+      style={style}
+    >
+      No tengo pista.
+      <br /> Me apunto para jugar
+    </Button>
   );
 };
 
@@ -36,4 +49,5 @@ DoesNotHaveCourtButton.propTypes = {
   setSchedules: PropTypes.func.isRequired,
   setPayer: PropTypes.func.isRequired,
   setShowButtons: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };

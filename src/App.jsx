@@ -11,15 +11,22 @@ import ResetPassword from "./components/ResetPassword";
 import { SnackbarProvider } from "notistack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, CircularProgress } from "@mui/material";
+import { deepPurple } from "@mui/material/colors";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
 const Home = lazy(() => import("./components/Home"));
-const Profile = lazy(() => import("./components/Profile")); // Import the Profile component
+const Profile = lazy(() => import("./components/Profile"));
 
 const theme = createTheme({
   palette: {
     type: "light", // o 'dark'
+    // primary: {
+    // main: "#3f51b5", // Este es el color primary por defecto de Material-UI
+    // },
+    secondary: {
+      main: deepPurple[900], // Este es un tono más oscuro de purple
+    },
     // otras opciones del tema
   },
   typography: {
@@ -33,8 +40,9 @@ const App = () => {
       <Router>
         <SnackbarProvider
           maxSnack={3}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          style={{ marginBottom: "56px" }} // Adjust this value based on the height of BottomNavBar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          autoHideDuration={3000}
+          resumeHideDuration={0}
         >
           <Suspense
             fallback={
@@ -58,7 +66,7 @@ const App = () => {
               />
               <Route
                 path="/profile"
-                element={<ProtectedRoute element={<Profile />} />} // Add the Profile route
+                element={<ProtectedRoute element={<Profile />} />}
               />
               <Route path="/" element={<Navigate to="/login" />} />
               <Route path="*" element={<ProtectedRoute element={<Home />} />} />

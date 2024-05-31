@@ -141,21 +141,35 @@ const Home = () => {
   return (
     <div>
       {showButtons ? (
-        <>
-          <HaveCourtButton
-            setSchedules={setSchedules}
-            setPayer={setPayer}
-            setShowButtons={setShowButtons}
-            fetchSchedules={fetchSchedules}
-          />
-          <DoesNotHaveCourtButton
-            setSchedules={setSchedules}
-            setPayer={setPayer}
-            setShowButtons={setShowButtons}
-          />
-        </>
+        <Box m={2}>
+          <Grid
+            container
+            spacing={3}
+            direction="column"
+            alignItems="center"
+            justify="center"
+          >
+            <Grid item xs={12}>
+              <HaveCourtButton
+                setSchedules={setSchedules}
+                setPayer={setPayer}
+                setShowButtons={setShowButtons}
+                fetchSchedules={fetchSchedules}
+                style={{ width: "300px", height: "100px" }} // Cambia minWidth a width
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DoesNotHaveCourtButton
+                setSchedules={setSchedules}
+                setPayer={setPayer}
+                setShowButtons={setShowButtons}
+                style={{ width: "300px", height: "100px" }} // Cambia minWidth a width
+              />
+            </Grid>
+          </Grid>
+        </Box>
       ) : (
-        <div className="calendar-schedule-container">
+        <Box m={2}>
           <Button variant="contained" color="primary" onClick={handleBackClick}>
             Volver
           </Button>
@@ -171,7 +185,7 @@ const Home = () => {
           </Box>
 
           {schedulesForSelectedDate.length > 0 && (
-            <div className="schedule-list">
+            <Box mt={2}>
               <Grid container direction="row" spacing={2}>
                 <Grid item xs={6}>
                   {schedulesForSelectedDate
@@ -222,30 +236,34 @@ const Home = () => {
                     ))}
                 </Grid>
               </Grid>
-            </div>
+            </Box>
           )}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            disabled={!selectedSchedule}
-          >
-            Submit
-          </Button>
-        </div>
+          <Box mt={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              disabled={!selectedSchedule}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Box>
       )}
 
       {selectedSchedule && (
-        <div>
+        <Box m={2}>
           Selected Schedule:{" "}
           {moment(selectedSchedule.dateOfReservation).format(
             "DD/MM/YYYY, HH:mm"
           )}{" "}
           - Pista {selectedSchedule.courtNumber}
-        </div>
+        </Box>
       )}
       {profile && (
-        <MatchList profile={profile} deleteSchedule={deleteSchedule} />
+        <Box m={2}>
+          <MatchList profile={profile} deleteSchedule={deleteSchedule} />
+        </Box>
       )}
     </div>
   );

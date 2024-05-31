@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { Box, Typography, Button } from "@mui/material";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -33,13 +34,20 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <>
-      <div>
-        <h2>Profile</h2>
-        <h2>{profile.name}</h2>
-        <p>{profile.email}</p>
-      </div>
-    </>
+    <Box sx={{ m: 2 }}>
+      <Typography variant="h2" gutterBottom>
+        Perfil
+      </Typography>
+      <Typography variant="h4" gutterBottom>
+        {profile.name}
+      </Typography>
+      <Typography variant="body1" gutterBottom>
+        {profile.email}
+      </Typography>
+      <Button variant="contained" color="primary">
+        Editar Perfil
+      </Button>
+    </Box>
   );
 };
 

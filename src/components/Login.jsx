@@ -9,8 +9,11 @@ import {
   Fade,
   Paper,
   Divider,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -18,6 +21,7 @@ const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [loginAttempts, setLoginAttempts] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -117,11 +121,23 @@ const Login = () => {
           fullWidth
           name="password"
           label="Contraseña"
-          type="password"
+          type={showPassword ? "text" : "password"}
           id="password"
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Button
           type="submit"
