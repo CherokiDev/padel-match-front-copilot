@@ -245,7 +245,7 @@ const Home = () => {
               onClick={handleSubmit}
               disabled={!selectedSchedule}
             >
-              Submit
+              Apuntarme
             </Button>
           </Box>
         </Box>

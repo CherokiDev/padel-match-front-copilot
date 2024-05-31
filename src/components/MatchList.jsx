@@ -5,15 +5,14 @@ import moment from "moment";
 import {
   Box,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
+  Card,
+  CardContent,
   Typography,
+  Stack,
+  Avatar,
+  Divider,
 } from "@mui/material";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 
 const MatchList = ({ profile, deleteSchedule }) => {
   const [players, setPlayers] = useState([]);
@@ -43,7 +42,13 @@ const MatchList = ({ profile, deleteSchedule }) => {
   if (!profile) return null;
 
   return (
-    <Box m={2}>
+    <Box m={2} mb={15}>
+      {/* <Box
+        bgcolor="primary.light" // Use a lighter color
+        color="primary.contrastText"
+        p={2}
+        borderRadius={2}
+      > */}
       <Typography variant="h5" gutterBottom>
         Reservas Actuales
       </Typography>
@@ -72,51 +77,63 @@ const MatchList = ({ profile, deleteSchedule }) => {
           </Button>
         </Box>
       ))}
-      <Typography variant="h5" gutterBottom>
-        Jugadores en el mismo horario que yo tengo la pista reservada
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">WhatsApp</TableCell>
-              <TableCell align="center">Nombre</TableCell>
-              <TableCell align="center">Apodo</TableCell>
-              <TableCell align="center">Tlf</TableCell>
-              <TableCell align="center">Fecha</TableCell>
-              <TableCell align="center">Pista</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {players.map((player) =>
-              player.schedules.map((schedule) => (
-                <TableRow key={schedule.id}>
-                  <TableCell>
-                    <a
-                      href={`https://wa.me/${player.phone}?text=Hola%20${player.username},%20jugamos%20al%20padel?.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="contained" color="primary">
-                        Enviar whatsapp a {player.username}
-                      </Button>
-                    </a>
-                  </TableCell>
-                  <TableCell>{player.name}</TableCell>
-                  <TableCell>{player.username}</TableCell>
-                  <TableCell>{player.phone}</TableCell>
-                  <TableCell>
-                    {moment(schedule.dateOfReservation).format(
-                      "DD/MM/YYYY, HH:mm"
-                    )}
-                  </TableCell>
-                  <TableCell>{schedule.courtNumber}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* </Box> */}
+      <Divider variant="middle" sx={{ my: 3 }} />
+      <Box
+        bgcolor="secondary.main"
+        color="secondary.contrastText"
+        p={2}
+        borderRadius={2}
+      >
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          sx={{ mt: 2, mb: 3 }}
+        >
+          {" "}
+          {/* Add margin-bottom here */}
+          <Avatar>
+            <SportsTennisIcon />
+          </Avatar>
+          <Typography variant="h5" gutterBottom>
+            Jugadores disponibles
+          </Typography>
+        </Stack>
+        {players.map((player) =>
+          player.schedules.map((schedule) => (
+            <Card key={schedule.id} sx={{ mb: 2 }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {player.name} ({player.username})
+                </Typography>
+                <Typography variant="body1">
+                  Teléfono: {player.phone}
+                </Typography>
+                <Typography variant="body1">
+                  Fecha:{" "}
+                  {moment(schedule.dateOfReservation).format(
+                    "DD/MM/YYYY, HH:mm"
+                  )}
+                </Typography>
+                <Typography variant="body1">
+                  Pista: {schedule.courtNumber}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 1 }}
+                  href={`https://wa.me/${player.phone}?text=Hola%20${player.username},%20jugamos%20al%20padel?.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Enviar whatsapp a {player.username}
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </Box>
     </Box>
   );
 };
