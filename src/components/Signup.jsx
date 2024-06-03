@@ -83,6 +83,23 @@ const Signup = () => {
       localStorage.setItem("id", loginResponse.data.id);
       localStorage.setItem("role", loginResponse.data.role);
 
+      // Send registration details email
+      try {
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/send-registration-details-email`,
+          {
+            email,
+          }
+        );
+        enqueueSnackbar("Correo de confirmación enviado con éxito", {
+          variant: "success",
+        });
+      } catch (error) {
+        enqueueSnackbar("Error al enviar el correo de confirmación", {
+          variant: "error",
+        });
+      }
+
       navigate("/home"); // Change this to the route you want after logging in
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
