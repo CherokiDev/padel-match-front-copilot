@@ -40,7 +40,7 @@ const HaveCourtButton = ({
       style={style}
     >
       Tengo pista.
-      <br /> busco compañeros
+      <br /> Busco jugadores
     </Button>
   );
 };

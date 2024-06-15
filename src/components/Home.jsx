@@ -1,7 +1,7 @@
 // src/components/Home.js
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+// import moment from "moment";
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import Calendar from "react-calendar";
@@ -10,11 +10,9 @@ import "./Home.css";
 import HaveCourtButton from "./HaveCourtButton";
 import DoesNotHaveCourtButton from "./DoesNotHaveCourtButton";
 import { enqueueSnackbar } from "notistack";
-import MatchList from "./MatchList";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 
 const Home = () => {
-  const [profile, setProfile] = useState(null);
   const [schedules, setSchedules] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSchedule, setSelectedSchedule] = useState(null);
@@ -42,15 +40,11 @@ const Home = () => {
     }
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/players/profile`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      setProfile(response.data.dataValues);
+      await axios.get(`${import.meta.env.VITE_API_URL}/players/profile`, {
+        headers: {
+          Authorization: token,
+        },
+      });
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
       navigate("/login");
@@ -105,8 +99,6 @@ const Home = () => {
           },
         }
       );
-
-      setProfile(response.data.data);
       setSelectedSchedule(null);
       const schedulesEndpoint = payer ? "/schedulesAvailables" : "/schedules";
       const schedulesResponse = await axios.get(
@@ -119,71 +111,76 @@ const Home = () => {
     }
   };
 
-  const deleteSchedule = async (scheduleId) => {
-    const token = localStorage.getItem("token");
-    const playerId = localStorage.getItem("id");
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
-        {
-          data: { scheduleId },
-          headers: { Authorization: token },
-        }
-      );
-      fetchProfile();
-      fetchSchedules();
-      enqueueSnackbar(response.data.message, { variant: "success" });
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: "error" });
-    }
-  };
-
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        marginBottom: "50px",
+      }}
+    >
       {showButtons ? (
-        <Box m={2}>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          style={{ height: "60%" }}
+        >
           <Grid
-            container
-            spacing={3}
-            direction="column"
-            alignItems="center"
-            justify="center"
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            <Grid item xs={12}>
-              <HaveCourtButton
-                setSchedules={setSchedules}
-                setPayer={setPayer}
-                setShowButtons={setShowButtons}
-                fetchSchedules={fetchSchedules}
-                style={{ width: "300px", height: "100px" }} // Cambia minWidth a width
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <DoesNotHaveCourtButton
-                setSchedules={setSchedules}
-                setPayer={setPayer}
-                setShowButtons={setShowButtons}
-                style={{ width: "300px", height: "100px" }} // Cambia minWidth a width
-              />
-            </Grid>
+            <HaveCourtButton
+              setSchedules={setSchedules}
+              setPayer={setPayer}
+              setShowButtons={setShowButtons}
+              fetchSchedules={fetchSchedules}
+              style={{ width: "70%", height: "80%" }}
+            />
           </Grid>
-        </Box>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <DoesNotHaveCourtButton
+              setSchedules={setSchedules}
+              setPayer={setPayer}
+              setShowButtons={setShowButtons}
+              style={{ width: "70%", height: "80%" }}
+            />
+          </Grid>
+        </Grid>
       ) : (
         <Box m={2}>
-          <Button variant="contained" color="primary" onClick={handleBackClick}>
-            Volver
-          </Button>
           {payer && (
             <Typography variant="h6">
-              Qué día tienes la pista alquilada
+              ¿Cuándo tienes la pista alquilada?
             </Typography>
           )}
-          {!payer && <Typography variant="h6">Cúando quieres jugar</Typography>}
-
+          {!payer && (
+            <Typography variant="h6">¿Cúando quieres jugar?</Typography>
+          )}
           <Box display="flex" justifyContent="center" m={1} p={1}>
             <Calendar onChange={handleDateChange} value={selectedDate} />
           </Box>
-
           {schedulesForSelectedDate.length > 0 && (
             <Box mt={2}>
               <Grid container direction="row" spacing={2}>
@@ -238,20 +235,38 @@ const Home = () => {
               </Grid>
             </Box>
           )}
-          <Box mt={2}>
+          <Divider style={{ width: "100%", margin: "10px 0" }} />{" "}
+          <Box mt={2} display="flex" justifyContent="center" gap={2}>
             <Button
               variant="contained"
-              color="primary"
               onClick={handleSubmit}
               disabled={!selectedSchedule}
+              style={{
+                flex: 1,
+                height: "50px",
+                backgroundColor: !selectedSchedule ? "#9E9E9E" : "#4CAF50", // Gris cuando está deshabilitado
+                color: "white",
+              }}
             >
               Apuntarme
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleBackClick}
+              style={{
+                flex: 1,
+                height: "50px",
+                backgroundColor: "#AF6666",
+                color: "white",
+              }} // Gris
+            >
+              Volver
             </Button>
           </Box>
         </Box>
       )}
 
-      {selectedSchedule && (
+      {/* {selectedSchedule && (
         <Box m={2}>
           Selected Schedule:{" "}
           {moment(selectedSchedule.dateOfReservation).format(
@@ -259,12 +274,7 @@ const Home = () => {
           )}{" "}
           - Pista {selectedSchedule.courtNumber}
         </Box>
-      )}
-      {profile && (
-        <Box m={2}>
-          <MatchList profile={profile} deleteSchedule={deleteSchedule} />
-        </Box>
-      )}
+      )} */}
     </div>
   );
 };

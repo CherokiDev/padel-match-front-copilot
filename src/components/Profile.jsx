@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { Box, Typography, Button } from "@mui/material";
+import MatchList from "./MatchList";
+import { enqueueSnackbar } from "notistack";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -31,6 +33,24 @@ const Profile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
+  const deleteSchedule = async (scheduleId) => {
+    const token = localStorage.getItem("token");
+    const playerId = localStorage.getItem("id");
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
+        {
+          data: { scheduleId },
+          headers: { Authorization: token },
+        }
+      );
+      fetchProfile();
+      enqueueSnackbar(response.data.message, { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: "error" });
+    }
+  };
+
   if (!profile) return null;
 
   return (
@@ -41,12 +61,21 @@ const Profile = () => {
       <Typography variant="h4" gutterBottom>
         {profile.name}
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography
+        variant="body1"
+        gutterBottom
+        style={{ wordWrap: "break-word" }}
+      >
         {profile.email}
       </Typography>
-      <Button variant="contained" color="primary">
+      <Button disabled variant="contained" color="primary">
         Editar Perfil
       </Button>
+      {profile && (
+        <Box m={2}>
+          <MatchList profile={profile} deleteSchedule={deleteSchedule} />
+        </Box>
+      )}
     </Box>
   );
 };
