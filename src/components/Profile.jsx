@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { Box, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button } from "@mui/material";
 import MatchList from "./MatchList";
 import { enqueueSnackbar } from "notistack";
 
@@ -54,29 +54,41 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <Box sx={{ m: 2 }}>
-      <Typography variant="h2" gutterBottom>
-        Perfil
-      </Typography>
-      <Typography variant="h4" gutterBottom>
-        {profile.name}
-      </Typography>
-      <Typography
-        variant="body1"
-        gutterBottom
-        style={{ wordWrap: "break-word" }}
-      >
-        {profile.email}
-      </Typography>
-      <Button disabled variant="contained" color="primary">
-        Editar Perfil
-      </Button>
-      {profile && (
-        <Box m={2}>
-          <MatchList profile={profile} deleteSchedule={deleteSchedule} />
-        </Box>
-      )}
-    </Box>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        marginTop: "60px",
+        marginBottom: "60px",
+        minHeight: "calc(100vh - 120px)",
+      }}
+    >
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h2" gutterBottom>
+            Perfil
+          </Typography>
+          <Typography variant="h4" gutterBottom>
+            {profile.name}
+          </Typography>
+          <Typography
+            variant="body1"
+            gutterBottom
+            style={{ wordWrap: "break-word" }}
+          >
+            {profile.email}
+          </Typography>
+          <Button disabled variant="contained" color="primary">
+            Editar Perfil
+          </Button>
+          {profile && (
+            <Grid item xs={12}>
+              <MatchList profile={profile} deleteSchedule={deleteSchedule} />
+            </Grid>
+          )}
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 

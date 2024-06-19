@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@mui/material";
 import BottomNavBar from "./BottomNavBar";
+import Header from "./Header";
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -24,8 +25,16 @@ const ProtectedRoute = ({ element }) => {
 
   return isAuthenticated ? (
     <>
-      {element}
-      <BottomNavBar />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Header /> {element}
+        <BottomNavBar />
+      </div>
     </>
   ) : (
     <Navigate to="/login" state={{ from: location }} />

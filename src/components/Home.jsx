@@ -115,10 +115,10 @@ const Home = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        marginBottom: "50px",
+        flexDirection: "column",
+        marginTop: "60px",
+        marginBottom: "60px",
+        minHeight: "calc(100vh - 120px)",
       }}
     >
       {showButtons ? (
@@ -126,7 +126,7 @@ const Home = () => {
           container
           direction="row"
           justify="center"
-          style={{ height: "60%" }}
+          style={{ height: "400px" }}
         >
           <Grid
             item
@@ -145,7 +145,7 @@ const Home = () => {
               setPayer={setPayer}
               setShowButtons={setShowButtons}
               fetchSchedules={fetchSchedules}
-              style={{ width: "70%", height: "80%" }}
+              style={{ width: "70%", height: "60%" }}
             />
           </Grid>
           <Grid
@@ -164,7 +164,7 @@ const Home = () => {
               setSchedules={setSchedules}
               setPayer={setPayer}
               setShowButtons={setShowButtons}
-              style={{ width: "70%", height: "80%" }}
+              style={{ width: "70%", height: "60%" }}
             />
           </Grid>
         </Grid>

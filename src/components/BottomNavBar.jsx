@@ -19,6 +19,7 @@ const BottomNavBar = () => {
 
   return (
     <BottomNavigation
+      position="fixed"
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -32,6 +33,10 @@ const BottomNavBar = () => {
         bottom: 0,
         width: "100%",
         backgroundColor: "#f0f0f0",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <BottomNavigationAction label="Inicio" icon={<HomeIcon />} />
