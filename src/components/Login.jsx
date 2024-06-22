@@ -54,7 +54,7 @@ const Login = () => {
         enqueueSnackbar("Bienvenido!", { variant: "success" });
       } catch (error) {
         setLoginAttempts((prevAttempts) => prevAttempts + 1);
-        if (loginAttempts >= 1) {
+        if (loginAttempts >= 0) {
           setShowForgotPassword(true);
         }
         if (error.response && error.response.data.message) {

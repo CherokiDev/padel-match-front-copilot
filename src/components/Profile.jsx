@@ -38,7 +38,7 @@ const Profile = () => {
     const playerId = localStorage.getItem("id");
     try {
       const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
+        `${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`,
         {
           data: { scheduleId },
           headers: { Authorization: token },

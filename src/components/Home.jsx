@@ -88,7 +88,7 @@ const Home = () => {
     try {
       const playerId = localStorage.getItem("id");
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/player/${playerId}/schedules`,
+        `${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`,
         {
           scheduleId: selectedSchedule.id,
           payer,
