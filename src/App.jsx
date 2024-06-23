@@ -12,6 +12,8 @@ import { SnackbarProvider } from "notistack";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, CircularProgress } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
@@ -36,45 +38,50 @@ const theme = createTheme({
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <SnackbarProvider
-          maxSnack={3}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          autoHideDuration={3000}
-          resumeHideDuration={0}
-        >
-          <Suspense
-            fallback={
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height="100vh"
-              >
-                <CircularProgress />
-              </Box>
-            }
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <SnackbarProvider
+            maxSnack={3}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            autoHideDuration={3000}
+            resumeHideDuration={0}
           >
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/reset/:token" element={<ResetPassword />} />
-              <Route
-                path="/home"
-                element={<ProtectedRoute element={<Home />} />}
-              />
-              <Route
-                path="/profile"
-                element={<ProtectedRoute element={<Profile />} />}
-              />
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="*" element={<ProtectedRoute element={<Home />} />} />
-            </Routes>
-          </Suspense>
-        </SnackbarProvider>
-      </Router>
-    </ThemeProvider>
+            <Suspense
+              fallback={
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height="100vh"
+                >
+                  <CircularProgress />
+                </Box>
+              }
+            >
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/reset/:token" element={<ResetPassword />} />
+                <Route
+                  path="/home"
+                  element={<ProtectedRoute element={<Home />} />}
+                />
+                <Route
+                  path="/profile"
+                  element={<ProtectedRoute element={<Profile />} />}
+                />
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route
+                  path="*"
+                  element={<ProtectedRoute element={<Home />} />}
+                />
+              </Routes>
+            </Suspense>
+          </SnackbarProvider>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
 };
 

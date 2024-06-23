@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Grid, Typography, Button } from "@mui/material";
 import MatchList from "./MatchList";
 import { enqueueSnackbar } from "notistack";
+import MainContainer from "./MainContainer";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -54,15 +55,7 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        marginTop: "60px",
-        marginBottom: "60px",
-        minHeight: "calc(100vh - 120px)",
-      }}
-    >
+    <MainContainer>
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="h2" gutterBottom>
@@ -88,7 +81,7 @@ const Profile = () => {
           )}
         </Grid>
       </Grid>
-    </div>
+    </MainContainer>
   );
 };
 
