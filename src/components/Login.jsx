@@ -88,13 +88,28 @@ const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
-        <Typography variant="h4" align="center">
+      <Paper
+        elevation={3}
+        style={{
+          padding: "20px",
+          marginBottom: "20px",
+          background: "linear-gradient(to right, #3775DF, #F0D053)",
+        }}
+      >
+        <Typography variant="h4" align="center" style={{ color: "white" }}>
           Padel Match
         </Typography>
       </Paper>
-      <Typography component="h1" variant="h5">
+      <Typography
+        component="h1"
+        variant="h6"
+        marginBottom={2}
+        style={{ color: "#1976d2", fontWeight: "bold" }}
+      >
         Iniciar sesión
+      </Typography>
+      <Typography variant="body2" style={{ color: "#1976d2" }}>
+        Bienvenid@ a Padel Match, inicia sesión para continuar.
       </Typography>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -141,14 +156,21 @@ const Login = () => {
           fullWidth
           variant="contained"
           color="primary"
-          style={{ marginBottom: "10px" }}
+          style={{
+            marginBottom: "10px",
+            borderRadius: "20px",
+            marginTop: "20px",
+          }}
         >
-          Iniciar sesión
+          Entrar
         </Button>
 
         <Divider variant="middle" style={{ margin: "20px 0" }} />
 
-        <Typography variant="body1" style={{ marginTop: "10px" }}>
+        <Typography
+          variant="body1"
+          style={{ marginTop: "10px", color: "#1976d2" }}
+        >
           ¿No tienes cuenta?
         </Typography>
 
@@ -157,9 +179,13 @@ const Login = () => {
           fullWidth
           variant="outlined"
           color="primary"
-          style={{ backgroundColor: "#f5f5f5" }}
+          style={{
+            backgroundColor: "#f5f5f5",
+            borderRadius: "20px",
+            marginTop: "10px",
+          }}
         >
-          Regístrate
+          Registrarse
         </Button>
       </form>
       <Fade
@@ -168,7 +194,11 @@ const Login = () => {
         style={{ marginTop: "50px" }}
       >
         <form onSubmit={handleForgotPassword}>
-          <Typography variant="body1" style={{ marginTop: "10px" }}>
+          <Divider variant="middle" style={{ margin: "20px 0" }} />
+          <Typography
+            variant="body1"
+            style={{ marginTop: "10px", color: "#1976d2" }}
+          >
             ¿Olvidaste tu contraseña?
           </Typography>
           <TextField
@@ -188,7 +218,11 @@ const Login = () => {
             fullWidth
             variant="outlined"
             color="primary"
-            style={{ backgroundColor: "#F4DDA7" }}
+            style={{
+              backgroundColor: "#F4DDA7",
+              borderRadius: "20px",
+              marginTop: "10px",
+            }}
           >
             Enviar correo de recuperación
           </Button>

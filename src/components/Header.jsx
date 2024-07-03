@@ -6,7 +6,7 @@ const Header = () => {
       position="fixed"
       style={{
         height: "60px",
-        background: "#2B8B2B",
+        background: "linear-gradient(to right, #3775DF, #F0D053)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
