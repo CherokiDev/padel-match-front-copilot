@@ -15,6 +15,7 @@ const Signup = () => {
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -56,6 +57,7 @@ const Signup = () => {
       enqueueSnackbar("Las contraseñas no coinciden", { variant: "error" });
       return;
     }
+    setIsSubmitting(true);
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/players`, {
         email,
@@ -79,9 +81,6 @@ const Signup = () => {
       );
 
       localStorage.setItem("token", loginResponse.data.token);
-      localStorage.setItem("email", loginResponse.data.email);
-      localStorage.setItem("id", loginResponse.data.id);
-      localStorage.setItem("role", loginResponse.data.role);
 
       // Send registration details email
       try {
@@ -103,6 +102,8 @@ const Signup = () => {
       navigate("/home"); // Change this to the route you want after logging in
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -217,6 +218,7 @@ const Signup = () => {
           variant="contained"
           color="primary"
           style={{ marginBottom: "10px" }}
+          disabled={isSubmitting}
         >
           Registrarse
         </Button>

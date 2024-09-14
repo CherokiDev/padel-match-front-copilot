@@ -10,7 +10,6 @@ import {
   Typography,
   Stack,
   Avatar,
-  // Divider,
   Modal,
   Backdrop,
 } from "@mui/material";
@@ -105,7 +104,7 @@ const MatchList = ({ profile, deleteSchedule }) => {
           </Box>
         ))}
       <Modal open={open} onClose={handleClose}>
-        <Backdrop open={open} onClick={handleClose}>
+        <Backdrop open={open} onClick={handleClose} inert="true">
           <Box
             display="flex"
             alignItems="center"

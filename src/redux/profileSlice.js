@@ -1,4 +1,4 @@
-// src/redux/features/profile/profileSlice.js
+// src/redux/profileSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 

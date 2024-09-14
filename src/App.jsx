@@ -14,6 +14,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import Schedules from "./components/Schedules";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
@@ -74,7 +75,7 @@ const App = () => {
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route
                   path="*"
-                  element={<ProtectedRoute element={<Home />} />}
+                  element={<ProtectedRoute element={<Schedules />} />}
                 />
               </Routes>
             </Suspense>

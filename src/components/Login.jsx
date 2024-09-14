@@ -160,6 +160,7 @@ const Login = () => {
             marginBottom: "10px",
             borderRadius: "20px",
             marginTop: "20px",
+            height: "50px",
           }}
         >
           Entrar
@@ -183,6 +184,7 @@ const Login = () => {
             backgroundColor: "#f5f5f5",
             borderRadius: "20px",
             marginTop: "10px",
+            height: "50px",
           }}
         >
           Registrarse
@@ -222,6 +224,7 @@ const Login = () => {
               backgroundColor: "#F4DDA7",
               borderRadius: "20px",
               marginTop: "10px",
+              height: "50px",
             }}
           >
             Enviar correo de recuperación

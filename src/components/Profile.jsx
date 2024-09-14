@@ -5,6 +5,7 @@ import { Grid, Typography, Button } from "@mui/material";
 import MatchList from "./MatchList";
 import { enqueueSnackbar } from "notistack";
 import MainContainer from "./MainContainer";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -34,9 +35,17 @@ const Profile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
+  const {
+    data: profileData,
+    status: profileStatus,
+    error: profileError,
+  } = useSelector((state) => state.profile);
+
   const deleteSchedule = async (scheduleId) => {
+    const playerId = profileData?.id;
+
     const token = localStorage.getItem("token");
-    const playerId = localStorage.getItem("id");
+
     try {
       const response = await axios.delete(
         `${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`,
@@ -53,6 +62,15 @@ const Profile = () => {
   };
 
   if (!profile) return null;
+
+  if (profileStatus === "loading")
+    return <MainContainer>Loading...</MainContainer>;
+  if (profileError)
+    return (
+      <MainContainer>
+        <p>Error: {profileError}</p>
+      </MainContainer>
+    );
 
   return (
     <MainContainer>

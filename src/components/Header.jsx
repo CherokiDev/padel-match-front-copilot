@@ -1,6 +1,7 @@
-import { AppBar, Toolbar, Typography } from "@mui/material";
+import { AppBar, Toolbar, Badge, Avatar } from "@mui/material";
+import PropTypes from "prop-types";
 
-const Header = () => {
+const Header = ({ notificationCount }) => {
   return (
     <AppBar
       position="fixed"
@@ -8,15 +9,29 @@ const Header = () => {
         height: "60px",
         background: "linear-gradient(to right, #3775DF, #F0D053)",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center",
+        paddingRight: "20px",
       }}
     >
       <Toolbar>
-        <Typography variant="h6">Padel Match</Typography>
+        <Badge
+          badgeContent={notificationCount}
+          color="error"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Avatar sx={{ bgcolor: "#3775DF" }}>PM</Avatar>
+        </Badge>
       </Toolbar>
     </AppBar>
   );
+};
+
+Header.propTypes = {
+  notificationCount: PropTypes.number,
 };
 
 export default Header;

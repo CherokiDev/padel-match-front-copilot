@@ -1,25 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const BottomNavBar = () => {
-  const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (location.pathname === "/home") setValue(0);
+    else if (location.pathname === "/profile") setValue(1);
+    else if (location.pathname === "/login") setValue(2);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("id");
-    localStorage.removeItem("role");
     navigate("/login");
   };
 
   return (
     <BottomNavigation
-      position="fixed"
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
