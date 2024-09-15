@@ -39,7 +39,7 @@ const Login = () => {
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/players/login`,
           {
-            identifier,
+            identifier: identifier.trimEnd(),
             password,
           },
           {
@@ -108,9 +108,18 @@ const Login = () => {
       >
         Iniciar sesión
       </Typography>
-      <Typography variant="body2" style={{ color: "#1976d2" }}>
-        Bienvenid@ a Padel Match, inicia sesión para continuar.
-      </Typography>
+      <div>
+        <Typography
+          variant="body2"
+          style={{ color: "#1976d2", marginBottom: "16px" }}
+        >
+          Bienvenid@ a Padel Match, tu aplicación para encontrar partidos de
+          padel
+        </Typography>
+        <Typography variant="body2" style={{ color: "#1976d2" }}>
+          Inicia sesión para continuar.
+        </Typography>
+      </div>
       <form onSubmit={handleSubmit}>
         <TextField
           variant="outlined"

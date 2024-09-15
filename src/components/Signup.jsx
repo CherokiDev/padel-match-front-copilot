@@ -61,9 +61,9 @@ const Signup = () => {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/players`, {
         email,
-        name,
+        name: name.trimEnd(),
         phone,
-        username,
+        username: username.trimEnd(),
         password,
       });
       enqueueSnackbar("Usuario creado con éxito", { variant: "success" });
@@ -72,7 +72,7 @@ const Signup = () => {
       const loginResponse = await axios.post(
         `${import.meta.env.VITE_API_URL}/players/login`,
         {
-          identifier: username, // or you can use email
+          identifier: username.trimEnd(), // or you can use email
           password,
         },
         {
