@@ -5,9 +5,9 @@ const MainContainer = ({ children }) => (
     style={{
       display: "flex",
       flexDirection: "column",
-      marginTop: "60px",
+      marginTop: "110px",
       marginBottom: "60px",
-      minHeight: "calc(100vh - 120px)",
+      minHeight: "calc(100vh - 170px)",
     }}
   >
     {children}

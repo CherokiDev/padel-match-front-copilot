@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
-  Button,
   TextField,
   Container,
   Typography,
@@ -14,6 +13,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import StyledButton from "./StyledButton"; // Importa el botón estilizado
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -88,37 +88,20 @@ const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper
-        elevation={3}
-        style={{
-          padding: "20px",
-          marginBottom: "20px",
-          background: "linear-gradient(to right, #3775DF, #F0D053)",
-        }}
-      >
-        <Typography variant="h4" align="center" style={{ color: "white" }}>
+      <Paper elevation={3}>
+        <Typography variant="h4" align="center">
           Padel Match
         </Typography>
       </Paper>
-      <Typography
-        component="h1"
-        variant="h6"
-        marginBottom={2}
-        style={{ color: "#1976d2", fontWeight: "bold" }}
-      >
+      <Typography component="h5" variant="h5">
         Iniciar sesión
       </Typography>
       <div>
-        <Typography
-          variant="body2"
-          style={{ color: "#1976d2", marginBottom: "16px" }}
-        >
+        <Typography variant="body2" style={{ marginBottom: "16px" }}>
           Bienvenid@ a Padel Match, tu aplicación para encontrar partidos de
           padel
         </Typography>
-        <Typography variant="body2" style={{ color: "#1976d2" }}>
-          Inicia sesión para continuar.
-        </Typography>
+        <Typography variant="body2">Inicia sesión para continuar.</Typography>
       </div>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -160,58 +143,31 @@ const Login = () => {
             ),
           }}
         />
-        <Button
+        <StyledButton
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
-          style={{
-            marginBottom: "10px",
-            borderRadius: "20px",
-            marginTop: "20px",
-            height: "50px",
-          }}
         >
           Entrar
-        </Button>
+        </StyledButton>
 
         <Divider variant="middle" style={{ margin: "20px 0" }} />
 
-        <Typography
-          variant="body1"
-          style={{ marginTop: "10px", color: "#1976d2" }}
-        >
-          ¿No tienes cuenta?
-        </Typography>
+        <Typography variant="h6">¿No tienes cuenta?</Typography>
 
-        <Button
-          onClick={handleSignup}
-          fullWidth
-          variant="outlined"
-          color="primary"
-          style={{
-            backgroundColor: "#f5f5f5",
-            borderRadius: "20px",
-            marginTop: "10px",
-            height: "50px",
-          }}
-        >
+        <StyledButton onClick={handleSignup} fullWidth variant="outlinedButton">
           Registrarse
-        </Button>
+        </StyledButton>
       </form>
       <Fade
         in={showForgotPassword}
         timeout={duration}
-        style={{ marginTop: "50px" }}
+        style={{ marginTop: "20px" }}
       >
         <form onSubmit={handleForgotPassword}>
           <Divider variant="middle" style={{ margin: "20px 0" }} />
-          <Typography
-            variant="body1"
-            style={{ marginTop: "10px", color: "#1976d2" }}
-          >
-            ¿Olvidaste tu contraseña?
-          </Typography>
+          <Typography variant="h6">¿Olvidaste tu contraseña?</Typography>
           <TextField
             variant="outlined"
             margin="normal"
@@ -224,20 +180,15 @@ const Login = () => {
             value={forgotPasswordEmail}
             onChange={(e) => setForgotPasswordEmail(e.target.value)}
           />
-          <Button
+          <StyledButton
             type="submit"
             fullWidth
             variant="outlined"
             color="primary"
-            style={{
-              backgroundColor: "#F4DDA7",
-              borderRadius: "20px",
-              marginTop: "10px",
-              height: "50px",
-            }}
+            style={{ backgroundColor: "#F4DDA7" }}
           >
             Enviar correo de recuperación
-          </Button>
+          </StyledButton>
         </form>
       </Fade>
     </Container>

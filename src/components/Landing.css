@@ -1,0 +1,22 @@
+/* src/components/Landing.css */
+.landing-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.landing-buttons {
+  margin-top: 20px;
+}
+
+.btn {
+  margin: 10px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}

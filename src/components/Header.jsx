@@ -6,15 +6,17 @@ const Header = ({ notificationCount }) => {
     <AppBar
       position="fixed"
       style={{
-        height: "60px",
         background: "linear-gradient(to right, #3775DF, #F0D053)",
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        paddingRight: "20px",
       }}
     >
-      <Toolbar>
+      <Toolbar
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
         <Badge
           badgeContent={notificationCount}
           color="error"

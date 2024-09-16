@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, Container, Typography, Paper } from "@mui/material";
+import { TextField, Container, Typography, Paper } from "@mui/material";
 import { useSnackbar } from "notistack";
+import StyledButton from "./StyledButton";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -118,7 +119,7 @@ const Signup = () => {
           Padel Match
         </Typography>
       </Paper>
-      <Typography component="h1" variant="h5">
+      <Typography component="h5" variant="h5">
         Registrarse
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -212,7 +213,7 @@ const Signup = () => {
           error={!passwordsMatch}
           helperText={!passwordsMatch && "Las contraseñas no coinciden"}
         />
-        <Button
+        <StyledButton
           type="submit"
           fullWidth
           variant="contained"
@@ -221,16 +222,16 @@ const Signup = () => {
           disabled={isSubmitting}
         >
           Registrarse
-        </Button>
-        <Button
-          type="button"
+        </StyledButton>
+        <StyledButton
+          // type="button"
           fullWidth
-          variant="contained"
-          color="secondary"
+          variant="outlinedButton"
+          color="primary"
           onClick={handleGoToLogin}
         >
           Volver al inicio de sesión
-        </Button>
+        </StyledButton>
       </form>
     </Container>
   );
