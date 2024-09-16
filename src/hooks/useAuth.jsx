@@ -23,7 +23,6 @@ const useAuth = () => {
             },
           }
         );
-        console.log("llamada a verify-token desde useAuth", response);
         setIsAuthenticated(response.status === 200);
       } catch (error) {
         setIsAuthenticated(false);

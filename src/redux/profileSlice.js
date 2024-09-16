@@ -14,10 +14,6 @@ export const fetchProfile = createAsyncThunk(
           },
         }
       );
-      console.log(
-        "llamada a profile desde profileSlice",
-        response.data.dataValues
-      );
       return response.data.dataValues;
     } catch (error) {
       return rejectWithValue(error.response.data);

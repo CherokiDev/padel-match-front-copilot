@@ -14,7 +14,6 @@ export const fetchSchedules = createAsyncThunk(
           },
         }
       );
-      console.log("llamada a schedules desde schedulesSlice", response.data);
 
       return response.data;
     } catch (error) {
