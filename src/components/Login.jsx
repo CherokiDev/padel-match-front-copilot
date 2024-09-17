@@ -10,10 +10,13 @@ import {
   Divider,
   InputAdornment,
   IconButton,
+  Box,
+  CircularProgress,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import StyledButton from "./StyledButton"; // Importa el botón estilizado
+import StyledButton from "./StyledButton";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -24,6 +27,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     return () => {
@@ -86,6 +96,19 @@ const Login = () => {
 
   const duration = 2000;
 
+  if (isLoading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper elevation={3}>
@@ -93,14 +116,25 @@ const Login = () => {
           Padel Match
         </Typography>
       </Paper>
-      <Typography component="h5" variant="h5">
-        Iniciar sesión
-      </Typography>
       <div>
-        <Typography variant="body2" style={{ marginBottom: "16px" }}>
-          Bienvenid@ a Padel Match, tu aplicación para encontrar partidos de
-          padel
+        <Typography
+          component="h5"
+          variant="h5"
+          style={{ marginBottom: "16px" }}
+        >
+          Bienvenid@ a Padel Match
         </Typography>
+
+        <Typography
+          component="h6"
+          variant="h6"
+          style={{ marginBottom: "16px" }}
+        >
+          Únete a la comunidad de jugadores de pádel de Puerto Serrano.
+        </Typography>
+
+        <Divider variant="middle" style={{ margin: "20px 0" }} />
+
         <Typography variant="body2">Inicia sesión para continuar.</Typography>
       </div>
       <form onSubmit={handleSubmit}>

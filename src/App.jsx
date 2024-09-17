@@ -20,6 +20,7 @@ const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/Profile"));
+const NotFound = lazy(() => import("./components/NotFound"));
 
 const App = () => {
   return (
@@ -57,11 +58,12 @@ const App = () => {
                   path="/profile"
                   element={<ProtectedRoute element={<Profile />} />}
                 />
-                <Route path="/" element={<Navigate to="/login" />} />
                 <Route
-                  path="*"
+                  path="/schedules"
                   element={<ProtectedRoute element={<Schedules />} />}
                 />
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="*" element={<NotFound />} />{" "}
               </Routes>
             </Suspense>
           </SnackbarProvider>
