@@ -7,7 +7,17 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import MainContainer from "./MainContainer";
 import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
+import {
+  Modal,
+  Box,
+  Button,
+  Typography,
+  TextField,
+  Container,
+} from "@mui/material";
+import { useSnackbar } from "notistack";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./customCalendarStyles.css"; // Importa el archivo CSS personalizado
 
 const localizer = momentLocalizer(moment);
 
@@ -16,6 +26,9 @@ const Schedules = () => {
   const { payer } = location.state;
   const dispatch = useDispatch();
   const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     data: schedulesResponse,
@@ -68,9 +81,15 @@ const Schedules = () => {
       dispatch(fetchSchedules(token));
       dispatch(fetchProfile(token));
 
-      console.log("Respuesta del backend:", response.data);
+      enqueueSnackbar(response.data.message, { variant: "success" });
     } catch (error) {
-      console.error("Error:", error);
+      if (error.response && error.response.data.message) {
+        enqueueSnackbar(error.response.data.message, { variant: "error" });
+      } else {
+        enqueueSnackbar("Ocurrió un error al confirmar la reserva", {
+          variant: "error",
+        });
+      }
     }
   };
 
@@ -87,9 +106,8 @@ const Schedules = () => {
   const events = schedulesData.map((schedule) => {
     const start = new Date(schedule.dateOfReservation);
     const end = moment(start).add(1, "hours").add(30, "minutes").toDate();
-    const isPayer = userSchedules.some(
-      (userSchedule) =>
-        userSchedule.id === schedule.id && userSchedule.playerSchedules.payer
+    const isReservedByUser = userSchedules.some(
+      (userSchedule) => userSchedule.id === schedule.id
     );
     return {
       id: schedule.id,
@@ -97,7 +115,7 @@ const Schedules = () => {
       start,
       end,
       courtNumber: schedule.courtNumber,
-      disabled: isPayer,
+      disabled: isReservedByUser,
     };
   });
 
@@ -115,6 +133,18 @@ const Schedules = () => {
     };
   };
 
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+
+  const handleDateChange = (event) => {
+    setSelectedDate(new Date(event.target.value));
+    closeModal();
+  };
+
+  const handleNavigate = (date) => {
+    setSelectedDate(date);
+  };
+
   return (
     <MainContainer>
       <h1>{payer ? "Con la pista alquilada" : "Sin la pista alquilada"}</h1>
@@ -124,26 +154,82 @@ const Schedules = () => {
           : "Contenido para cuando el usuario no tiene la pista alquilada"}
       </p>
       <h2>Schedules</h2>
+      <Button variant="contained" color="primary" onClick={openModal}>
+        Select Date
+      </Button>
+      <Modal open={modalIsOpen} onClose={closeModal}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "110px",
+            marginBottom: "60px",
+            minHeight: "calc(100vh - 170px)",
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              // width: 400,
+              bgcolor: "background.paper",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography variant="h6" component="h2">
+              Select a Date
+            </Typography>
+            <TextField
+              type="date"
+              fullWidth
+              onChange={handleDateChange}
+              sx={{ mt: 2 }}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={closeModal}
+              sx={{ mt: 2 }}
+            >
+              Close
+            </Button>
+          </Box>
+        </div>
+      </Modal>
       <Calendar
-        views={["month", "day"]}
+        views={["day"]}
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
         onSelectEvent={(event) => !event.disabled && setSelectedSchedule(event)}
         eventPropGetter={eventStyleGetter}
+        defaultView="day"
+        date={selectedDate}
+        onNavigate={handleNavigate}
+        min={new Date(1970, 1, 1, 8, 0, 0)} // 8:00 AM
+        max={new Date(1970, 1, 1, 22, 0, 0)} // 10:00 PM
       />
       {selectedSchedule && (
-        <div>
-          <h3>Selected Schedule</h3>
-          <p>Court Number: {selectedSchedule.courtNumber}</p>
-          <p>
+        <Container>
+          <Typography variant="h6">Selected Schedule</Typography>
+          <Typography>Court Number: {selectedSchedule.courtNumber}</Typography>
+          <Typography>
             Date of Reservation:{" "}
             {new Date(selectedSchedule.start).toLocaleString()}
-          </p>
-          <button onClick={handleSendToBackend}>Confirmar Reserva</button>
-        </div>
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSendToBackend}
+          >
+            Confirmar Reserva
+          </Button>
+        </Container>
       )}
     </MainContainer>
   );

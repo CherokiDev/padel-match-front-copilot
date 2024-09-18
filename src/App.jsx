@@ -32,7 +32,7 @@ const App = () => {
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             autoHideDuration={3000}
             resumeHideDuration={0}
-            style={{ height: "45px" }}
+            // style={{ height: "45px" }}
           >
             <Suspense
               fallback={

@@ -1,0 +1,29 @@
+/* customCalendarStyles.css */
+
+/* Cambiar el tamaño del texto */
+.rbc-time-content {
+  font-size: 12px; /* Cambia el tamaño del texto */
+}
+
+/* Cambiar el tamaño de los cuadros con los horarios */
+.rbc-time-slot {
+  height: 30px; /* Cambia la altura de los cuadros */
+  width: 40%; /* Cambia el ancho de los cuadros */
+  margin-right: 10px; /* Cambia el margen derecho de los cuadros */
+}
+
+/* Cambiar el color de fondo de los eventos */
+.rbc-event {
+  background-color: #3174ad; /* Cambia el color de fondo de los eventos */
+}
+
+/* Cambiar el color del texto de los eventos */
+.rbc-event-content {
+  color: white; /* Cambia el color del texto de los eventos */
+  width: 100px;
+}
+
+/* Cambiar el ancho de los eventos seleccionados */
+.rbc-event.rbc-selected {
+  width: 50%; /* Cambia el ancho de los eventos seleccionados */
+}

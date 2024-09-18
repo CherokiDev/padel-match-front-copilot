@@ -2,8 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/profileSlice";
 import MainContainer from "./MainContainer";
-// import { fetchSchedules } from "../redux/schedulesSlice";
 import { useNavigate } from "react-router-dom";
+import { Typography, Button, Box } from "@mui/material";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
+import PeopleIcon from "@mui/icons-material/People";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,6 @@ const Home = () => {
     const token = localStorage.getItem("token");
     if (token) {
       dispatch(fetchProfile(token));
-      // dispatch(fetchSchedules(token));
     }
   }, [dispatch]);
 
@@ -37,18 +38,63 @@ const Home = () => {
 
   return (
     <MainContainer>
-      <h1>Profile</h1>
-      {profileData && <p> Name: {profileData.name}</p>}
+      <Typography variant="h6" component="h6" gutterBottom>
+        Hola {profileData.username}, ¿qué estás buscando?
+      </Typography>
 
-      <p>Hola {profileData.username}, primero de nada, que estás buscando?</p>
+      <Box
+        display="flex"
+        flexDirection={{ xs: "column", sm: "row" }}
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+        width="80%"
+        mx="auto"
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<SportsTennisIcon />}
+          onClick={() => handleButtonClick(true)}
+          sx={{
+            marginBottom: { xs: 2, sm: 0 },
+            marginRight: { sm: 2 },
+            width: { xs: "100%", sm: "45%" },
+            height: { xs: "auto", sm: "45vw" },
+            minHeight: "150px",
+            padding: { xs: 2, sm: 1 },
+            fontSize: { xs: "1rem", sm: "0.875rem" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography>Tengo la pista alquilada,</Typography>
+          <Typography>busco jugadores</Typography>
+        </Button>
 
-      <button onClick={() => handleButtonClick(true)}>
-        Tengo la pista alquilada y busco jugadores
-      </button>
-
-      <button onClick={() => handleButtonClick(false)}>
-        Quiero jugar, busco a gente que la tenga alquilada
-      </button>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<PeopleIcon />}
+          onClick={() => handleButtonClick(false)}
+          sx={{
+            width: { xs: "100%", sm: "45%" },
+            height: { xs: "auto", sm: "45vw" },
+            minHeight: "150px",
+            padding: { xs: 2, sm: 1 },
+            fontSize: { xs: "1rem", sm: "0.875rem" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography>Quiero jugar,</Typography>
+          <Typography>busco a gente que la tenga alquilada</Typography>
+        </Button>
+      </Box>
     </MainContainer>
   );
 };

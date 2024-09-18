@@ -32,7 +32,8 @@ const ProtectedRoute = ({ element }) => {
           minHeight: "100vh",
         }}
       >
-        <Header /> {element}
+        <Header />
+        {element}
         <BottomNavBar />
       </div>
     </>
