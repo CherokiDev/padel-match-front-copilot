@@ -7,7 +7,16 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import MainContainer from "./MainContainer";
 import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
-import { Button, Typography, TextField, Container, Box } from "@mui/material";
+import {
+  Button,
+  Typography,
+  TextField,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useSnackbar } from "notistack";
@@ -23,6 +32,7 @@ const Schedules = () => {
   const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const {
     data: schedulesResponse,
@@ -76,6 +86,7 @@ const Schedules = () => {
       dispatch(fetchProfile(token));
 
       enqueueSnackbar(response.data.message, { variant: "success" });
+      setOpenDialog(false);
     } catch (error) {
       if (error.response && error.response.data.message) {
         enqueueSnackbar(error.response.data.message, { variant: "error" });
@@ -135,6 +146,13 @@ const Schedules = () => {
     setSelectedDate(date);
   };
 
+  const handleSelectEvent = (event) => {
+    if (!event.disabled) {
+      setSelectedSchedule(event);
+      setOpenDialog(true);
+    }
+  };
+
   return (
     <MainContainer>
       <Typography variant="h5">Elegir Pista</Typography>
@@ -178,7 +196,7 @@ const Schedules = () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        onSelectEvent={(event) => !event.disabled && setSelectedSchedule(event)}
+        onSelectEvent={handleSelectEvent}
         eventPropGetter={eventStyleGetter}
         defaultView="day"
         date={selectedDate}
@@ -187,16 +205,19 @@ const Schedules = () => {
         max={new Date(1970, 1, 1, 22, 0, 0)} // 10:00 PM
         className="custom-calendar"
       />
-      {selectedSchedule && (
-        <Container>
-          <Typography variant="h6">Horario Seleccionado</Typography>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Horario Seleccionado</DialogTitle>
+        <DialogContent>
           <Typography>
-            Número de Pista: {selectedSchedule.courtNumber}
+            Número de Pista: {selectedSchedule?.courtNumber}
           </Typography>
           <Typography>
             Fecha de Reserva:{" "}
-            {new Date(selectedSchedule.start).toLocaleString()}
+            {new Date(selectedSchedule?.start).toLocaleString()}
           </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
           <Button
             variant="contained"
             color="primary"
@@ -204,8 +225,8 @@ const Schedules = () => {
           >
             Confirmar Reserva
           </Button>
-        </Container>
-      )}
+        </DialogActions>
+      </Dialog>
     </MainContainer>
   );
 };
