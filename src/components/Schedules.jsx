@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./customCalendarStyles.css"; // Importa el archivo CSS personalizado
+import "./customCalendarStyles.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -213,6 +213,7 @@ const Schedules = () => {
         onNavigate={handleNavigate}
         min={new Date(1970, 1, 1, 8, 0, 0)} // 8:00 AM
         max={new Date(1970, 1, 1, 22, 0, 0)} // 10:00 PM
+        className="custom-calendar"
       />
       {selectedSchedule && (
         <Container>
