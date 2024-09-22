@@ -2,3 +2,7 @@
   width: 49% !important;
   height: 10% !important;
 }
+
+.custom-calendar .rbc-toolbar {
+  display: none;
+}

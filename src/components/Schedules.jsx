@@ -7,14 +7,9 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import MainContainer from "./MainContainer";
 import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
-import {
-  Modal,
-  Box,
-  Button,
-  Typography,
-  TextField,
-  Container,
-} from "@mui/material";
+import { Button, Typography, TextField, Container, Box } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useSnackbar } from "notistack";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./customCalendarStyles.css";
@@ -26,7 +21,6 @@ const Schedules = () => {
   const { payer } = location.state;
   const dispatch = useDispatch();
   const [selectedSchedule, setSelectedSchedule] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
 
@@ -133,12 +127,8 @@ const Schedules = () => {
     };
   };
 
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
-
   const handleDateChange = (event) => {
     setSelectedDate(new Date(event.target.value));
-    closeModal();
   };
 
   const handleNavigate = (date) => {
@@ -147,59 +137,41 @@ const Schedules = () => {
 
   return (
     <MainContainer>
-      <h1>{payer ? "Con la pista alquilada" : "Sin la pista alquilada"}</h1>
-      <p>
-        {payer
-          ? "Contenido para cuando el usuario tiene la pista alquilada"
-          : "Contenido para cuando el usuario no tiene la pista alquilada"}
-      </p>
-      <h2>Schedules</h2>
-      <Button variant="contained" color="primary" onClick={openModal}>
-        Select Date
-      </Button>
-      <Modal open={modalIsOpen} onClose={closeModal}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "110px",
-            marginBottom: "60px",
-            minHeight: "calc(100vh - 170px)",
-          }}
+      <Typography variant="h5">Elegir Pista</Typography>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 2 }}>
+        <Button
+          onClick={() =>
+            handleNavigate(moment(selectedDate).subtract(1, "days").toDate())
+          }
         >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              // width: 400,
-              bgcolor: "background.paper",
-              border: "2px solid #000",
-              boxShadow: 24,
-              p: 4,
-            }}
-          >
-            <Typography variant="h6" component="h2">
-              Select a Date
-            </Typography>
-            <TextField
-              type="date"
-              fullWidth
-              onChange={handleDateChange}
-              sx={{ mt: 2 }}
-            />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={closeModal}
-              sx={{ mt: 2 }}
-            >
-              Close
-            </Button>
-          </Box>
-        </div>
-      </Modal>
+          <ArrowBackIcon />
+        </Button>
+        <Button
+          onClick={() =>
+            handleNavigate(moment(selectedDate).add(1, "days").toDate())
+          }
+        >
+          <ArrowForwardIcon />
+        </Button>
+        <Button onClick={() => handleNavigate(new Date())}>Hoy</Button>
+        <TextField
+          type="date"
+          value={moment(selectedDate).format("YYYY-MM-DD")}
+          onChange={handleDateChange}
+          sx={{ mr: 2 }}
+        />
+      </Box>
+      <Typography variant="h6" sx={{ ml: 2 }}>
+        {new Intl.DateTimeFormat("es-ES", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+          .format(selectedDate)
+          .replace(/ de /g, " ")}
+      </Typography>
+
       <Calendar
         views={["day"]}
         localizer={localizer}
@@ -217,10 +189,12 @@ const Schedules = () => {
       />
       {selectedSchedule && (
         <Container>
-          <Typography variant="h6">Selected Schedule</Typography>
-          <Typography>Court Number: {selectedSchedule.courtNumber}</Typography>
+          <Typography variant="h6">Horario Seleccionado</Typography>
           <Typography>
-            Date of Reservation:{" "}
+            Número de Pista: {selectedSchedule.courtNumber}
+          </Typography>
+          <Typography>
+            Fecha de Reserva:{" "}
             {new Date(selectedSchedule.start).toLocaleString()}
           </Typography>
           <Button
