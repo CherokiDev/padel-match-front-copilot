@@ -25,6 +25,7 @@ const Login = () => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { isAuthenticated, isLoading } = useAuth();
@@ -79,6 +80,7 @@ const Login = () => {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
+    setIsSending(true);
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/players/forgot`, {
         email: forgotPasswordEmail,
@@ -88,6 +90,8 @@ const Login = () => {
       });
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -217,8 +221,13 @@ const Login = () => {
             variant="outlined"
             color="primary"
             style={{ backgroundColor: "#F4DDA7" }}
+            disabled={isSending}
           >
-            Enviar correo de recuperación
+            {isSending ? (
+              <CircularProgress size={24} />
+            ) : (
+              "Enviar correo de recuperación"
+            )}
           </StyledButton>
         </form>
       </Fade>
