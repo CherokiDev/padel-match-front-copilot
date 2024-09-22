@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import {
   TextField,
   Container,
@@ -13,7 +14,6 @@ import {
   Box,
   CircularProgress,
 } from "@mui/material";
-import { useSnackbar } from "notistack";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import StyledButton from "./StyledButton";
 import useAuth from "../hooks/useAuth";
@@ -42,43 +42,40 @@ const Login = () => {
     };
   }, []);
 
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/players/login`,
-          {
-            identifier: identifier.trimEnd(),
-            password,
-          },
-          {
-            withCredentials: true,
-          }
-        );
-        localStorage.setItem("token", response.data.token);
-        navigate("/home");
-        enqueueSnackbar("Bienvenido!", { variant: "success" });
-      } catch (error) {
-        setLoginAttempts((prevAttempts) => prevAttempts + 1);
-        if (loginAttempts >= 0) {
-          setShowForgotPassword(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/players/login`,
+        {
+          identifier: identifier.trimEnd(),
+          password,
+        },
+        {
+          withCredentials: true,
         }
-        if (error.response && error.response.data.message) {
-          enqueueSnackbar(error.response.data.message, { variant: "error" });
-        } else {
-          enqueueSnackbar("Ocurrió un error al iniciar sesión", {
-            variant: "error",
-          });
-        }
+      );
+      localStorage.setItem("token", response.data.token);
+      navigate("/home");
+      enqueueSnackbar("Bienvenid@!", { variant: "success" });
+    } catch (error) {
+      setLoginAttempts((prevAttempts) => prevAttempts + 1);
+      if (loginAttempts >= 0) {
+        setShowForgotPassword(true);
       }
-    },
-    [identifier, password, navigate, enqueueSnackbar, loginAttempts]
-  );
+      if (error.response && error.response.data.message) {
+        enqueueSnackbar(error.response.data.message, { variant: "error" });
+      } else {
+        enqueueSnackbar("Ocurrió un error al iniciar sesión", {
+          variant: "error",
+        });
+      }
+    }
+  };
 
-  const handleSignup = useCallback(() => {
+  const handleSignup = () => {
     navigate("/signup");
-  }, [navigate]);
+  };
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();

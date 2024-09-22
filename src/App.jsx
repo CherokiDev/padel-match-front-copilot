@@ -7,19 +7,19 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "react-toastify/dist/ReactToastify.css";
-import ResetPassword from "./components/ResetPassword";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
 import { Box, CircularProgress } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import Schedules from "./components/Schedules";
 import theme from "./theme";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
 const Home = lazy(() => import("./components/Home"));
 const Profile = lazy(() => import("./components/Profile"));
+const Schedules = lazy(() => import("./components/Schedules"));
+const ResetPassword = lazy(() => import("./components/ResetPassword"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
 const App = () => {
@@ -32,7 +32,6 @@ const App = () => {
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             autoHideDuration={3000}
             resumeHideDuration={0}
-            // style={{ height: "45px" }}
           >
             <Suspense
               fallback={
