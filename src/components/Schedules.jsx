@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  CircularProgress,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -33,6 +34,7 @@ const Schedules = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { enqueueSnackbar } = useSnackbar();
   const [openDialog, setOpenDialog] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const {
     data: schedulesResponse,
@@ -75,6 +77,7 @@ const Schedules = () => {
 
     const token = localStorage.getItem("token");
 
+    setIsSending(true);
     try {
       const response = await axios.post(url, body, {
         headers: {
@@ -95,11 +98,23 @@ const Schedules = () => {
           variant: "error",
         });
       }
+    } finally {
+      setIsSending(false);
     }
   };
 
   if (schedulesStatus === "loading" || profileStatus === "loading")
-    return <MainContainer>Loading...</MainContainer>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   if (schedulesError || profileError)
     return (
       <MainContainer>Error: {schedulesError || profileError}</MainContainer>
@@ -217,13 +232,30 @@ const Schedules = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
+          <Button onClick={() => setOpenDialog(false)} disabled={isSending}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width={120}
+            >
+              {isSending ? <CircularProgress size={24} /> : "Cancelar"}
+            </Box>
+          </Button>
           <Button
             variant="contained"
             color="primary"
             onClick={handleSendToBackend}
+            disabled={isSending}
           >
-            Confirmar Reserva
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width={160}
+            >
+              {isSending ? <CircularProgress size={24} /> : "Confirmar Reserva"}
+            </Box>
           </Button>
         </DialogActions>
       </Dialog>

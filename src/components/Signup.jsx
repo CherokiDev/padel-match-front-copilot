@@ -173,7 +173,7 @@ const Signup = () => {
           required
           fullWidth
           id="username"
-          label="Nombre de usuario"
+          label="Nombre de usuario (apodo)"
           name="username"
           autoComplete="username"
           value={username}

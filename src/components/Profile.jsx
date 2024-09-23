@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { Grid, Typography, Button } from "@mui/material";
-import MatchList from "./MatchList";
 import { enqueueSnackbar } from "notistack";
 import MainContainer from "./MainContainer";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const isAuthenticated = Boolean(localStorage.getItem("token"));
+  const navigate = useNavigate();
 
   const fetchProfile = useCallback(async () => {
     if (!isAuthenticated) {
@@ -35,42 +35,14 @@ const Profile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  const {
-    data: profileData,
-    status: profileStatus,
-    error: profileError,
-  } = useSelector((state) => state.profile);
-
-  const deleteSchedule = async (scheduleId) => {
-    const playerId = profileData?.id;
-
-    const token = localStorage.getItem("token");
-
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`,
-        {
-          data: { scheduleId },
-          headers: { Authorization: token },
-        }
-      );
-      fetchProfile();
-      enqueueSnackbar(response.data.message, { variant: "success" });
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: "error" });
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    enqueueSnackbar("Sesión cerrada correctamente", { variant: "success" });
+    setProfile(null);
+    navigate("/login");
   };
 
   if (!profile) return null;
-
-  if (profileStatus === "loading")
-    return <MainContainer>Loading...</MainContainer>;
-  if (profileError)
-    return (
-      <MainContainer>
-        <p>Error: {profileError}</p>
-      </MainContainer>
-    );
 
   return (
     <MainContainer>
@@ -89,14 +61,17 @@ const Profile = () => {
           >
             {profile.email}
           </Typography>
-          <Button disabled variant="contained" color="primary">
+          <Button variant="contained" color="primary" disabled>
             Editar Perfil
           </Button>
-          {profile && (
-            <Grid item xs={12}>
-              <MatchList profile={profile} deleteSchedule={deleteSchedule} />
-            </Grid>
-          )}
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleLogout}
+            sx={{ ml: 2 }}
+          >
+            Cerrar sesión
+          </Button>
         </Grid>
       </Grid>
     </MainContainer>

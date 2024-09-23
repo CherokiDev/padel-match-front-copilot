@@ -59,6 +59,22 @@ const theme = createTheme({
           padding: "20px",
           marginBottom: "20px",
           background: "linear-gradient(to right, #3775DF, #F0D053)",
+          // background: "linear-gradient(to right, #3775DF, #53F082FF)",
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          padding: "20px",
+          background: "white",
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          background: "#C9C9C9FF",
         },
       },
     },

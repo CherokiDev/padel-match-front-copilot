@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 
 const BottomNavBar = () => {
   const navigate = useNavigate();
@@ -12,14 +12,9 @@ const BottomNavBar = () => {
 
   useEffect(() => {
     if (location.pathname === "/home") setValue(0);
-    else if (location.pathname === "/profile") setValue(1);
-    else if (location.pathname === "/login") setValue(2);
+    else if (location.pathname === "/matchlist") setValue(1);
+    else if (location.pathname === "/profile") setValue(2);
   }, [location.pathname]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
 
   return (
     <BottomNavigation
@@ -27,8 +22,8 @@ const BottomNavBar = () => {
       onChange={(event, newValue) => {
         setValue(newValue);
         if (newValue === 0) navigate("/home");
-        if (newValue === 1) navigate("/profile");
-        if (newValue === 2) handleLogout();
+        if (newValue === 1) navigate("/matchlist");
+        if (newValue === 2) navigate("/profile");
       }}
       showLabels
       style={{
@@ -43,8 +38,8 @@ const BottomNavBar = () => {
       }}
     >
       <BottomNavigationAction label="Inicio" icon={<HomeIcon />} />
+      <BottomNavigationAction label="Partidos" icon={<SportsTennisIcon />} />
       <BottomNavigationAction label="Perfil" icon={<PersonIcon />} />
-      <BottomNavigationAction label="Cerrar sesión" icon={<ExitToAppIcon />} />
     </BottomNavigation>
   );
 };

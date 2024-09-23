@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/profileSlice";
 import MainContainer from "./MainContainer";
 import { useNavigate } from "react-router-dom";
-import { Typography, Button, Box } from "@mui/material";
+import { Typography, Button, Box, CircularProgress } from "@mui/material";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import PeopleIcon from "@mui/icons-material/People";
 
@@ -28,7 +28,17 @@ const Home = () => {
   };
 
   if (profileStatus === "loading")
-    return <MainContainer>Loading...</MainContainer>;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   if (profileError)
     return (
       <MainContainer>
