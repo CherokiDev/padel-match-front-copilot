@@ -170,7 +170,9 @@ const Schedules = () => {
 
   return (
     <MainContainer>
-      <Typography variant="h5">Elegir Pista</Typography>
+      <Typography variant="h5">
+        {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
+      </Typography>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 2 }}>
         <Button
           onClick={() =>

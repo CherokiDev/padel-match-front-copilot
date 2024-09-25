@@ -48,18 +48,23 @@ const Profile = () => {
     <MainContainer>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h2" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Perfil
           </Typography>
-          <Typography variant="h4" gutterBottom>
-            {profile.name}
+          <Typography variant="body2" gutterBottom>
+            Nombre: {profile.name}
           </Typography>
-          <Typography
-            variant="body1"
-            gutterBottom
-            style={{ wordWrap: "break-word" }}
-          >
-            {profile.email}
+          <Typography variant="body2" gutterBottom>
+            Email: {profile.email}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Teléfono: {profile.phone}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Usuario (apodo): {profile.username}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            Usuario desde: {new Date(profile.createdAt).toLocaleDateString()}
           </Typography>
           <Button variant="contained" color="primary" disabled>
             Editar Perfil
