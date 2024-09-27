@@ -112,20 +112,19 @@ const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3}>
+      <Paper
+        elevation={3}
+        sx={{
+          background: "linear-gradient(to right, #3775DF, #F0D053)",
+          padding: "20px",
+          marginBottom: "20px",
+        }}
+      >
         <Typography variant="h4" align="center">
-          Padel Match
+          PADELERO
         </Typography>
       </Paper>
       <div>
-        <Typography
-          component="h5"
-          variant="h5"
-          style={{ marginBottom: "16px" }}
-        >
-          Bienvenid@ a Padel Match
-        </Typography>
-
         <Typography
           component="h6"
           variant="h6"

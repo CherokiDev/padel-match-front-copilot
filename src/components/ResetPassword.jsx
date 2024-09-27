@@ -67,7 +67,7 @@ const ResetPassword = () => {
     <Container component="main" maxWidth="xs">
       <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
         <Typography variant="h4" align="center">
-          Padel Match
+          PADELERO
         </Typography>
       </Paper>
       <Typography component="h5" variant="h5">

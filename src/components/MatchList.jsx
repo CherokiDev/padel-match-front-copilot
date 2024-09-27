@@ -247,7 +247,7 @@ const MatchList = () => {
                     variant="contained"
                     color="primary"
                     sx={{ mt: 1 }}
-                    href={`https://wa.me/${player.phone}?text=Hola%20${player.username},%20jugamos%20al%20padel?.`}
+                    href={`https://wa.me/${player.phone}?text=Hola%20${player.username}.`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

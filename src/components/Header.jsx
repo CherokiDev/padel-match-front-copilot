@@ -1,13 +1,32 @@
-import { AppBar, Toolbar, IconButton, Badge, Avatar, Box } from "@mui/material";
-// import { Notifications, Menu } from "@mui/icons-material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Badge,
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useTheme } from "@mui/material/styles";
 
 const Header = ({ notificationCount }) => {
   const navigate = useNavigate();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const handleHomeClick = () => {
     navigate("/home");
+    setDrawerOpen(false);
   };
 
   return (
@@ -34,12 +53,25 @@ const Header = ({ notificationCount }) => {
             justifyContent="center"
             height="100%"
           >
-            <Avatar
-              onClick={handleHomeClick}
-              sx={{ bgcolor: "#9E9E9EFF", marginLeft: 1, fontSize: 14 }}
+            <IconButton color="inherit" onClick={handleDrawerToggle}>
+              <MenuIcon />
+            </IconButton>
+            <Drawer
+              anchor="left"
+              open={drawerOpen}
+              onClose={handleDrawerToggle}
             >
-              PM
-            </Avatar>
+              <List>
+                <ListItem button onClick={handleHomeClick}>
+                  <ListItemText
+                    primary="Inicio"
+                    primaryTypographyProps={{
+                      style: { color: theme.palette.primary.main },
+                    }}
+                  />
+                </ListItem>
+              </List>
+            </Drawer>
           </Box>
           <Box
             display="flex"

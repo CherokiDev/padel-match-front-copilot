@@ -35,6 +35,7 @@ const BottomNavBar = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 10,
       }}
     >
       <BottomNavigationAction label="Inicio" icon={<HomeIcon />} />

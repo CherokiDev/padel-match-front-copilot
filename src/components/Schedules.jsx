@@ -225,12 +225,23 @@ const Schedules = () => {
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Horario Seleccionado</DialogTitle>
         <DialogContent>
-          <Typography>
-            Número de Pista: {selectedSchedule?.courtNumber}
-          </Typography>
+          <Typography>Pista: {selectedSchedule?.courtNumber}</Typography>
           <Typography>
             Fecha de Reserva:{" "}
-            {new Date(selectedSchedule?.start).toLocaleString()}
+            {`${new Date(selectedSchedule?.start).toLocaleDateString(
+              undefined,
+              {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              }
+            )} a las ${new Date(selectedSchedule?.start).toLocaleTimeString(
+              undefined,
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            )}`}
           </Typography>
         </DialogContent>
         <DialogActions>
