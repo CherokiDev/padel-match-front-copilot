@@ -65,7 +65,14 @@ const ResetPassword = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+      <Paper
+        elevation={3}
+        sx={{
+          background: "linear-gradient(to right, #3775DF, #F0D053)",
+          padding: "20px",
+          marginBottom: "20px",
+        }}
+      >
         <Typography variant="h4" align="center">
           PADELERO
         </Typography>
