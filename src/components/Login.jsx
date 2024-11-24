@@ -188,7 +188,7 @@ const Login = () => {
 
         <Divider variant="middle" style={{ margin: "20px 0" }} />
 
-        <Typography variant="h6">¿No tienes cuenta?</Typography>
+        <Typography variant="body2">¿No tienes cuenta?</Typography>
 
         <StyledButton onClick={handleSignup} fullWidth variant="outlinedButton">
           Registrarse
@@ -201,14 +201,14 @@ const Login = () => {
       >
         <form onSubmit={handleForgotPassword}>
           <Divider variant="middle" style={{ margin: "20px 0" }} />
-          <Typography variant="h6">¿Olvidaste tu contraseña?</Typography>
+          <Typography variant="body2">¿Olvidaste tu contraseña?</Typography>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="forgotPasswordEmail"
-            label="Email para recuperar contraseña"
+            label="Email para recuperar la contraseña"
             name="forgotPasswordEmail"
             autoComplete="email"
             value={forgotPasswordEmail}
@@ -225,7 +225,7 @@ const Login = () => {
             {isSending ? (
               <CircularProgress size={24} />
             ) : (
-              "Enviar correo de recuperación"
+              "Enviar email de recuperación"
             )}
           </StyledButton>
         </form>

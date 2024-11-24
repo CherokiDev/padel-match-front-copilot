@@ -6,7 +6,7 @@ const StyledButton = styled(Button)(({ theme, variant }) => {
   const variantStyles =
     theme.components.MuiButton.styleOverrides[variant] || {};
   return {
-    borderRadius: "20px",
+    borderRadius: "10px",
     height: "50px",
     marginBottom: "10px",
     marginTop: "20px",

@@ -58,7 +58,7 @@ const Home = () => {
         justifyContent="space-between"
         alignItems="center"
         mt={2}
-        width="80%"
+        width="90%"
         mx="auto"
       >
         <Button
@@ -71,7 +71,7 @@ const Home = () => {
             marginRight: { sm: 2 },
             width: { xs: "100%", sm: "45%" },
             height: { xs: "auto", sm: "45vw" },
-            minHeight: "150px",
+            minHeight: "140px",
             padding: { xs: 2, sm: 1 },
             fontSize: { xs: "1rem", sm: "0.875rem" },
             display: "flex",
@@ -92,7 +92,7 @@ const Home = () => {
           sx={{
             width: { xs: "100%", sm: "45%" },
             height: { xs: "auto", sm: "45vw" },
-            minHeight: "150px",
+            minHeight: "140px",
             padding: { xs: 2, sm: 1 },
             fontSize: { xs: "1rem", sm: "0.875rem" },
             display: "flex",

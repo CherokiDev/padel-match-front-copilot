@@ -11,11 +11,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "react-toastify/dist/ReactToastify.css";
 import { SnackbarProvider } from "notistack";
 import { ThemeProvider } from "@mui/material/styles";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import theme from "./theme";
 import LoadingScreen from "./components/LoadingScreen";
+import MobileRecommendationModal from "./components/MobileRecommendationModal";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));
@@ -28,6 +29,8 @@ const NotFound = lazy(() => import("./components/NotFound"));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,6 +39,10 @@ const App = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Provider store={store}>
@@ -85,6 +92,12 @@ const App = () => {
                   <Route path="/" element={<Navigate to="/login" />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                {!isMobile && (
+                  <MobileRecommendationModal
+                    open={isModalOpen}
+                    onClose={handleCloseModal}
+                  />
+                )}
               </Suspense>
             )}
           </SnackbarProvider>

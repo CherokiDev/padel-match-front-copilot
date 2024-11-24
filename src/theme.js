@@ -29,12 +29,16 @@ const theme = createTheme({
     body2: {
       color: "#1976d2",
     },
+    body3: {
+      // color: "#1976d2",
+      fontSize: "0.7rem",
+    },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: "20px",
+          borderRadius: "10px",
           height: "50px",
         },
         containedSecondary: {
