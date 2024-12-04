@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import PropTypes from "prop-types";
@@ -30,15 +31,7 @@ const Header = ({ notificationCount }) => {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      style={{
-        background: "linear-gradient(to right, #3775DF, #F0D053)",
-        height: "60px",
-        margin: 0,
-        padding: 0,
-      }}
-    >
+    <AppBar position="fixed">
       <Toolbar style={{ height: "100%" }}>
         <Box
           display="flex"
@@ -56,6 +49,7 @@ const Header = ({ notificationCount }) => {
             <IconButton color="inherit" onClick={handleDrawerToggle}>
               <MenuIcon />
             </IconButton>
+            <Typography variant="titleHeader">Padelero</Typography>
             <Drawer
               anchor="left"
               open={drawerOpen}

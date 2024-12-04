@@ -33,8 +33,24 @@ const theme = createTheme({
       // color: "#1976d2",
       fontSize: "0.7rem",
     },
+    titleHeader: {
+      color: "white",
+      fontSize: "1.5rem",
+      fontFamily: "'Roboto Slab', serif",
+    },
   },
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          background: "#0B2136FF",
+          height: "60px",
+          margin: 0,
+          padding: 0,
+          borderRadius: "0 0 10px 10px",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -79,6 +95,16 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           background: "#C9C9C9FF",
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          color: "white",
+          "&$selected": {
+            color: blue[700],
+          },
         },
       },
     },

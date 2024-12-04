@@ -117,12 +117,15 @@ const Signup = () => {
       <Paper
         elevation={3}
         sx={{
-          background: "linear-gradient(to right, #3775DF, #F0D053)",
+          background: "#0B2136FF",
           padding: "20px",
           marginBottom: "20px",
+          alignItems: "center",
+          flexDirection: "column",
+          textAlign: "center",
         }}
       >
-        <Typography variant="h4" align="center">
+        <Typography variant="titleHeader" align="center">
           PADELERO
         </Typography>
       </Paper>

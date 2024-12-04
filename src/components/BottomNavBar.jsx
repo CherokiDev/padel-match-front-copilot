@@ -30,7 +30,7 @@ const BottomNavBar = () => {
         position: "fixed",
         bottom: 0,
         width: "100%",
-        backgroundColor: "#f0f0f0",
+        backgroundColor: "#3E4953FF",
         height: "60px",
         display: "flex",
         justifyContent: "center",
