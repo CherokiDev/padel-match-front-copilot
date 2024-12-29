@@ -2,16 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import {
-  Container,
-  IconButton,
-  InputAdornment,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import StyledButton from "./StyledButton";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -64,89 +54,66 @@ const ResetPassword = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper
-        elevation={3}
-        sx={{
-          background: "#0B2136FF",
-          padding: "20px",
-          marginBottom: "20px",
-          alignItems: "center",
-          flexDirection: "column",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="titleHeader" align="center">
-          PADELERO
-        </Typography>
-      </Paper>
-      <Typography component="h5" variant="h5">
-        Restablecer contraseña
-      </Typography>
+    <div>
+      <div>
+        <h1>PADELERO</h1>
+      </div>
+      <h5>Restablecer contraseña</h5>
       <form onSubmit={handleSubmit}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Nueva contraseña"
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-          error={!passwordIsValid || !passwordsMatch}
-          helperText={
-            !passwordIsValid
-              ? "La contraseña debe tener al menos 8 caracteres, incluyendo letras, números y al menos una letra mayúscula"
-              : !passwordsMatch && "Las contraseñas no coinciden"
-          }
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Confirmar nueva contraseña"
-          type={showPassword ? "text" : "password"}
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          error={!passwordsMatch}
-          helperText={!passwordsMatch && "Las contraseñas no coinciden"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <StyledButton
+        <div>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Nueva contraseña"
+            value={password}
+            onChange={handlePasswordChange}
+            className={`input ${
+              !passwordIsValid || !passwordsMatch ? "input-error" : ""
+            }`}
+          />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Ocultar" : "Mostrar"}
+          </button>
+        </div>
+        {!passwordIsValid && (
+          <span className="error-text">
+            La contraseña debe tener al menos 8 caracteres, incluyendo letras,
+            números y al menos una letra mayúscula
+          </span>
+        )}
+        {!passwordsMatch && (
+          <span className="error-text">Las contraseñas no coinciden</span>
+        )}
+        <div>
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Confirmar nueva contraseña"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            className={`input ${!passwordsMatch ? "input-error" : ""}`}
+          />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Ocultar" : "Mostrar"}
+          </button>
+        </div>
+        {!passwordsMatch && (
+          <span className="error-text">Las contraseñas no coinciden</span>
+        )}
+        <button
           type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
           disabled={!passwordIsValid || !passwordsMatch || isSubmitting}
         >
           Restablecer contraseña
-        </StyledButton>
+        </button>
       </form>
-    </Container>
+    </div>
   );
 };
 

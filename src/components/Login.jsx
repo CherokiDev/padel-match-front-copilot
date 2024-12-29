@@ -2,21 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import {
-  TextField,
-  Container,
-  Typography,
-  Fade,
-  Paper,
-  Divider,
-  InputAdornment,
-  IconButton,
-  Box,
-  CircularProgress,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import StyledButton from "./StyledButton";
 import useAuth from "../hooks/useAuth";
+import "./Login.css";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -95,141 +82,99 @@ const Login = () => {
     }
   };
 
-  const duration = 2000;
-
   if (isLoading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
+      <div className="container-loading">
+        <div className="loading-spinner"></div>
+      </div>
     );
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper
-        elevation={3}
-        sx={{
-          background: "#0B2136FF",
-          padding: "20px",
-          marginBottom: "20px",
-          alignItems: "center",
-          flexDirection: "column",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="titleHeader" align="center">
-          PADELERO
-        </Typography>
-      </Paper>
-      <div>
-        <Typography variant="h6" style={{ marginBottom: "16px" }}>
-          Únete a la comunidad de jugadores de pádel de Puerto Serrano.
-        </Typography>
-
-        <Divider variant="middle" style={{ margin: "20px 0" }} />
-
-        <Typography variant="body2">Inicia sesión para continuar.</Typography>
+    <div
+      className="container-main-not-login"
+      style={{ backgroundColor: "#F3C5C5FF" }}
+    >
+      <div className="container-header-not-login">
+        <div className="header-text-not-login">PADELERO</div>
       </div>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="identifier"
-          label="Email o nombre de usuario"
-          name="identifier"
-          autoComplete="identifier"
-          autoFocus
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          style={{ marginBottom: "0px" }}
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Contraseña"
-          type={showPassword ? "text" : "password"}
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <StyledButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          Entrar
-        </StyledButton>
-
-        <Divider variant="middle" style={{ margin: "20px 0" }} />
-
-        <Typography variant="body2">¿No tienes cuenta?</Typography>
-
-        <StyledButton onClick={handleSignup} fullWidth variant="outlinedButton">
-          Registrarse
-        </StyledButton>
-      </form>
-      <Fade
-        in={showForgotPassword}
-        timeout={duration}
-        style={{ marginTop: "20px" }}
-      >
-        <form onSubmit={handleForgotPassword}>
-          <Divider variant="middle" style={{ margin: "20px 0" }} />
-          <Typography variant="body2">¿Olvidaste tu contraseña?</Typography>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="forgotPasswordEmail"
-            label="Email para recuperar la contraseña"
-            name="forgotPasswordEmail"
-            autoComplete="email"
-            value={forgotPasswordEmail}
-            onChange={(e) => setForgotPasswordEmail(e.target.value)}
-          />
-          <StyledButton
-            type="submit"
-            fullWidth
-            variant="outlined"
-            color="primary"
-            style={{ backgroundColor: "#F4DDA7" }}
-            disabled={isSending}
+      <div className="container-body-not-login">
+        <div className="title-h4">
+          Únete a la comunidad de jugadores de pádel de Puerto Serrano.
+          <hr className="hr-separator" />
+        </div>
+        <div className="title-h5">Inicia sesión para continuar.</div>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="identifier">Email o nombre de usuario</label>
+            <input
+              type="text"
+              id="identifier"
+              name="identifier"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="form-input"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="toggle-password"
+            >
+              {showPassword ? "Ocultar" : "Mostrar"}
+            </button>
+          </div>
+          <button type="submit" className="submit-button">
+            Entrar
+          </button>
+          <hr className="hr-separator" />
+          <p>¿No tienes cuenta?</p>
+          <button
+            type="button"
+            onClick={handleSignup}
+            className="signup-button"
           >
-            {isSending ? (
-              <CircularProgress size={24} />
-            ) : (
-              "Enviar email de recuperación"
-            )}
-          </StyledButton>
+            Registrarse
+          </button>
         </form>
-      </Fade>
-    </Container>
+        {showForgotPassword && (
+          <div style={{ marginTop: "20px" }}>
+            <hr className="hr-separator" />
+            <p>¿Olvidaste tu contraseña?</p>
+            <form onSubmit={handleForgotPassword}>
+              <div>
+                <label htmlFor="forgotPasswordEmail">
+                  Email para recuperar la contraseña
+                </label>
+                <input
+                  type="email"
+                  id="forgotPasswordEmail"
+                  name="forgotPasswordEmail"
+                  value={forgotPasswordEmail}
+                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" disabled={isSending}>
+                {isSending ? "Enviando..." : "Enviar email de recuperación"}
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

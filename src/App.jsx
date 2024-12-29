@@ -17,6 +17,7 @@ import { store } from "./redux/store";
 import theme from "./theme";
 import LoadingScreen from "./components/LoadingScreen";
 import MobileRecommendationModal from "./components/MobileRecommendationModal";
+import "./App.css";
 
 const Login = lazy(() => import("./components/Login"));
 const Signup = lazy(() => import("./components/Signup"));

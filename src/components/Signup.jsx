@@ -1,9 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { TextField, Container, Typography, Paper } from "@mui/material";
 import { useSnackbar } from "notistack";
-import StyledButton from "./StyledButton";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -113,137 +111,92 @@ const Signup = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper
-        elevation={3}
-        sx={{
-          background: "#0B2136FF",
-          padding: "20px",
-          marginBottom: "20px",
-          alignItems: "center",
-          flexDirection: "column",
-          textAlign: "center",
-        }}
-      >
-        <Typography variant="titleHeader" align="center">
-          PADELERO
-        </Typography>
-      </Paper>
-      <Typography component="h5" variant="h5">
-        Registrarse
-      </Typography>
+    <div>
+      <div>
+        <h1>PADELERO</h1>
+      </div>
+      <h5>Registrarse</h5>
       <form onSubmit={handleSubmit}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
+        <input
+          type="email"
           id="email"
-          label="Email"
           name="email"
-          autoComplete="email"
-          autoFocus
+          placeholder="Email"
           value={email}
           onChange={handleEmailChange}
-          error={!emailIsValid}
-          helperText={!emailIsValid && "Email no válido"}
+          className={`input ${!emailIsValid ? "input-error" : ""}`}
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
+        {!emailIsValid && <span className="error-text">Email no válido</span>}
+        <input
+          type="text"
           id="name"
-          label="Nombre"
           name="name"
-          autoComplete="name"
+          placeholder="Nombre"
           value={name}
           onChange={handleNameChange}
+          className="input"
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
+        <input
+          type="text"
           id="phone"
-          label="Teléfono"
           name="phone"
-          autoComplete="phone"
+          placeholder="Teléfono"
           value={phone}
           onChange={handlePhoneChange}
-          error={!phoneIsValid}
-          helperText={
-            !phoneIsValid &&
-            "Número de teléfono no válido, debe de tener 9 dígitos"
-          }
+          className={`input ${!phoneIsValid ? "input-error" : ""}`}
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
+        {!phoneIsValid && (
+          <span className="error-text">
+            Número de teléfono no válido, debe de tener 9 dígitos
+          </span>
+        )}
+        <input
+          type="text"
           id="username"
-          label="Nombre de usuario (apodo)"
           name="username"
-          autoComplete="username"
+          placeholder="Nombre de usuario (apodo)"
           value={username}
           onChange={handleUsernameChange}
+          className="input"
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Contraseña"
+        <input
           type="password"
           id="password"
-          autoComplete="new-password"
+          name="password"
+          placeholder="Contraseña"
           value={password}
           onChange={handlePasswordChange}
-          error={!passwordIsValid || !passwordsMatch}
-          helperText={
-            !passwordIsValid
-              ? "La contraseña debe tener al menos 8 caracteres, incluyendo letras, números y al menos una letra mayúscula"
-              : !passwordsMatch && "Las contraseñas no coinciden"
-          }
+          className={`input ${
+            !passwordIsValid || !passwordsMatch ? "input-error" : ""
+          }`}
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="confirmPassword"
-          label="Confirmar contraseña"
+        {!passwordIsValid && (
+          <span className="error-text">
+            La contraseña debe tener al menos 8 caracteres, incluyendo letras,
+            números y al menos una letra mayúscula
+          </span>
+        )}
+        {!passwordsMatch && (
+          <span className="error-text">Las contraseñas no coinciden</span>
+        )}
+        <input
           type="password"
           id="confirmPassword"
-          autoComplete="new-password"
+          name="confirmPassword"
+          placeholder="Confirmar contraseña"
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
-          error={!passwordsMatch}
-          helperText={!passwordsMatch && "Las contraseñas no coinciden"}
+          className={`input ${!passwordsMatch ? "input-error" : ""}`}
         />
-        <StyledButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          style={{ marginBottom: "10px" }}
-          disabled={isSubmitting}
-        >
+        {!passwordsMatch && (
+          <span className="error-text">Las contraseñas no coinciden</span>
+        )}
+        <button type="submit" disabled={isSubmitting}>
           Registrarse
-        </StyledButton>
-        <StyledButton
-          // type="button"
-          fullWidth
-          variant="outlinedButton"
-          color="primary"
-          onClick={handleGoToLogin}
-        >
-          Volver al inicio de sesión
-        </StyledButton>
+        </button>
+        <button onClick={handleGoToLogin}>Volver al inicio de sesión</button>
       </form>
-    </Container>
+    </div>
   );
 };
 
