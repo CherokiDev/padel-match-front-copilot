@@ -91,10 +91,7 @@ const Login = () => {
   }
 
   return (
-    <div
-      className="container-main-not-login"
-      style={{ backgroundColor: "#F3C5C5FF" }}
-    >
+    <div className="container-main-not-login">
       <div className="container-header-not-login">
         <div className="header-text-not-login">PADELERO</div>
       </div>
@@ -103,10 +100,12 @@ const Login = () => {
           Únete a la comunidad de jugadores de pádel de Puerto Serrano.
           <hr className="hr-separator" />
         </div>
-        <div className="title-h5">Inicia sesión para continuar.</div>
-        <form onSubmit={handleSubmit} className="login-form">
+        <div className="title-h4">Inicia sesión para continuar.</div>
+        <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
-            <label htmlFor="identifier">Email o nombre de usuario</label>
+            <label className="title-h5" htmlFor="identifier">
+              Email o nombre de usuario
+            </label>
             <input
               type="text"
               id="identifier"
@@ -116,9 +115,9 @@ const Login = () => {
               required
               className="form-input"
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label className="title-h5" htmlFor="password">
+              Contraseña
+            </label>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
@@ -131,31 +130,31 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="toggle-password"
+              className="form-toggle-password"
             >
-              {showPassword ? "Ocultar" : "Mostrar"}
+              {showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             </button>
           </div>
-          <button type="submit" className="submit-button">
+          <button type="submit" className="form-primary-button">
             Entrar
           </button>
           <hr className="hr-separator" />
-          <p>¿No tienes cuenta?</p>
+          <div className="title-h4">¿No tienes cuenta?</div>
           <button
             type="button"
             onClick={handleSignup}
-            className="signup-button"
+            className="form-secondary-button"
           >
             Registrarse
           </button>
         </form>
         {showForgotPassword && (
-          <div style={{ marginTop: "20px" }}>
+          <div>
             <hr className="hr-separator" />
-            <p>¿Olvidaste tu contraseña?</p>
-            <form onSubmit={handleForgotPassword}>
-              <div>
-                <label htmlFor="forgotPasswordEmail">
+            <div className="title-h4">¿Olvidaste tu contraseña?</div>
+            <form className="form" onSubmit={handleForgotPassword}>
+              <div className="form-group">
+                <label className="title-h5" htmlFor="forgotPasswordEmail">
                   Email para recuperar la contraseña
                 </label>
                 <input
@@ -165,9 +164,14 @@ const Login = () => {
                   value={forgotPasswordEmail}
                   onChange={(e) => setForgotPasswordEmail(e.target.value)}
                   required
+                  className="form-input"
                 />
               </div>
-              <button type="submit" disabled={isSending}>
+              <button
+                type="submit"
+                disabled={isSending}
+                className="form-primary-button"
+              >
                 {isSending ? "Enviando..." : "Enviar email de recuperación"}
               </button>
             </form>

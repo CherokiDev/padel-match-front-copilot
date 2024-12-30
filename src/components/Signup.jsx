@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import useAuth from "../hooks/useAuth";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,13 @@ const Signup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -110,92 +118,136 @@ const Signup = () => {
     navigate("/login");
   };
 
-  return (
-    <div>
-      <div>
-        <h1>PADELERO</h1>
+  if (isLoading) {
+    return (
+      <div className="container-loading">
+        <div className="loading-spinner"></div>
       </div>
-      <h5>Registrarse</h5>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={handleEmailChange}
-          className={`input ${!emailIsValid ? "input-error" : ""}`}
-        />
-        {!emailIsValid && <span className="error-text">Email no válido</span>}
-        <input
-          type="text"
-          id="name"
-          name="name"
-          placeholder="Nombre"
-          value={name}
-          onChange={handleNameChange}
-          className="input"
-        />
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          placeholder="Teléfono"
-          value={phone}
-          onChange={handlePhoneChange}
-          className={`input ${!phoneIsValid ? "input-error" : ""}`}
-        />
-        {!phoneIsValid && (
-          <span className="error-text">
-            Número de teléfono no válido, debe de tener 9 dígitos
-          </span>
-        )}
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Nombre de usuario (apodo)"
-          value={username}
-          onChange={handleUsernameChange}
-          className="input"
-        />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={handlePasswordChange}
-          className={`input ${
-            !passwordIsValid || !passwordsMatch ? "input-error" : ""
-          }`}
-        />
-        {!passwordIsValid && (
-          <span className="error-text">
-            La contraseña debe tener al menos 8 caracteres, incluyendo letras,
-            números y al menos una letra mayúscula
-          </span>
-        )}
-        {!passwordsMatch && (
-          <span className="error-text">Las contraseñas no coinciden</span>
-        )}
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          placeholder="Confirmar contraseña"
-          value={confirmPassword}
-          onChange={handleConfirmPasswordChange}
-          className={`input ${!passwordsMatch ? "input-error" : ""}`}
-        />
-        {!passwordsMatch && (
-          <span className="error-text">Las contraseñas no coinciden</span>
-        )}
-        <button type="submit" disabled={isSubmitting}>
-          Registrarse
-        </button>
-        <button onClick={handleGoToLogin}>Volver al inicio de sesión</button>
-      </form>
+    );
+  }
+
+  return (
+    <div className="container-main-not-login">
+      <div className="container-header-not-login">
+        <div className="header-text-not-login">PADELERO</div>
+      </div>
+      <div className="container-body-not-login">
+        <div className="title-h4">Registrarse</div>
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label className="title-h5" htmlFor="email">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={handleEmailChange}
+              className={`form-input ${
+                !emailIsValid ? "form-input-error" : ""
+              }`}
+            />
+            {!emailIsValid && (
+              <div className="form-error-message visible">Email no válido.</div>
+            )}
+            <label className="title-h5" htmlFor="name">
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={handleNameChange}
+              className="form-input"
+            />
+            <label className="title-h5" htmlFor="phone">
+              Teléfono
+            </label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={phone}
+              onChange={handlePhoneChange}
+              className={`form-input ${
+                !phoneIsValid ? "form-input-error" : ""
+              }`}
+            />
+            {!phoneIsValid && (
+              <div className="form-error-message visible">
+                Número de teléfono no válido, debe de tener 9 dígitos
+              </div>
+            )}
+            <label className="title-h5" htmlFor="username">
+              Nombre de usuario (apodo)
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={handleUsernameChange}
+              className="form-input"
+            />
+            <label className="title-h5" htmlFor="password">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className={`form-input ${
+                !passwordIsValid ? "form-input-error" : ""
+              }`}
+            />
+            {!passwordIsValid && (
+              <div className="form-error-message visible">
+                La contraseña debe tener al menos 8 caracteres, incluyendo
+                letras, números y al menos una letra mayúscula
+              </div>
+            )}
+            {!passwordsMatch && (
+              <span className="error-text">Las contraseñas no coinciden</span>
+            )}
+            <label className="title-h5" htmlFor="confirmPassword">
+              Confirmar contraseña
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              className={`form-input ${
+                !passwordsMatch ? "form-input-error" : ""
+              }`}
+            />
+            {!passwordsMatch && (
+              <div className="form-error-message visible">
+                Las contraseñas no coinciden
+              </div>
+            )}
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="form-primary-button"
+          >
+            Registrarse
+          </button>
+          <button
+            type="button"
+            className="form-secondary-button"
+            onClick={handleGoToLogin}
+          >
+            Volver al inicio de sesión
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

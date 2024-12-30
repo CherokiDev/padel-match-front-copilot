@@ -18,10 +18,11 @@ body {
 :root {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
-  --background-color: #c5c5c5;
+  --background-color: #e2f0ff;
   --background-color-header: #0b2136ff;
   --text-color: #333;
   --font-size-base: 16px;
+  --background-color-form: #fafafa;
 }
 
 /* Enlaces globales */
