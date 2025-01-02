@@ -1,0 +1,52 @@
+.container-buttons-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin-top: 1rem;
+  background-color: rgba(0, 123, 255, 0.1); /* Fondo con color y transparencia */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+}
+
+.button-home {
+  width: 90%; /* Ancho fijo */
+  height: 60px; /* Alto fijo */
+  background-color: #007bff; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 25px; /* Bordes redondeados */
+  font-size: 16px; /* Tamaño de fuente */
+  cursor: pointer; /* Cursor de mano */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transiciones suaves */
+  display: flex;
+  flex-direction: row; /* Cambiar a fila para icono y texto */
+  justify-content: space-between; /* Espacio entre icono y texto */
+  align-items: center;
+  text-align: left;
+  padding: 15px;
+  padding-right: 10px; /* Espacio a la derecha para el icono */
+  margin: 10px;
+}
+
+.button-home:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el ratón */
+  transform: scale(1.05); /* Efecto de agrandamiento al pasar el ratón */
+}
+
+.button-home div {
+  margin: 0; /* Sin margen en los párrafos dentro del botón */
+}
+
+.icon-placeholder {
+  background-color: white; /* Fondo blanco */
+  border-radius: 50%; /* Bordes redondeados */
+  padding: 10px; /* Espaciado interno */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Ancho fijo */
+  height: 40px; /* Alto fijo */
+  font-size: 20px; /* Tamaño del icono */
+}

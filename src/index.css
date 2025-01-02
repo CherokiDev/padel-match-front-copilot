@@ -21,6 +21,7 @@ body {
   --background-color: #e2f0ff;
   --background-color-header: #0b2136ff;
   --text-color: #333;
+  --header-text-color: #ffffff;
   --font-size-base: 16px;
   --background-color-form: #fafafa;
 }

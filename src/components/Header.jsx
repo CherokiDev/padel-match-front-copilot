@@ -1,93 +1,11 @@
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Badge,
-  Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import "./Header.css";
 
-const Header = ({ notificationCount }) => {
-  const navigate = useNavigate();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme = useTheme();
-
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-  const handleHomeClick = () => {
-    navigate("/home");
-    setDrawerOpen(false);
-  };
-
+const Header = () => {
   return (
-    <AppBar position="fixed">
-      <Toolbar style={{ height: "100%" }}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          width="100%"
-          height="100%"
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="100%"
-          >
-            <IconButton color="inherit" onClick={handleDrawerToggle}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="titleHeader">Padelero</Typography>
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={handleDrawerToggle}
-            >
-              <List>
-                <ListItem button onClick={handleHomeClick}>
-                  <ListItemText
-                    primary="Inicio"
-                    primaryTypographyProps={{
-                      style: { color: theme.palette.primary.main },
-                    }}
-                  />
-                </ListItem>
-              </List>
-            </Drawer>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            height="100%"
-          >
-            <IconButton color="inherit">
-              <Badge badgeContent={notificationCount} color="error">
-                {/* <Notifications /> */}
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">{/* <Menu /> */}</IconButton>
-          </Box>
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <div className="container-header-logged">
+      <div className="header-text-logged">Padelero</div>
+    </div>
   );
-};
-
-Header.propTypes = {
-  notificationCount: PropTypes.number,
 };
 
 export default Header;

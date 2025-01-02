@@ -91,11 +91,11 @@ const Login = () => {
   }
 
   return (
-    <div className="container-main-not-login">
-      <div className="container-header-not-login">
-        <div className="header-text-not-login">PADELERO</div>
+    <div className="container-main-unlogged">
+      <div className="container-header-unlogged">
+        <div className="header-text-unlogged">PADELERO</div>
       </div>
-      <div className="container-body-not-login">
+      <div className="container-body-unlogged">
         <div className="title-h4">
           Únete a la comunidad de jugadores de pádel de Puerto Serrano.
           <hr className="hr-separator" />

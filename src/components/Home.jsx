@@ -1,11 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/profileSlice";
-import MainContainer from "./MainContainer";
 import { useNavigate } from "react-router-dom";
-import { Typography, Button, Box, CircularProgress } from "@mui/material";
-import SportsTennisIcon from "@mui/icons-material/SportsTennis";
-import PeopleIcon from "@mui/icons-material/People";
+import "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -27,85 +24,45 @@ const Home = () => {
     navigate("/schedules", { state: { payer } });
   };
 
-  if (profileStatus === "loading")
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
+  if (profileStatus === "loading") return;
+  <div className="container-loading">
+    <div className="loading-spinner"></div>
+  </div>;
 
   if (profileError)
     return (
-      <MainContainer>
+      <div>
         <p>Error: {profileError}</p>
-      </MainContainer>
+      </div>
     );
 
   return (
-    <MainContainer>
-      <Typography variant="h6" component="h6" gutterBottom>
+    <div className="container-main-logged">
+      <div className="title-h5">
         Hola {profileData.username}, ¿qué estás buscando?
-      </Typography>
+      </div>
 
-      <Box
-        display="flex"
-        flexDirection={{ xs: "column", sm: "row" }}
-        justifyContent="space-between"
-        alignItems="center"
-        mt={2}
-        width="90%"
-        mx="auto"
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<SportsTennisIcon />}
-          onClick={() => handleButtonClick(true)}
-          sx={{
-            marginBottom: { xs: 2, sm: 0 },
-            marginRight: { sm: 2 },
-            width: { xs: "100%", sm: "45%" },
-            height: { xs: "auto", sm: "45vw" },
-            minHeight: "140px",
-            padding: { xs: 2, sm: 1 },
-            fontSize: { xs: "1rem", sm: "0.875rem" },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography>Tengo la pista alquilada,</Typography>
-          <Typography>busco jugadores</Typography>
-        </Button>
+      <div className="container-buttons-home">
+        <button className="button-home" onClick={() => handleButtonClick(true)}>
+          <div>
+            <div className="title-h6">Tengo la pista alquilada,</div>
+            <div className="title-h6">busco jugadores</div>
+          </div>
+          <div className="icon-placeholder">👥</div> {/* Icono de ejemplo */}
+        </button>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<PeopleIcon />}
+        <button
+          className="button-home"
           onClick={() => handleButtonClick(false)}
-          sx={{
-            width: { xs: "100%", sm: "45%" },
-            height: { xs: "auto", sm: "45vw" },
-            minHeight: "140px",
-            padding: { xs: 2, sm: 1 },
-            fontSize: { xs: "1rem", sm: "0.875rem" },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
         >
-          <Typography>Quiero jugar,</Typography>
-          <Typography>busco a gente que la tenga alquilada</Typography>
-        </Button>
-      </Box>
-    </MainContainer>
+          <div>
+            <div className="title-h6">Quiero jugar,</div>
+            <div className="title-h6">busco pista</div>
+          </div>
+          <div className="icon-placeholder">🎾</div> {/* Icono de ejemplo */}
+        </button>
+      </div>
+    </div>
   );
 };
 

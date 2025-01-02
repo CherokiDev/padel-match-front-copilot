@@ -22,6 +22,7 @@
   background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }
 
+/* loading */
 .container-loading {
   display: flex;
   align-items: center;
@@ -38,7 +39,8 @@
   animation: spin 1s linear infinite;
 }
 
-.container-main-not-login {
+/* unlogged */
+.container-main-unlogged {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +48,7 @@
   height: 100%;
 }
 
-.container-header-not-login {
+.container-header-unlogged {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,15 +59,42 @@
   background-color: var(--background-color-header);
 }
 
-.header-text-not-login {
+.header-text-unlogged {
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  color: var(--header-text-color);
+}
+
+.container-body-unlogged {
+  width: 100%;
+  padding: 3%;
+}
+
+/* logged */
+.container-main-logged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  /* padding-top: 60px; */
+}
+
+.container-header-unlogged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0px 0px 5px 5px;
+  margin-bottom: 1rem;
+  background-color: var(--background-color-header);
+}
+
+.header-text-unlogged {
   font-size: 1.8rem;
   margin: 1rem 0;
   color: #ffffff;
-}
-
-.container-body-not-login {
-  width: 100%;
-  padding: 3%;
 }
 
 .title-h1 {
@@ -90,6 +119,11 @@
 
 .title-h5 {
   font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.title-h6 {
+  font-size: 0.8rem;
   margin-bottom: 1rem;
 }
 
