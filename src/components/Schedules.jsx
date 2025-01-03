@@ -7,19 +7,6 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import MainContainer from "./MainContainer";
 import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
-import {
-  Button,
-  Typography,
-  TextField,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  CircularProgress,
-} from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useSnackbar } from "notistack";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./customCalendarStyles.css";
@@ -105,14 +92,16 @@ const Schedules = () => {
 
   if (schedulesStatus === "loading" || profileStatus === "loading")
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
       >
-        <CircularProgress />
-      </Box>
+        <div className="loading-spinner"></div>
+      </div>
     );
 
   if (schedulesError || profileError)
@@ -169,34 +158,41 @@ const Schedules = () => {
   };
 
   return (
-    <MainContainer>
-      <Typography variant="h5">
+    <div>
+      <h5>
         {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
-      </Typography>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 2 }}>
-        <Button
+      </h5>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "16px",
+          marginTop: "16px",
+        }}
+      >
+        <button
           onClick={() =>
             handleNavigate(moment(selectedDate).subtract(1, "days").toDate())
           }
         >
-          <ArrowBackIcon />
-        </Button>
-        <Button
+          {"<"}
+        </button>
+        <button
           onClick={() =>
             handleNavigate(moment(selectedDate).add(1, "days").toDate())
           }
         >
-          <ArrowForwardIcon />
-        </Button>
-        <Button onClick={() => handleNavigate(new Date())}>Hoy</Button>
-        <TextField
+          {">"}
+        </button>
+        <button onClick={() => handleNavigate(new Date())}>Hoy</button>
+        <input
           type="date"
           value={moment(selectedDate).format("YYYY-MM-DD")}
           onChange={handleDateChange}
-          sx={{ mr: 2 }}
+          style={{ marginRight: "16px" }}
         />
-      </Box>
-      <Typography variant="h6" sx={{ ml: 2 }}>
+      </div>
+      <h6 style={{ marginLeft: "16px" }}>
         {new Intl.DateTimeFormat("es-ES", {
           weekday: "long",
           year: "numeric",
@@ -205,7 +201,7 @@ const Schedules = () => {
         })
           .format(selectedDate)
           .replace(/ de /g, " ")}
-      </Typography>
+      </h6>
 
       <Calendar
         views={["day"]}
@@ -222,57 +218,44 @@ const Schedules = () => {
         max={new Date(1970, 1, 1, 22, 0, 0)} // 10:00 PM
         className="custom-calendar"
       />
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Horario Seleccionado</DialogTitle>
-        <DialogContent>
-          <Typography>Pista: {selectedSchedule?.courtNumber}</Typography>
-          <Typography>
-            Fecha de Reserva:{" "}
-            {`${new Date(selectedSchedule?.start).toLocaleDateString(
-              undefined,
-              {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }
-            )} a las ${new Date(selectedSchedule?.start).toLocaleTimeString(
-              undefined,
-              {
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            )}`}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} disabled={isSending}>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width={120}
-            >
-              {isSending ? <CircularProgress size={24} /> : "Cancelar"}
-            </Box>
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSendToBackend}
-            disabled={isSending}
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width={160}
-            >
-              {isSending ? <CircularProgress size={24} /> : "Confirmar Reserva"}
-            </Box>
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </MainContainer>
+      {openDialog && (
+        <div className="dialog">
+          <div className="dialog-title">Horario Seleccionado</div>
+          <div className="dialog-content">
+            <p>Pista: {selectedSchedule?.courtNumber}</p>
+            <p>
+              Fecha de Reserva:{" "}
+              {`${new Date(selectedSchedule?.start).toLocaleDateString(
+                undefined,
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                }
+              )} a las ${new Date(selectedSchedule?.start).toLocaleTimeString(
+                undefined,
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              )}`}
+            </p>
+          </div>
+          <div className="dialog-actions">
+            <button onClick={() => setOpenDialog(false)} disabled={isSending}>
+              {isSending ? <div className="loading-spinner"></div> : "Cancelar"}
+            </button>
+            <button onClick={handleSendToBackend} disabled={isSending}>
+              {isSending ? (
+                <div className="loading-spinner"></div>
+              ) : (
+                "Confirmar Reserva"
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

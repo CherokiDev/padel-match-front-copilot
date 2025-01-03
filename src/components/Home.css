@@ -39,14 +39,14 @@
   margin: 0; /* Sin margen en los párrafos dentro del botón */
 }
 
-.icon-placeholder {
-  background-color: white; /* Fondo blanco */
-  border-radius: 50%; /* Bordes redondeados */
-  padding: 10px; /* Espaciado interno */
+.icon-button-home {
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Ancho fijo */
-  height: 40px; /* Alto fijo */
+  width: 40px;
+  height: 40px;
   font-size: 20px; /* Tamaño del icono */
 }

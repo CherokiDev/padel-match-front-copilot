@@ -45,10 +45,11 @@ const Home = () => {
       <div className="container-buttons-home">
         <button className="button-home" onClick={() => handleButtonClick(true)}>
           <div>
-            <div className="title-h6">Tengo la pista alquilada,</div>
-            <div className="title-h6">busco jugadores</div>
+            <div className="title-h6">
+              Tengo la pista alquilada, <strong>busco jugadores </strong>
+            </div>
           </div>
-          <div className="icon-placeholder">👥</div> {/* Icono de ejemplo */}
+          <div className="icon-button-home">👥</div>
         </button>
 
         <button
@@ -56,10 +57,11 @@ const Home = () => {
           onClick={() => handleButtonClick(false)}
         >
           <div>
-            <div className="title-h6">Quiero jugar,</div>
-            <div className="title-h6">busco pista</div>
+            <div className="title-h6">
+              Quiero jugar, <strong>busco pista</strong>
+            </div>
           </div>
-          <div className="icon-placeholder">🎾</div> {/* Icono de ejemplo */}
+          <div className="icon-button-home">🎾</div>
         </button>
       </div>
     </div>
