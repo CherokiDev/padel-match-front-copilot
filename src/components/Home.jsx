@@ -38,7 +38,7 @@ const Home = () => {
 
   return (
     <div className="container-main-logged">
-      <div className="title-h5">
+      <div className="title-h4">
         Hola {profileData.username}, ¿qué estás buscando?
       </div>
 

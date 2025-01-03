@@ -9,7 +9,7 @@ import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
 import { useSnackbar } from "notistack";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./customCalendarStyles.css";
+import "./Schedules.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -158,18 +158,11 @@ const Schedules = () => {
   };
 
   return (
-    <div>
-      <h5>
+    <div className="container-main-logged">
+      <div className="title-h4">
         {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
-      </h5>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "16px",
-          marginTop: "16px",
-        }}
-      >
+      </div>
+      <div>
         <button
           onClick={() =>
             handleNavigate(moment(selectedDate).subtract(1, "days").toDate())

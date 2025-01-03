@@ -77,7 +77,8 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  /* padding-top: 60px; */
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .container-header-unlogged {
