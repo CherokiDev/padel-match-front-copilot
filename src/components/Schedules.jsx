@@ -162,30 +162,39 @@ const Schedules = () => {
       <div className="title-h4">
         {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
       </div>
-      <div>
-        <button
-          onClick={() =>
-            handleNavigate(moment(selectedDate).subtract(1, "days").toDate())
-          }
-        >
-          {"<"}
-        </button>
-        <button
-          onClick={() =>
-            handleNavigate(moment(selectedDate).add(1, "days").toDate())
-          }
-        >
-          {">"}
-        </button>
-        <button onClick={() => handleNavigate(new Date())}>Hoy</button>
+      <div className="container-date-picker">
+        <div>
+          <button
+            className="primary-button"
+            onClick={() =>
+              handleNavigate(moment(selectedDate).subtract(1, "days").toDate())
+            }
+          >
+            {"<"}
+          </button>
+          <button
+            className="primary-button"
+            onClick={() =>
+              handleNavigate(moment(selectedDate).add(1, "days").toDate())
+            }
+          >
+            {">"}
+          </button>
+          <button
+            className="primary-button"
+            onClick={() => handleNavigate(new Date())}
+          >
+            Hoy
+          </button>
+        </div>
         <input
+          className="date-picker"
           type="date"
           value={moment(selectedDate).format("YYYY-MM-DD")}
           onChange={handleDateChange}
-          style={{ marginRight: "16px" }}
         />
       </div>
-      <h6 style={{ marginLeft: "16px" }}>
+      <div className="title-h5">
         {new Intl.DateTimeFormat("es-ES", {
           weekday: "long",
           year: "numeric",
@@ -194,7 +203,7 @@ const Schedules = () => {
         })
           .format(selectedDate)
           .replace(/ de /g, " ")}
-      </h6>
+      </div>
 
       <Calendar
         views={["day"]}
