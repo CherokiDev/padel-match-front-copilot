@@ -163,7 +163,7 @@ const Schedules = () => {
         {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
       </div>
       <div className="container-date-picker">
-        <div>
+        <div className="date-picker-buttons">
           <button
             className="primary-button"
             onClick={() =>
@@ -221,39 +221,45 @@ const Schedules = () => {
         className="custom-calendar"
       />
       {openDialog && (
-        <div className="dialog">
-          <div className="dialog-title">Horario Seleccionado</div>
-          <div className="dialog-content">
-            <p>Pista: {selectedSchedule?.courtNumber}</p>
-            <p>
-              Fecha de Reserva:{" "}
-              {`${new Date(selectedSchedule?.start).toLocaleDateString(
-                undefined,
-                {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                }
-              )} a las ${new Date(selectedSchedule?.start).toLocaleTimeString(
-                undefined,
-                {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }
-              )}`}
-            </p>
-          </div>
-          <div className="dialog-actions">
-            <button onClick={() => setOpenDialog(false)} disabled={isSending}>
-              {isSending ? <div className="loading-spinner"></div> : "Cancelar"}
-            </button>
-            <button onClick={handleSendToBackend} disabled={isSending}>
-              {isSending ? (
-                <div className="loading-spinner"></div>
-              ) : (
-                "Confirmar Reserva"
-              )}
-            </button>
+        <div className="modal">
+          <div className="modal-content">
+            <div className="modal-title">Horario Seleccionado</div>
+            <div className="dialog-content">
+              <p>Pista: {selectedSchedule?.courtNumber}</p>
+              <p>
+                Fecha de Reserva:{" "}
+                {`${new Date(selectedSchedule?.start).toLocaleDateString(
+                  undefined,
+                  {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }
+                )} a las ${new Date(selectedSchedule?.start).toLocaleTimeString(
+                  undefined,
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }
+                )}`}
+              </p>
+            </div>
+            <div className="modal-actions">
+              <button onClick={() => setOpenDialog(false)} disabled={isSending}>
+                {isSending ? (
+                  <div className="loading-spinner"></div>
+                ) : (
+                  "Cancelar"
+                )}
+              </button>
+              <button onClick={handleSendToBackend} disabled={isSending}>
+                {isSending ? (
+                  <div className="loading-spinner"></div>
+                ) : (
+                  "Confirmar Reserva"
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
