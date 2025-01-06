@@ -5,11 +5,13 @@ import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import "./BottomNavBar.css";
+import LoadingScreen from "./LoadingScreen";
 
 const BottomNavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState(0);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     if (location.pathname === "/home") setValue(0);
@@ -17,15 +19,23 @@ const BottomNavBar = () => {
     else if (location.pathname === "/profile") setValue(2);
   }, [location.pathname]);
 
+  const handleNavigation = (newValue) => {
+    setIsSending(true);
+    setValue(newValue);
+    if (newValue === 0) navigate("/home");
+    if (newValue === 1) navigate("/matchlist");
+    if (newValue === 2) navigate("/profile");
+    setIsSending(false);
+  };
+
+  if (isSending) {
+    return <LoadingScreen />;
+  }
+
   return (
     <BottomNavigation
       value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-        if (newValue === 0) navigate("/home");
-        if (newValue === 1) navigate("/matchlist");
-        if (newValue === 2) navigate("/profile");
-      }}
+      onChange={(event, newValue) => handleNavigation(newValue)}
       showLabels
       style={{
         position: "fixed",

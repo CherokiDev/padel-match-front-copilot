@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
 import { enqueueSnackbar } from "notistack";
+import LoadingScreen from "./LoadingScreen";
 
 const MatchList = () => {
   const [players, setPlayers] = useState([]);
@@ -90,10 +91,15 @@ const MatchList = () => {
 
   if (!profile) return null;
 
+  if (isSending) {
+    return <LoadingScreen />;
+  }
+
   return (
-    <div className="container-main-logged">
-      <div className={open ? "inert" : undefined}>
+    <>
+      <div className={open ? "inert" : "container-main-logged"}>
         <div className="title-h3">Reservas Actuales</div>
+        <hr className="hr-separator" />
         <div className="title-h4">Reservadas por mí</div>
         {profile.schedules
           .filter((schedule) => schedule.playerSchedules.payer)
@@ -123,13 +129,12 @@ const MatchList = () => {
               <button
                 className="secondary-button"
                 onClick={() => deleteSchedule(schedule.id)}
-                disabled={isSending}
               >
-                {isSending ? <div className="loading-spinner" /> : "Eliminar"}
+                Eliminar
               </button>
             </div>
           ))}
-        <div className="hr-separator"></div>
+        <hr className="hr-separator" />
         <div className="title-h4">Apuntado para jugar</div>
         {profile.schedules
           .filter((schedule) => !schedule.playerSchedules.payer)
@@ -143,9 +148,8 @@ const MatchList = () => {
               <button
                 className="secondary-button"
                 onClick={() => deleteSchedule(schedule.id)}
-                disabled={isSending}
               >
-                {isSending ? <div className="loading-spinner" /> : "Eliminar"}
+                Eliminar
               </button>
             </div>
           ))}
@@ -172,13 +176,13 @@ const MatchList = () => {
             ))}
             <div className="modal-actions">
               <button onClick={handleClose} className="secondary-button">
-                {isSending ? <div className="loading-spinner" /> : "Cerrar"}
+                Cerrar
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

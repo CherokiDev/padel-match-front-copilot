@@ -4,11 +4,63 @@
   font-family: "Roboto", sans-serif;
 }
 
-.custom-calendar .rbc-event {
+.custom-calendar .rbc-calendar {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* .custom-calendar .rbc-event {
   width: 49% !important;
   height: 10% !important;
-}
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between
+} */
 
 .custom-calendar .rbc-toolbar {
   display: none;
+}
+
+.custom-calendar .rbc-event {
+  margin: 0 !important;
+  
+}
+
+.custom-calendar .rbc-time-header {
+  display: none;
+}
+
+.custom-calendar .rbc-selected {
+  background: rgba(0, 123, 255, 0.3) !important;
+}
+
+.custom-calendar .rbc-event-label {
+  font-size: 0.7rem !important;
+}
+
+.custom-calendar .rbc-event-content {
+  font-size: 0.7rem !important;
+}
+
+.custom-calendar .rbc-events-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  /* background-color: rgba(0, 123, 255, 0.3) !important; */
+  margin: 0 !important;
+  padding: 0 !important;
+
+}
+
+.custom-calendar .rbc-time-slot {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-size: 0.7rem !important;
 }

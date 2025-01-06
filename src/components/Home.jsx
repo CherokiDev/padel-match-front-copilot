@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/profileSlice";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import LoadingScreen from "./LoadingScreen";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,7 @@ const Home = () => {
     navigate("/schedules", { state: { payer } });
   };
 
-  if (profileStatus === "loading") return;
-  <div className="container-loading">
-    <div className="loading-spinner"></div>
-  </div>;
+  if (profileStatus === "loading") return <LoadingScreen />;
 
   if (profileError)
     return (

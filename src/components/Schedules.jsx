@@ -8,8 +8,10 @@ import MainContainer from "./MainContainer";
 import { fetchSchedules } from "../redux/schedulesSlice";
 import { fetchProfile } from "../redux/profileSlice";
 import { useSnackbar } from "notistack";
+import LoadingScreen from "./LoadingScreen";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Schedules.css";
+import "./customCalendarStyles.css";
 
 const localizer = momentLocalizer(moment);
 
@@ -91,18 +93,10 @@ const Schedules = () => {
   };
 
   if (schedulesStatus === "loading" || profileStatus === "loading")
-    return (
-      <div className="global-loading-container">
-        <div className="global-loading-spinner"></div>
-      </div>
-    );
+    return <LoadingScreen />;
 
   if (isSending) {
-    return (
-      <div className="global-loading-container">
-        <div className="global-loading-spinner"></div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (schedulesError || profileError)

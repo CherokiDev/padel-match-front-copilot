@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import useAuth from "../hooks/useAuth";
+import LoadingScreen from "./LoadingScreen";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -119,11 +120,7 @@ const Signup = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="container-loading">
-        <div className="loading-spinner"></div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (

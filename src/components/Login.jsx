@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import useAuth from "../hooks/useAuth";
 import "./Login.css";
+import LoadingScreen from "./LoadingScreen";
 
 const Login = () => {
   const [identifier, setIdentifier] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
   const [isSending, setIsSending] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,6 +33,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/players/login`,
@@ -58,6 +60,8 @@ const Login = () => {
           variant: "error",
         });
       }
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -82,12 +86,8 @@ const Login = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="container-loading">
-        <div className="loading-spinner"></div>
-      </div>
-    );
+  if (isSending) {
+    return <LoadingScreen />;
   }
 
   return (
@@ -98,8 +98,8 @@ const Login = () => {
       <div className="container-body-unlogged">
         <div className="title-h4">
           Únete a la comunidad de jugadores de pádel de Puerto Serrano.
-          <hr className="hr-separator" />
         </div>
+        <hr className="hr-separator" />
         <div className="title-h4">Inicia sesión para continuar.</div>
         <form onSubmit={handleSubmit} className="form">
           <div className="form-group">
@@ -167,12 +167,8 @@ const Login = () => {
                   className="form-input"
                 />
               </div>
-              <button
-                type="submit"
-                disabled={isSending}
-                className="form-primary-button"
-              >
-                {isSending ? "Enviando..." : "Enviar email de recuperación"}
+              <button type="submit" className="form-primary-button">
+                Enviar email de recuperación
               </button>
             </form>
           </div>

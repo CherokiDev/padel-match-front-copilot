@@ -15,6 +15,10 @@
 }
 
 .hr-separator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   border: 0;
   height: 2px;
   margin: 1rem 0;
@@ -23,22 +27,6 @@
 }
 
 /* loading */
-.container-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.loading-spinner {
-  border: 8px solid rgba(0, 0, 0, 0.1);
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-}
-
 .global-loading-container {
   position: fixed;
   top: 0;
@@ -88,6 +76,10 @@
 }
 
 .container-body-unlogged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   padding: 3%;
 }
@@ -118,10 +110,21 @@
   height: 100%;
   padding-top: 80px;
   padding-bottom: 80px;
+  width: 100%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.container-body-logged {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 3%;
 }
 
 /* titles */
-
 .title-h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -238,6 +241,7 @@
   background-color: #2980b9;
 }
 
+/* date picker */
 .container-date-picker {
   display: flex;
   flex-direction: column;
@@ -261,7 +265,6 @@
 }
 
 /* buttons */
-
 .primary-button {
   padding: 0.75rem;
   background-color: #007bff;
@@ -339,11 +342,6 @@
   max-width: 500px;
 }
 
-.modal-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -354,6 +352,7 @@
   margin-left: 10px;
 }
 
+/* card */
 .card {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -361,6 +360,7 @@
   padding: 1rem;
   margin-bottom: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .inert {
