@@ -92,17 +92,18 @@ const Schedules = () => {
 
   if (schedulesStatus === "loading" || profileStatus === "loading")
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div className="loading-spinner"></div>
+      <div className="global-loading-container">
+        <div className="global-loading-spinner"></div>
       </div>
     );
+
+  if (isSending) {
+    return (
+      <div className="global-loading-container">
+        <div className="global-loading-spinner"></div>
+      </div>
+    );
+  }
 
   if (schedulesError || profileError)
     return (
@@ -223,13 +224,13 @@ const Schedules = () => {
       {openDialog && (
         <div className="modal">
           <div className="modal-content">
-            <div className="modal-title">Horario Seleccionado</div>
-            <div className="dialog-content">
-              <p>Pista: {selectedSchedule?.courtNumber}</p>
-              <p>
-                Fecha de Reserva:{" "}
+            <div className="title-h4">Horario Seleccionado</div>
+            <div className="title-h5">
+              <div>Pista: {selectedSchedule?.courtNumber}</div>
+              <div>
+                Fecha:{" "}
                 {`${new Date(selectedSchedule?.start).toLocaleDateString(
-                  undefined,
+                  "es-ES",
                   {
                     day: "2-digit",
                     month: "2-digit",
@@ -242,22 +243,17 @@ const Schedules = () => {
                     minute: "2-digit",
                   }
                 )}`}
-              </p>
+              </div>
             </div>
             <div className="modal-actions">
-              <button onClick={() => setOpenDialog(false)} disabled={isSending}>
-                {isSending ? (
-                  <div className="loading-spinner"></div>
-                ) : (
-                  "Cancelar"
-                )}
+              <button
+                className="secondary-button"
+                onClick={() => setOpenDialog(false)}
+              >
+                Cancelar
               </button>
-              <button onClick={handleSendToBackend} disabled={isSending}>
-                {isSending ? (
-                  <div className="loading-spinner"></div>
-                ) : (
-                  "Confirmar Reserva"
-                )}
+              <button className="primary-button" onClick={handleSendToBackend}>
+                Confirmar reserva
               </button>
             </div>
           </div>

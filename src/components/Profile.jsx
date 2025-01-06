@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { Grid, Typography, Button } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import MainContainer from "./MainContainer";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -45,41 +43,18 @@ const Profile = () => {
   if (!profile) return null;
 
   return (
-    <MainContainer>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Perfil
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Nombre: {profile.name}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Email: {profile.email}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Teléfono: {profile.phone}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Usuario (apodo): {profile.username}
-          </Typography>
-          <Typography variant="body2" gutterBottom>
-            Usuario desde: {new Date(profile.createdAt).toLocaleDateString()}
-          </Typography>
-          <Button variant="contained" color="primary" disabled>
-            Editar Perfil
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={handleLogout}
-            sx={{ ml: 2 }}
-          >
-            Cerrar sesión
-          </Button>
-        </Grid>
-      </Grid>
-    </MainContainer>
+    <div className="container-main-logged">
+      <div className="title-h4">Perfil</div>
+      <div className="title-h6">Nombre: {profile.name}</div>
+      <div className="title-h6">Email: {profile.email}</div>
+      <div className="title-h6">Teléfono: {profile.phone}</div>
+      <div className="title-h6">Usuario (apodo): {profile.username}</div>
+      <div className="title-h6">
+        Usuario desde: {new Date(profile.createdAt).toLocaleDateString()}
+      </div>
+      <button disabled>Editar Perfil</button>
+      <button onClick={handleLogout}>Cerrar sesión</button>
+    </div>
   );
 };
 

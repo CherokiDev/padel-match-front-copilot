@@ -39,6 +39,28 @@
   animation: spin 1s linear infinite;
 }
 
+.global-loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}
+
+.global-loading-spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
 /* unlogged */
 .container-main-unlogged {
   display: flex;
@@ -260,7 +282,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin: 10px;
-  width: 50px;
+  min-width: 30px;
 }
 
 .primary-button:hover {
@@ -271,6 +293,29 @@
 .primary-button div {
   margin: 0; /* Sin margen en los párrafos dentro del botón */
 }
+
+.secondary-button {
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  color: #007bff;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 10px;
+  min-width: 30px;
+}
+
+.secondary-button:hover {
+  background-color: #d3d3d3;
+  transform: scale(1.05); 
+}
+
+.secondary-button div {
+  margin: 0; /* Sin margen en los párrafos dentro del botón */
+}
+
 
 /* modal */
 .modal {
@@ -287,6 +332,9 @@
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
