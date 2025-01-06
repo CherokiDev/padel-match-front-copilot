@@ -238,18 +238,6 @@
   background-color: #2980b9;
 }
 
-/* buttons */
-
-.primary-button {
-  padding: 0.75rem;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  background-color: #3498db;
-}
-
 .container-date-picker {
   display: flex;
   flex-direction: column;
@@ -272,13 +260,15 @@
   margin-bottom: 1rem;
 }
 
+/* buttons */
+
 .primary-button {
   padding: 0.75rem;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin: 10px;
@@ -287,11 +277,18 @@
 
 .primary-button:hover {
   background-color: #0056b3;
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 .primary-button div {
   margin: 0; /* Sin margen en los párrafos dentro del botón */
+}
+
+.primary-button:disabled {
+  background-color: #cccccc; /* Color cuando el botón está deshabilitado */
+  cursor: not-allowed;
+  transform: none; /* Eliminar el efecto de aumentar */
+  transition: none; /* Eliminar las transiciones */
 }
 
 .secondary-button {
@@ -300,7 +297,7 @@
   color: #007bff;
   border: none;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin: 10px;
@@ -309,13 +306,12 @@
 
 .secondary-button:hover {
   background-color: #d3d3d3;
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 .secondary-button div {
   margin: 0; /* Sin margen en los párrafos dentro del botón */
 }
-
 
 /* modal */
 .modal {
@@ -356,4 +352,18 @@
 
 .modal-actions button {
   margin-left: 10px;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inert {
+  pointer-events: none;
+  opacity: 0.5;
 }

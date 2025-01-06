@@ -44,16 +44,20 @@ const Profile = () => {
 
   return (
     <div className="container-main-logged">
-      <div className="title-h4">Perfil</div>
-      <div className="title-h6">Nombre: {profile.name}</div>
-      <div className="title-h6">Email: {profile.email}</div>
-      <div className="title-h6">Teléfono: {profile.phone}</div>
-      <div className="title-h6">Usuario (apodo): {profile.username}</div>
-      <div className="title-h6">
+      <div className="title-h3">Perfil</div>
+      <div className="title-h5">Nombre: {profile.name}</div>
+      <div className="title-h5">Email: {profile.email}</div>
+      <div className="title-h5">Teléfono: {profile.phone}</div>
+      <div className="title-h5">Usuario (apodo): {profile.username}</div>
+      <div className="title-h5">
         Usuario desde: {new Date(profile.createdAt).toLocaleDateString()}
       </div>
-      <button disabled>Editar Perfil</button>
-      <button onClick={handleLogout}>Cerrar sesión</button>
+      <button className="primary-button" disabled>
+        Editar Perfil
+      </button>
+      <button className="secondary-button" onClick={handleLogout}>
+        Cerrar sesión
+      </button>
     </div>
   );
 };

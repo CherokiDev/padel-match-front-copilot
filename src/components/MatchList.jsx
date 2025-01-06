@@ -1,24 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  Stack,
-  Avatar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  CircularProgress,
-  Grid,
-} from "@mui/material";
-import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import { enqueueSnackbar } from "notistack";
-import MainContainer from "./MainContainer";
 
 const MatchList = () => {
   const [players, setPlayers] = useState([]);
@@ -108,170 +91,94 @@ const MatchList = () => {
   if (!profile) return null;
 
   return (
-    <MainContainer>
-      <Grid container>
-        <div inert={open ? "true" : undefined}>
-          <Typography variant="h5" gutterBottom>
-            Reservas Actuales
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Reservadas por mí
-          </Typography>
-          {profile.schedules
-            .filter((schedule) => schedule.playerSchedules.payer)
-            .map((schedule) => (
-              <Box
-                key={schedule.id}
-                my={2}
-                p={2}
-                border={1}
-                borderRadius={2}
-                borderColor="divider"
+    <div className="container-main-logged">
+      <div className={open ? "inert" : undefined}>
+        <div className="title-h3">Reservas Actuales</div>
+        <div className="title-h4">Reservadas por mí</div>
+        {profile.schedules
+          .filter((schedule) => schedule.playerSchedules.payer)
+          .map((schedule) => (
+            <div key={schedule.id} className="card">
+              <div className="title-h5">
+                Fecha:{" "}
+                {moment(schedule.dateOfReservation).format("DD/MM/YYYY, HH:mm")}{" "}
+                - Pista: {schedule.courtNumber}
+              </div>
+              <button
+                className="primary-button"
+                onClick={() => handleOpen(schedule.id)}
+                disabled={
+                  players.filter((player) =>
+                    player.schedules.some((s) => s.id === schedule.id)
+                  ).length === 0
+                }
               >
-                <Typography variant="body1">
-                  Fecha:{" "}
-                  {moment(schedule.dateOfReservation).format(
-                    "DD/MM/YYYY, HH:mm"
-                  )}{" "}
-                  - Pista: {schedule.courtNumber}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleOpen(schedule.id)}
-                  disabled={
-                    !players.some((player) =>
-                      player.schedules.some((s) => s.id === schedule.id)
-                    )
-                  }
-                  sx={{ mt: 1 }}
-                >
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    width={200}
-                  >
-                    Jugadores disponibles:{" "}
-                    {
-                      players.filter((player) =>
-                        player.schedules.some((s) => s.id === schedule.id)
-                      ).length
-                    }
-                  </Box>
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteSchedule(schedule.id)}
-                  sx={{ mt: 1 }}
-                  disabled={isSending}
-                >
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    width={100}
-                  >
-                    {isSending ? <CircularProgress size={24} /> : "Eliminar"}
-                  </Box>
-                </Button>
-              </Box>
-            ))}
-          <Typography variant="h6" gutterBottom>
-            Apuntado para jugar
-          </Typography>
-          {profile.schedules
-            .filter((schedule) => !schedule.playerSchedules.payer)
-            .map((schedule) => (
-              <Box
-                key={schedule.id}
-                my={2}
-                p={2}
-                border={1}
-                borderRadius={2}
-                borderColor="divider"
+                Jugadores disponibles:{" "}
+                {
+                  players.filter((player) =>
+                    player.schedules.some((s) => s.id === schedule.id)
+                  ).length
+                }
+              </button>
+              <button
+                className="secondary-button"
+                onClick={() => deleteSchedule(schedule.id)}
+                disabled={isSending}
               >
-                <Typography variant="body1">
-                  Fecha:{" "}
-                  {moment(schedule.dateOfReservation).format(
-                    "DD/MM/YYYY, HH:mm"
-                  )}{" "}
-                  - Pista: {schedule.courtNumber}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteSchedule(schedule.id)}
-                  sx={{ mt: 1 }}
-                  disabled={isSending}
-                >
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    width={100}
-                  >
-                    {isSending ? <CircularProgress size={24} /> : "Eliminar"}
-                  </Box>
-                </Button>
-              </Box>
-            ))}
-        </div>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Jugadores disponibles</DialogTitle>
-          <DialogContent>
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={2}
-              sx={{ mt: 2, mb: 3 }}
-            >
-              <Avatar>
-                <SportsTennisIcon />
-              </Avatar>
-              <Typography variant="h5" gutterBottom>
-                Jugadores disponibles
-              </Typography>
-            </Stack>
+                {isSending ? <div className="loading-spinner" /> : "Eliminar"}
+              </button>
+            </div>
+          ))}
+        <div className="hr-separator"></div>
+        <div className="title-h4">Apuntado para jugar</div>
+        {profile.schedules
+          .filter((schedule) => !schedule.playerSchedules.payer)
+          .map((schedule) => (
+            <div key={schedule.id} className="card">
+              <div className="title-h5">
+                Fecha:{" "}
+                {moment(schedule.dateOfReservation).format("DD/MM/YYYY, HH:mm")}{" "}
+                - Pista: {schedule.courtNumber}
+              </div>
+              <button
+                className="secondary-button"
+                onClick={() => deleteSchedule(schedule.id)}
+                disabled={isSending}
+              >
+                {isSending ? <div className="loading-spinner" /> : "Eliminar"}
+              </button>
+            </div>
+          ))}
+      </div>
+      {open && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className="title-h3">Jugadores disponibles</div>
             {selectedPlayers.map((player) => (
-              <Card key={player.id} sx={{ mb: 2 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {player.name} ({player.username})
-                  </Typography>
-                  <Typography variant="body1">
-                    Teléfono: {player.phone}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: 1 }}
-                    href={`https://wa.me/${player.phone}?text=Hola%20${player.username}.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Enviar whatsapp a {player.username}
-                  </Button>
-                </CardContent>
-              </Card>
+              <div key={player.id} className="card">
+                <div className="title-h4">
+                  {player.name} ({player.username})
+                </div>
+                <div className="title-h5">Teléfono: {player.phone}</div>
+                <button
+                  className="primary-button"
+                  href={`https://wa.me/${player.phone}?text=Hola%20${player.username}.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Enviar whatsapp a {player.username}
+                </button>
+              </div>
             ))}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} disabled={isSending}>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width={100}
-              >
-                {isSending ? <CircularProgress size={24} /> : "Cerrar"}
-              </Box>
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-    </MainContainer>
+            <div className="modal-actions">
+              <button onClick={handleClose} className="secondary-button">
+                {isSending ? <div className="loading-spinner" /> : "Cerrar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
