@@ -127,7 +127,7 @@ const MatchList = () => {
                 }
               </button>
               <button
-                className="secondary-button"
+                className="delete-button"
                 onClick={() => deleteSchedule(schedule.id)}
               >
                 Eliminar
@@ -146,7 +146,7 @@ const MatchList = () => {
                 - Pista: {schedule.courtNumber}
               </div>
               <button
-                className="secondary-button"
+                className="delete-button"
                 onClick={() => deleteSchedule(schedule.id)}
               >
                 Eliminar

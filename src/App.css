@@ -316,6 +316,50 @@
   margin: 0; /* Sin margen en los párrafos dentro del botón */
 }
 
+.warning-button {
+  padding: 0.75rem;
+  background-color: #ffc107;
+  color: #212529;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 10px;
+  min-width: 30px;
+}
+
+.warning-button:hover {
+  background-color: #ffca2c;
+  transform: scale(1.05);
+}
+
+.warning-button div {
+  margin: 0; /* Sin margen en los párrafos dentro del botón */
+}
+
+.delete-button {
+  padding: 0.75rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin: 10px;
+  min-width: 30px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.delete-button div {
+  margin: 0; /* Sin margen en los párrafos dentro del botón */
+}
+
 /* modal */
 .modal {
   position: fixed;
@@ -354,6 +398,9 @@
 
 /* card */
 .card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
