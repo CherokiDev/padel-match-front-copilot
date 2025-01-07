@@ -56,7 +56,7 @@ const Home = () => {
         >
           <div>
             <div className="title-h6">
-              Quiero jugar, <strong>busco pista</strong>
+              <strong>Quiero apuntarme</strong> a las horas que estoy disponible
             </div>
           </div>
           <div className="icon-button-home">🎾</div>

@@ -2,60 +2,52 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
 import { enqueueSnackbar } from "notistack";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfile } from "../redux/profileSlice";
 import LoadingScreen from "./LoadingScreen";
 
 const MatchList = () => {
+  const dispatch = useDispatch();
+  const {
+    data: profileData,
+    status: profileStatus,
+    error: profileError,
+  } = useSelector((state) => state.profile);
+
   const [players, setPlayers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
-  const [profile, setProfile] = useState(null);
   const [isSending, setIsSending] = useState(false);
-  const isAuthenticated = Boolean(localStorage.getItem("token"));
-
-  const fetchProfile = useCallback(async () => {
-    if (!isAuthenticated) {
-      return;
-    }
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/players/profile`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      setProfile(response.data.dataValues);
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-    }
-  }, [isAuthenticated]);
 
   useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchProfile(token));
+    }
+  }, [dispatch]);
 
   const fetchPlayers = useCallback(async () => {
-    if (!profile) return;
+    if (!profileData) return;
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/players/same-schedule/${profile.id}`,
+        `${import.meta.env.VITE_API_URL}/players/same-schedule/${
+          profileData.id
+        }`,
         { headers: { Authorization: token } }
       );
       setPlayers(response.data.players);
     } catch (error) {
       console.error("Error fetching players", error);
     }
-  }, [profile]);
+  }, [profileData]);
 
   useEffect(() => {
     fetchPlayers();
-  }, [fetchPlayers, profile]);
+  }, [fetchPlayers, profileData]);
 
   const deleteSchedule = async (scheduleId) => {
-    const playerId = profile?.id;
+    const playerId = profileData?.id;
     const token = localStorage.getItem("token");
     setIsSending(true);
     try {
@@ -66,7 +58,7 @@ const MatchList = () => {
           headers: { Authorization: token },
         }
       );
-      fetchProfile();
+      dispatch(fetchProfile(token));
       enqueueSnackbar(response.data.message, { variant: "success" });
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: "error" });
@@ -75,7 +67,16 @@ const MatchList = () => {
     }
   };
 
-  if (!profile) return null;
+  if (profileStatus === "loading") return <LoadingScreen />;
+
+  if (profileError)
+    return (
+      <div>
+        <p>Error: {profileError}</p>
+      </div>
+    );
+
+  if (!profileData) return null;
 
   const handleOpen = (scheduleId) => {
     const availablePlayers = players.filter((player) =>
@@ -89,8 +90,6 @@ const MatchList = () => {
     setOpen(false);
   };
 
-  if (!profile) return null;
-
   if (isSending) {
     return <LoadingScreen />;
   }
@@ -101,7 +100,7 @@ const MatchList = () => {
         <div className="title-h3">Reservas Actuales</div>
         <hr className="hr-separator" />
         <div className="title-h4">Reservadas por mí</div>
-        {profile.schedules
+        {profileData.schedules
           .filter((schedule) => schedule.playerSchedules.payer)
           .map((schedule) => (
             <div key={schedule.id} className="card">
@@ -136,7 +135,7 @@ const MatchList = () => {
           ))}
         <hr className="hr-separator" />
         <div className="title-h4">Apuntado para jugar</div>
-        {profile.schedules
+        {profileData.schedules
           .filter((schedule) => !schedule.playerSchedules.payer)
           .map((schedule) => (
             <div key={schedule.id} className="card">
