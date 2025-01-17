@@ -27,7 +27,7 @@ const MatchList = () => {
   }, [dispatch]);
 
   const fetchPlayers = useCallback(async () => {
-    if (!profileData) return;
+    if (!profileData || !profileData.id) return;
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
@@ -43,7 +43,9 @@ const MatchList = () => {
   }, [profileData]);
 
   useEffect(() => {
-    fetchPlayers();
+    if (profileData) {
+      fetchPlayers();
+    }
   }, [fetchPlayers, profileData]);
 
   const deleteSchedule = async (scheduleId) => {
@@ -79,7 +81,7 @@ const MatchList = () => {
   if (!profileData) return null;
 
   const handleOpen = (scheduleId) => {
-    const availablePlayers = players.filter((player) =>
+    const availablePlayers = players?.filter((player) =>
       player.schedules.some((schedule) => schedule.id === scheduleId)
     );
     setSelectedPlayers(availablePlayers);
@@ -101,7 +103,7 @@ const MatchList = () => {
         <hr className="hr-separator" />
         <div className="title-h4">Reservadas por mí</div>
         {profileData.schedules
-          .filter((schedule) => schedule.playerSchedules.payer)
+          ?.filter((schedule) => schedule.playerSchedules.payer)
           .map((schedule) => (
             <div key={schedule.id} className="card">
               <div className="title-h5">
@@ -113,14 +115,14 @@ const MatchList = () => {
                 className="primary-button"
                 onClick={() => handleOpen(schedule.id)}
                 disabled={
-                  players.filter((player) =>
+                  players?.filter((player) =>
                     player.schedules.some((s) => s.id === schedule.id)
                   ).length === 0
                 }
               >
                 Jugadores disponibles:{" "}
                 {
-                  players.filter((player) =>
+                  players?.filter((player) =>
                     player.schedules.some((s) => s.id === schedule.id)
                   ).length
                 }
@@ -136,7 +138,7 @@ const MatchList = () => {
         <hr className="hr-separator" />
         <div className="title-h4">Apuntado para jugar</div>
         {profileData.schedules
-          .filter((schedule) => !schedule.playerSchedules.payer)
+          ?.filter((schedule) => !schedule.playerSchedules.payer)
           .map((schedule) => (
             <div key={schedule.id} className="card">
               <div className="title-h5">
