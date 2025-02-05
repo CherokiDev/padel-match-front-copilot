@@ -154,9 +154,18 @@ const Schedules = () => {
 
   return (
     <div className="container-main-logged">
-      <div className="title-h4">
-        {payer ? "¿Cuándo la tienes alquilada?" : "¿Cuándo quieres jugar?"}
-      </div>
+      {payer ? (
+        <div className="title-h4">¿Cuándo la tienes alquilada?</div>
+      ) : (
+        <>
+          <div className="title-h4">¿Cuándo quieres jugar?</div>
+          <div className="title-h6">
+            Se te avisará cuando alguien con la pista alquilada quiera ponerse
+            en contacto contigo.
+          </div>
+        </>
+      )}
+
       <div className="container-date-picker">
         <div className="date-picker-buttons">
           <button

@@ -56,7 +56,8 @@ const Home = () => {
         >
           <div>
             <div className="title-h6">
-              <strong>Quiero apuntarme</strong> a las horas que estoy disponible
+              Quiero jugar,{" "}
+              <strong>busco gente que tenga la pista alquilada</strong>
             </div>
           </div>
           <div className="icon-button-home">🎾</div>

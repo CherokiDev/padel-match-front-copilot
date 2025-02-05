@@ -101,7 +101,7 @@ const MatchList = () => {
       <div className={open ? "inert" : "container-main-logged"}>
         <div className="title-h3">Reservas Actuales</div>
         <hr className="hr-separator" />
-        <div className="title-h4">Reservadas por mí</div>
+        <div className="title-h4">Alquiladas por mí</div>
         {profileData.schedules
           ?.filter((schedule) => schedule.playerSchedules.payer)
           .map((schedule) => (
