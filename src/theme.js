@@ -1,4 +1,3 @@
-// src/theme.js
 import { createTheme } from "@mui/material/styles";
 import { deepPurple, blue } from "@mui/material/colors";
 
