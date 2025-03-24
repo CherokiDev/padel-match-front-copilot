@@ -4,5 +4,3 @@
 # Iniciar el servidor
 doppler run -- npm run dev
 ```
-
-## API
