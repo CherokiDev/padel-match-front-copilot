@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .env
 info.md
+INFO_PRIVADA.md
 
 # Editor directories and files
 .vscode/*
