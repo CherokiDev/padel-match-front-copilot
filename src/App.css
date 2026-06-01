@@ -42,7 +42,7 @@
 
 .global-loading-spinner {
   border: 8px solid rgba(0, 0, 0, 0.1);
-  border-top: 8px solid #3498db;
+  border-top: 8px solid #007bff;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -137,22 +137,22 @@
 
 .title-h3 {
   font-size: 1.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .title-h4 {
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .title-h5 {
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem;
 }
 
 .title-h6 {
   font-size: 0.8rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
 }
 
 /* form */
@@ -189,7 +189,7 @@
 }
 
 .form-input:focus {
-  border-color: #3498db;
+  border-color: #007bff;
   outline: none;
 }
 
@@ -212,7 +212,7 @@
   margin-top: 0.5rem;
   background: none;
   border: none;
-  color: #3498db;
+  color: #007bff;
   cursor: pointer;
 }
 
@@ -229,7 +229,7 @@
 }
 
 .form-primary-button {
-  background-color: #3498db;
+  background-color: #007bff;
 }
 
 .form-secondary-button {
@@ -238,7 +238,7 @@
 }
 
 .form-primary-button:hover {
-  background-color: #2980b9;
+  background-color: #0056b3;
 }
 
 /* date picker */
@@ -368,7 +368,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
@@ -380,20 +380,30 @@
   align-items: center;
   background-color: #fff;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 90%;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+  width: 100%;
   max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
-.modal-actions {
+.modal-sheet-header {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
-.modal-actions button {
-  margin-left: 10px;
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #333;
+  padding: 4px 8px;
+  line-height: 1;
 }
 
 /* card */
@@ -413,4 +423,22 @@
 .inert {
   pointer-events: none;
   opacity: 0.5;
+}
+
+/* Buttons inside cards stretch to full width */
+.card .primary-button,
+.card .secondary-button,
+.card .delete-button,
+.card .warning-button {
+  width: calc(100% - 20px);
+}
+
+/* Clickable cards */
+.card-clickable {
+  transition: background-color 0.15s ease;
+}
+
+.card-clickable:active {
+  background-color: #f0f4f8;
+  transform: scale(0.99);
 }

@@ -26,6 +26,7 @@ const Profile = lazy(() => import("./components/Profile"));
 const Schedules = lazy(() => import("./components/Schedules"));
 const ResetPassword = lazy(() => import("./components/ResetPassword"));
 const MatchList = lazy(() => import("./components/MatchList"));
+const ChatList = lazy(() => import("./components/ChatList"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
 const App = () => {
@@ -66,6 +67,10 @@ const App = () => {
                 <Route
                   path="/matchlist"
                   element={<ProtectedRoute element={<MatchList />} />}
+                />
+                <Route
+                  path="/chats"
+                  element={<ProtectedRoute element={<ChatList />} />}
                 />
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="*" element={<NotFound />} />

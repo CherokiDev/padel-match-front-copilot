@@ -5,6 +5,7 @@ import { enqueueSnackbar } from "notistack";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "../redux/profileSlice";
 import LoadingScreen from "./LoadingScreen";
+import ChatModal from "./ChatModal";
 
 const MatchList = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,11 @@ const MatchList = () => {
   const [players, setPlayers] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [activeScheduleId, setActiveScheduleId] = useState(null);
   const [isSending, setIsSending] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatPeer, setChatPeer] = useState(null);
+  const [admittedScheduleIds, setAdmittedScheduleIds] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -47,6 +52,17 @@ const MatchList = () => {
       fetchPlayers();
     }
   }, [fetchPlayers, profileData]);
+
+  useEffect(() => {
+    if (!profileData) return;
+    const token = localStorage.getItem("token");
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/messages/admitted-schedules`, {
+        headers: { Authorization: token },
+      })
+      .then(({ data }) => setAdmittedScheduleIds(data.data))
+      .catch(() => {});
+  }, [profileData]);
 
   const deleteSchedule = async (scheduleId) => {
     const playerId = profileData?.id;
@@ -81,10 +97,13 @@ const MatchList = () => {
   if (!profileData) return null;
 
   const handleOpen = (scheduleId) => {
-    const availablePlayers = players?.filter((player) =>
-      player.schedules.some((schedule) => schedule.id === scheduleId)
+    const availablePlayers = players?.filter(
+      (player) =>
+        player.id !== profileData.id &&
+        player.schedules.some((schedule) => schedule.id === scheduleId)
     );
     setSelectedPlayers(availablePlayers);
+    setActiveScheduleId(scheduleId);
     setOpen(true);
   };
 
@@ -116,16 +135,19 @@ const MatchList = () => {
                 onClick={() => handleOpen(schedule.id)}
                 disabled={
                   players?.filter((player) =>
+                    player.id !== profileData.id &&
                     player.schedules.some((s) => s.id === schedule.id)
                   ).length === 0
                 }
               >
-                Jugadores disponibles:{" "}
+                Ver jugadores (
                 {
                   players?.filter((player) =>
+                    player.id !== profileData.id &&
                     player.schedules.some((s) => s.id === schedule.id)
                   ).length
                 }
+                )
               </button>
               <button
                 className="delete-button"
@@ -147,6 +169,21 @@ const MatchList = () => {
                 - Pista: {schedule.courtNumber}
               </div>
               <button
+                className="secondary-button"
+                onClick={() => handleOpen(schedule.id)}
+                disabled={!admittedScheduleIds.includes(schedule.id)}
+              >
+                {admittedScheduleIds.includes(schedule.id)
+                  ? `Ver jugadores (${
+                      players?.filter(
+                        (player) =>
+                          player.id !== profileData.id &&
+                          player.schedules.some((s) => s.id === schedule.id)
+                      ).length
+                    })`
+                  : "Pendiente de admisión"}
+              </button>
+              <button
                 className="delete-button"
                 onClick={() => deleteSchedule(schedule.id)}
               >
@@ -158,31 +195,61 @@ const MatchList = () => {
       {open && (
         <div className="modal">
           <div className="modal-content">
-            <div className="title-h3">Jugadores disponibles</div>
-            {selectedPlayers.map((player) => (
-              <div key={player.id} className="card">
-                <div className="title-h4">
-                  {player.name} ({player.username})
-                </div>
-                <div className="title-h5">Teléfono: {player.phone}</div>
-                <button
-                  className="primary-button"
-                  href={`https://wa.me/${player.phone}?text=Hola%20${player.username}.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Enviar whatsapp a {player.username}
-                </button>
-              </div>
-            ))}
-            <div className="modal-actions">
-              <button onClick={handleClose} className="secondary-button">
-                Cerrar
-              </button>
+            <div className="modal-sheet-header">
+              <span className="title-h3" style={{ margin: 0 }}>Jugadores disponibles</span>
+              <button className="modal-close-btn" onClick={handleClose}>✕</button>
             </div>
+            {selectedPlayers
+              .filter((player) => {
+                const mySchedule = profileData.schedules.find(
+                  (s) => s.id === activeScheduleId
+                );
+                if (mySchedule?.playerSchedules?.payer) return true;
+                return player.schedules.some(
+                  (s) => s.id === activeScheduleId && s.playerSchedules?.payer
+                );
+              })
+              .map((player) => (
+                <div key={player.id} className="card">
+                  <div className="title-h4">
+                    {player.name} ({player.username})
+                  </div>
+                  <div className="title-h5">Teléfono: {player.phone}</div>
+                  {profileData.schedules.some(
+                    (s) =>
+                      s.playerSchedules.payer &&
+                      player.schedules.some((ps) => ps.id === s.id)
+                  ) && (
+                    <button
+                      className="primary-button"
+                      href={`https://wa.me/${player.phone}?text=Hola%20${player.username}.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Enviar whatsapp a {player.username}
+                    </button>
+                  )}
+                  <button
+                    className="secondary-button"
+                    onClick={() => {
+                      setChatPeer(player);
+                      setChatOpen(true);
+                    }}
+                  >
+                    Chatear con {player.username}
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       )}
+      <ChatModal
+        open={chatOpen}
+        onClose={() => setChatOpen(false)}
+        peer={chatPeer || {}}
+        scheduleId={activeScheduleId}
+        scheduleInfo={profileData.schedules.find((s) => s.id === activeScheduleId) || null}
+      />
     </>
   );
 };

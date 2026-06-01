@@ -1,0 +1,123 @@
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #3e4953;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.profile-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.profile-username {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Info card */
+.profile-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 14px;
+}
+
+.profile-row:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.profile-row-icon {
+  color: #3e4953;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.profile-row-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-row-label {
+  font-size: 0.72rem;
+  color: gray;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-row-value {
+  font-size: 0.95rem;
+  color: #222;
+  margin-top: 1px;
+}
+
+/* Actions */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.profile-btn-edit {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.profile-btn-logout {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: #dc3545;
+  border: 1.5px solid #dc3545;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.profile-btn-logout:active {
+  background-color: #fff0f0;
+}

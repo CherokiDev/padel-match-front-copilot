@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { fetchProfile } from "../redux/profileSlice";
-import PropTypes from "prop-types";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import LoadingScreen from "./LoadingScreen";
+import "./Profile.css";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -17,9 +21,7 @@ const Profile = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      dispatch(fetchProfile(token));
-    }
+    if (token) dispatch(fetchProfile(token));
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -29,41 +31,64 @@ const Profile = () => {
   };
 
   if (profileStatus === "loading") return <LoadingScreen />;
-
-  if (profileError)
-    return (
-      <div>
-        <p>Error: {profileError}</p>
-      </div>
-    );
-
+  if (profileError) return <div><p>Error: {profileError}</p></div>;
   if (!profileData) return null;
 
+  const initials = profileData.name
+    ? profileData.name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase()
+    : "?";
+
   return (
-    <div className="container-main-logged">
-      <div className="title-h3">Perfil</div>
-      <div className="title-h5">Nombre: {profileData.name}</div>
-      <div className="title-h5">Email: {profileData.email}</div>
-      <div className="title-h5">Teléfono: {profileData.phone}</div>
-      <div className="title-h5">Usuario (apodo): {profileData.username}</div>
-      <div className="title-h5">
-        Usuario desde: {new Date(profileData.createdAt).toLocaleDateString()}
+    <div className="profile-wrapper">
+      <div className="profile-avatar">{initials}</div>
+      <div className="profile-name">{profileData.name}</div>
+      <div className="profile-username">@{profileData.username}</div>
+
+      <div className="profile-card">
+        <div className="profile-row">
+          <span className="profile-row-icon"><EmailOutlinedIcon fontSize="small" /></span>
+          <div className="profile-row-content">
+            <span className="profile-row-label">Email</span>
+            <span className="profile-row-value">{profileData.email}</span>
+          </div>
+        </div>
+        <div className="profile-row">
+          <span className="profile-row-icon"><PhoneOutlinedIcon fontSize="small" /></span>
+          <div className="profile-row-content">
+            <span className="profile-row-label">Teléfono</span>
+            <span className="profile-row-value">{profileData.phone}</span>
+          </div>
+        </div>
+        <div className="profile-row">
+          <span className="profile-row-icon"><BadgeOutlinedIcon fontSize="small" /></span>
+          <div className="profile-row-content">
+            <span className="profile-row-label">Nombre de usuario</span>
+            <span className="profile-row-value">@{profileData.username}</span>
+          </div>
+        </div>
+        <div className="profile-row">
+          <span className="profile-row-icon"><CalendarTodayOutlinedIcon fontSize="small" /></span>
+          <div className="profile-row-content">
+            <span className="profile-row-label">Miembro desde</span>
+            <span className="profile-row-value">
+              {new Date(profileData.createdAt).toLocaleDateString("es-ES", {
+                day: "numeric", month: "long", year: "numeric",
+              })}
+            </span>
+          </div>
+        </div>
       </div>
-      <button className="primary-button" disabled>
-        Editar Perfil
-      </button>
-      <button className="secondary-button" onClick={handleLogout}>
-        Cerrar sesión
-      </button>
+
+      <div className="profile-actions">
+        <button className="profile-btn-edit" disabled>
+          Editar perfil
+        </button>
+        <button className="profile-btn-logout" onClick={handleLogout}>
+          Cerrar sesión
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Profile;
-
-Profile.propTypes = {
-  profileData: PropTypes.shape({
-    name: PropTypes.string,
-    email: PropTypes.string,
-  }),
-};
