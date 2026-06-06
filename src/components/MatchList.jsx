@@ -110,7 +110,7 @@ const MatchList = () => {
     }
   };
 
-  if (profileStatus === "loading") return <LoadingScreen />;
+  if (profileStatus === "loading" || !profileData?.id) return <LoadingScreen />;
 
   if (profileError)
     return (
@@ -118,8 +118,6 @@ const MatchList = () => {
         <p>Error: {profileError}</p>
       </div>
     );
-
-  if (!profileData) return null;
 
   const handleOpen = (scheduleId, allIds = null) => {
     const ids = allIds || [scheduleId];
@@ -286,7 +284,7 @@ const MatchList = () => {
         onClose={() => setChatOpen(false)}
         peer={chatPeer || {}}
         scheduleId={activeScheduleId}
-        scheduleInfo={profileData.schedules.find((s) => s.id === activeScheduleId) || null}
+        scheduleInfo={profileData.schedules?.find((s) => s.id === activeScheduleId) || null}
       />
     </>
   );

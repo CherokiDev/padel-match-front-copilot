@@ -30,9 +30,8 @@ const Profile = () => {
     navigate("/login");
   };
 
-  if (profileStatus === "loading") return <LoadingScreen />;
+  if (profileStatus === "loading" || !profileData?.id) return <LoadingScreen />;
   if (profileError) return <div><p>Error: {profileError}</p></div>;
-  if (!profileData) return null;
 
   const initials = profileData.name
     ? profileData.name.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase()

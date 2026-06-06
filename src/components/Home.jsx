@@ -25,7 +25,7 @@ const Home = () => {
     navigate("/schedules", { state: { payer } });
   };
 
-  if (profileStatus === "loading") return <LoadingScreen />;
+  if (profileStatus === "loading" || !profileData?.id) return <LoadingScreen />;
 
   if (profileError)
     return (
