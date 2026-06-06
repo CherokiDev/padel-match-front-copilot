@@ -63,8 +63,13 @@
   font-family: "Roboto", sans-serif;
 }
 
-.custom-calendar .rbc-event {
+.custom-calendar.payer-view .rbc-event {
   width: 49% !important;
+  height: 10% !important;
+}
+
+.custom-calendar.non-payer-view .rbc-event {
+  width: 99% !important;
   height: 10% !important;
 }
 

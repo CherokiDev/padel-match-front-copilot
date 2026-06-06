@@ -19,6 +19,7 @@ const MatchList = () => {
   const [open, setOpen] = useState(false);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [activeScheduleId, setActiveScheduleId] = useState(null);
+  const [activeScheduleIds, setActiveScheduleIds] = useState([]);
   const [isSending, setIsSending] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatPeer, setChatPeer] = useState(null);
@@ -85,6 +86,30 @@ const MatchList = () => {
     }
   };
 
+  const deleteScheduleGroup = async (scheduleIds) => {
+    const playerId = profileData?.id;
+    const token = localStorage.getItem("token");
+    setIsSending(true);
+    try {
+      await Promise.all(
+        scheduleIds.map((sid) =>
+          axios
+            .delete(`${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`, {
+              data: { scheduleId: sid },
+              headers: { Authorization: token },
+            })
+            .catch(() => {})
+        )
+      );
+      dispatch(fetchProfile(token));
+      enqueueSnackbar("Horario eliminado correctamente", { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar("Error al eliminar el horario", { variant: "error" });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   if (profileStatus === "loading") return <LoadingScreen />;
 
   if (profileError)
@@ -96,14 +121,16 @@ const MatchList = () => {
 
   if (!profileData) return null;
 
-  const handleOpen = (scheduleId) => {
+  const handleOpen = (scheduleId, allIds = null) => {
+    const ids = allIds || [scheduleId];
     const availablePlayers = players?.filter(
       (player) =>
         player.id !== profileData.id &&
-        player.schedules.some((schedule) => schedule.id === scheduleId)
+        player.schedules.some((schedule) => ids.includes(schedule.id))
     );
     setSelectedPlayers(availablePlayers);
     setActiveScheduleId(scheduleId);
+    setActiveScheduleIds(ids);
     setOpen(true);
   };
 
@@ -159,38 +186,49 @@ const MatchList = () => {
           ))}
         <hr className="hr-separator" />
         <div className="title-h4">Apuntado para jugar</div>
-        {profileData.schedules
-          ?.filter((schedule) => !schedule.playerSchedules.payer)
-          .map((schedule) => (
-            <div key={schedule.id} className="card">
-              <div className="title-h5">
-                Fecha:{" "}
-                {moment(schedule.dateOfReservation).format("DD/MM/YYYY, HH:mm")}{" "}
-                - Pista: {schedule.courtNumber}
+        {(() => {
+          const nonPayerSchedules =
+            profileData.schedules?.filter((s) => !s.playerSchedules.payer) || [];
+          const byTime = {};
+          nonPayerSchedules.forEach((s) => {
+            const key = s.dateOfReservation;
+            if (!byTime[key]) byTime[key] = [];
+            byTime[key].push(s);
+          });
+          return Object.entries(byTime).map(([time, schedules]) => {
+            const ids = schedules.map((s) => s.id);
+            const admittedId = ids.find((id) => admittedScheduleIds.includes(id));
+            const isAdmitted = !!admittedId;
+            const playersInGroup =
+              players?.filter(
+                (player) =>
+                  player.id !== profileData.id &&
+                  player.schedules.some((s) => ids.includes(s.id))
+              ) || [];
+            return (
+              <div key={time} className="card">
+                <div className="title-h5">
+                  Fecha: {moment(time).format("DD/MM/YYYY, HH:mm")}
+                </div>
+                <button
+                  className="secondary-button"
+                  onClick={() => handleOpen(admittedId || ids[0], ids)}
+                  disabled={!isAdmitted}
+                >
+                  {isAdmitted
+                    ? `Ver jugadores (${playersInGroup.length})`
+                    : "Pendiente de admisión"}
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => deleteScheduleGroup(ids)}
+                >
+                  Eliminar
+                </button>
               </div>
-              <button
-                className="secondary-button"
-                onClick={() => handleOpen(schedule.id)}
-                disabled={!admittedScheduleIds.includes(schedule.id)}
-              >
-                {admittedScheduleIds.includes(schedule.id)
-                  ? `Ver jugadores (${
-                      players?.filter(
-                        (player) =>
-                          player.id !== profileData.id &&
-                          player.schedules.some((s) => s.id === schedule.id)
-                      ).length
-                    })`
-                  : "Pendiente de admisión"}
-              </button>
-              <button
-                className="delete-button"
-                onClick={() => deleteSchedule(schedule.id)}
-              >
-                Eliminar
-              </button>
-            </div>
-          ))}
+            );
+          });
+        })()}
       </div>
       {open && (
         <div className="modal">
@@ -206,7 +244,7 @@ const MatchList = () => {
                 );
                 if (mySchedule?.playerSchedules?.payer) return true;
                 return player.schedules.some(
-                  (s) => s.id === activeScheduleId && s.playerSchedules?.payer
+                  (s) => activeScheduleIds.includes(s.id) && s.playerSchedules?.payer
                 );
               })
               .map((player) => (
@@ -215,7 +253,7 @@ const MatchList = () => {
                     {player.name} ({player.username})
                   </div>
                   <div className="title-h5">Teléfono: {player.phone}</div>
-                  {profileData.schedules.some(
+                  {false && profileData.schedules.some(
                     (s) =>
                       s.playerSchedules.payer &&
                       player.schedules.some((ps) => ps.id === s.id)

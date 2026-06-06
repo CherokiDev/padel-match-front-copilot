@@ -24,6 +24,7 @@ const Schedules = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [openDialog, setOpenDialog] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [availableIds, setAvailableIds] = useState(null);
 
   const {
     data: schedulesResponse,
@@ -45,42 +46,53 @@ const Schedules = () => {
     }
   }, [dispatch]);
 
-  const handleSendToBackend = async () => {
-    if (!selectedSchedule) {
-      console.error("No schedule selected");
-      return;
-    }
+  useEffect(() => {
+    if (!payer) return;
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/schedulesAvailables`)
+      .then(({ data }) => setAvailableIds(new Set(data.data.map((s) => s.id))))
+      .catch(() => {});
+  }, [payer]);
 
+  const handleSendToBackend = async () => {
+    if (!selectedSchedule) return;
     const playerId = profileData?.id;
-    if (!playerId) {
-      console.error("Player ID is undefined");
-      return;
-    }
+    if (!playerId) return;
 
     const url = `${import.meta.env.VITE_API_URL}/players/${playerId}/schedules`;
-
-    const body = {
-      scheduleId: selectedSchedule.id,
-      payer,
-    };
-
     const token = localStorage.getItem("token");
+    const scheduleIds = selectedSchedule.ids || [selectedSchedule.id];
+
+    const refreshAvailableIds = () => {
+      axios
+        .get(`${import.meta.env.VITE_API_URL}/schedulesAvailables`)
+        .then(({ data }) => setAvailableIds(new Set(data.data.map((s) => s.id))))
+        .catch(() => {});
+    };
 
     setIsSending(true);
     try {
-      const response = await axios.post(url, body, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
+      let lastSuccessMessage = "Horario asignado correctamente";
+      for (const scheduleId of scheduleIds) {
+        try {
+          const response = await axios.post(
+            url,
+            { scheduleId, payer },
+            { headers: { "Content-Type": "application/json", Authorization: token } }
+          );
+          lastSuccessMessage = response.data.message;
+        } catch (err) {
+          if (payer || err.response?.status !== 400) throw err;
+        }
+      }
       dispatch(fetchSchedules(token));
       dispatch(fetchProfile(token));
-
-      enqueueSnackbar(response.data.message, { variant: "success" });
+      if (payer) refreshAvailableIds();
+      enqueueSnackbar(lastSuccessMessage, { variant: "success" });
       setOpenDialog(false);
     } catch (error) {
-      if (error.response && error.response.data.message) {
+      if (payer) refreshAvailableIds();
+      if (error.response?.data.message) {
         enqueueSnackbar(error.response.data.message, { variant: "error" });
       } else {
         enqueueSnackbar("Ocurrió un error al confirmar la reserva", {
@@ -107,33 +119,66 @@ const Schedules = () => {
   const schedulesData = schedulesResponse?.data || [];
   const userSchedules = profileData?.schedules || [];
 
-  const events = schedulesData.map((schedule) => {
-    const start = new Date(schedule.dateOfReservation);
-    const end = moment(start).add(1, "hours").add(30, "minutes").toDate();
-    const isReservedByUser = userSchedules.some(
-      (userSchedule) => userSchedule.id === schedule.id
-    );
-    return {
-      id: schedule.id,
-      title: `Pista ${schedule.courtNumber}`,
-      start,
-      end,
-      courtNumber: schedule.courtNumber,
-      disabled: isReservedByUser,
-    };
-  });
+  const events = payer
+    ? schedulesData.map((schedule) => {
+        const start = new Date(schedule.dateOfReservation);
+        const end = moment(start).add(1, "hours").add(30, "minutes").toDate();
+        const isReservedByUser = userSchedules.some((us) => us.id === schedule.id);
+        const takenByOther =
+          availableIds !== null && !availableIds.has(schedule.id) && !isReservedByUser;
+        return {
+          id: schedule.id,
+          ids: [schedule.id],
+          title: takenByOther
+            ? `Pista ${schedule.courtNumber} - Ocupada`
+            : `Pista ${schedule.courtNumber}`,
+          start,
+          end,
+          courtNumber: schedule.courtNumber,
+          disabled: isReservedByUser || takenByOther,
+          takenByOther,
+        };
+      })
+    : (() => {
+        const byTime = {};
+        schedulesData.forEach((schedule) => {
+          const key = schedule.dateOfReservation;
+          if (!byTime[key]) byTime[key] = [];
+          byTime[key].push(schedule);
+        });
+        return Object.entries(byTime).map(([time, schedules]) => {
+          const start = new Date(time);
+          const end = moment(start).add(1, "hours").add(30, "minutes").toDate();
+          const isReservedByUser = schedules.some((s) =>
+            userSchedules.some((us) => us.id === s.id)
+          );
+          return {
+            id: schedules[0].id,
+            ids: schedules.map((s) => s.id),
+            title: "",
+            start,
+            end,
+            disabled: isReservedByUser,
+          };
+        });
+      })();
 
   const eventStyleGetter = (event) => {
-    const style = {
-      backgroundColor: event.disabled
-        ? "#d3d3d3"
-        : event.id === selectedSchedule?.id
-        ? "#DDD165FF"
-        : "#3174ad",
-      pointerEvents: event.disabled ? "none" : "auto",
-    };
+    let backgroundColor;
+    if (event.takenByOther) {
+      backgroundColor = "#e74c3c";
+    } else if (event.disabled) {
+      backgroundColor = "#d3d3d3";
+    } else if (event.id === selectedSchedule?.id) {
+      backgroundColor = "#DDD165FF";
+    } else {
+      backgroundColor = "#3174ad";
+    }
     return {
-      style,
+      style: {
+        backgroundColor,
+        pointerEvents: event.disabled || event.takenByOther ? "none" : "auto",
+      },
     };
   };
 
@@ -222,14 +267,14 @@ const Schedules = () => {
         onNavigate={handleNavigate}
         min={new Date(1970, 1, 1, 8, 0, 0)} // 8:00 AM
         max={new Date(1970, 1, 1, 22, 0, 0)} // 10:00 PM
-        className="custom-calendar"
+        className={`custom-calendar ${payer ? "payer-view" : "non-payer-view"}`}
       />
       {openDialog && (
         <div className="modal">
           <div className="modal-content">
             <div className="title-h4">Horario Seleccionado</div>
             <div className="title-h5">
-              <div>Pista: {selectedSchedule?.courtNumber}</div>
+              {payer && <div>Pista: {selectedSchedule?.courtNumber}</div>}
               <div>
                 Fecha:{" "}
                 {`${new Date(selectedSchedule?.start).toLocaleDateString(
